@@ -3,29 +3,53 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */; };
-		1782EFE0235CBF8D0082F9CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFDF235CBF8D0082F9CD /* SceneDelegate.swift */; };
-		1782EFE2235CBF8D0082F9CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFE1235CBF8D0082F9CD /* ViewController.swift */; };
 		1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1782EFE3235CBF8D0082F9CD /* Main.storyboard */; };
 		1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */; };
 		1782EFEA235CBF8F0082F9CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1782EFE9235CBF8F0082F9CD /* Assets.xcassets */; };
 		1782EFED235CBF8F0082F9CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1782EFEB235CBF8F0082F9CD /* LaunchScreen.storyboard */; };
+		1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFF8235CC06C0082F9CD /* CoreDataStack.swift */; };
+		1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F00F235CC3BC0082F9CD /* OpenVPNService.swift */; };
+		1782F013235CC3DD0082F9CD /* OpenVPNConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F012235CC3DD0082F9CD /* OpenVPNConstants.swift */; };
+		1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F016235CC70C0082F9CD /* ServerDto.swift */; };
+		1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F01A235CE8110082F9CD /* MainViewController.swift */; };
+		1782F01D235CE83A0082F9CD /* ServerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */; };
+		1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F01E235CF6380082F9CD /* SettingsViewController.swift */; };
+		1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F020235CFD5A0082F9CD /* MainViewModel.swift */; };
+		1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F023235D02AE0082F9CD /* ServerItemTableViewCell.swift */; };
+		1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F026235D07BA0082F9CD /* UserDefaults+Settings.swift */; };
+		1782F02B235D0DD90082F9CD /* ServerEntity+CRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F02A235D0DD90082F9CD /* ServerEntity+CRUD.swift */; };
+		1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F02C235D1F310082F9CD /* RestAPI.swift */; };
+		4A5DF31520B9F03E4A7629CB /* Pods_VPNClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.release.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.release.xcconfig"; sourceTree = "<group>"; };
 		1782EFDA235CBF8D0082F9CD /* VPNClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1782EFDF235CBF8D0082F9CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		1782EFE1235CBF8D0082F9CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1782EFE4235CBF8D0082F9CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1782EFE7235CBF8D0082F9CD /* VPNClient.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VPNClient.xcdatamodel; sourceTree = "<group>"; };
 		1782EFE9235CBF8F0082F9CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1782EFEC235CBF8F0082F9CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1782EFEE235CBF8F0082F9CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1782EFF8235CC06C0082F9CD /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		1782F00F235CC3BC0082F9CD /* OpenVPNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNService.swift; sourceTree = "<group>"; };
+		1782F012235CC3DD0082F9CD /* OpenVPNConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConstants.swift; sourceTree = "<group>"; };
+		1782F016235CC70C0082F9CD /* ServerDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDto.swift; sourceTree = "<group>"; };
+		1782F01A235CE8110082F9CD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewController.swift; sourceTree = "<group>"; };
+		1782F01E235CF6380082F9CD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		1782F020235CFD5A0082F9CD /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		1782F023235D02AE0082F9CD /* ServerItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerItemTableViewCell.swift; sourceTree = "<group>"; };
+		1782F026235D07BA0082F9CD /* UserDefaults+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Settings.swift"; sourceTree = "<group>"; };
+		1782F02A235D0DD90082F9CD /* ServerEntity+CRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerEntity+CRUD.swift"; sourceTree = "<group>"; };
+		1782F02C235D1F310082F9CD /* RestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestAPI.swift; sourceTree = "<group>"; };
+		6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.debug.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.debug.xcconfig"; sourceTree = "<group>"; };
+		8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A5DF31520B9F03E4A7629CB /* Pods_VPNClient.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +69,8 @@
 			children = (
 				1782EFDC235CBF8D0082F9CD /* VPNClient */,
 				1782EFDB235CBF8D0082F9CD /* Products */,
+				5EAF721E9B977F4AA4EB7FF4 /* Pods */,
+				D2B7C2AB42458BA0B697642F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,9 +85,13 @@
 		1782EFDC235CBF8D0082F9CD /* VPNClient */ = {
 			isa = PBXGroup;
 			children = (
+				1782F025235D07A10082F9CD /* Extensions */,
+				1782F019235CE3B70082F9CD /* ViewControllers */,
+				1782F018235CE3AE0082F9CD /* ViewModels */,
+				1782F014235CC6C80082F9CD /* Entities */,
+				1782F011235CC3D10082F9CD /* Constants */,
+				1782EFF4235CC0270082F9CD /* Services */,
 				1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */,
-				1782EFDF235CBF8D0082F9CD /* SceneDelegate.swift */,
-				1782EFE1235CBF8D0082F9CD /* ViewController.swift */,
 				1782EFE3235CBF8D0082F9CD /* Main.storyboard */,
 				1782EFE9235CBF8F0082F9CD /* Assets.xcassets */,
 				1782EFEB235CBF8F0082F9CD /* LaunchScreen.storyboard */,
@@ -70,6 +101,125 @@
 			path = VPNClient;
 			sourceTree = "<group>";
 		};
+		1782EFF4235CC0270082F9CD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1782F00E235CC3A10082F9CD /* VPN */,
+				1782EFF5235CC0300082F9CD /* Data */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1782EFF5235CC0300082F9CD /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1782EFF7235CC0420082F9CD /* DB */,
+				1782EFF6235CC0360082F9CD /* Rest */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		1782EFF6235CC0360082F9CD /* Rest */ = {
+			isa = PBXGroup;
+			children = (
+				1782F02C235D1F310082F9CD /* RestAPI.swift */,
+			);
+			path = Rest;
+			sourceTree = "<group>";
+		};
+		1782EFF7235CC0420082F9CD /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				1782EFF8235CC06C0082F9CD /* CoreDataStack.swift */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
+		1782F00E235CC3A10082F9CD /* VPN */ = {
+			isa = PBXGroup;
+			children = (
+				1782F00F235CC3BC0082F9CD /* OpenVPNService.swift */,
+			);
+			path = VPN;
+			sourceTree = "<group>";
+		};
+		1782F011235CC3D10082F9CD /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				1782F012235CC3DD0082F9CD /* OpenVPNConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		1782F014235CC6C80082F9CD /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				1782F015235CC6D50082F9CD /* DTOs */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		1782F015235CC6D50082F9CD /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				1782F016235CC70C0082F9CD /* ServerDto.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		1782F018235CE3AE0082F9CD /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1782F020235CFD5A0082F9CD /* MainViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		1782F019235CE3B70082F9CD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1782F022235D02300082F9CD /* Cell */,
+				1782F01A235CE8110082F9CD /* MainViewController.swift */,
+				1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */,
+				1782F01E235CF6380082F9CD /* SettingsViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1782F022235D02300082F9CD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				1782F023235D02AE0082F9CD /* ServerItemTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		1782F025235D07A10082F9CD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1782F026235D07BA0082F9CD /* UserDefaults+Settings.swift */,
+				1782F02A235D0DD90082F9CD /* ServerEntity+CRUD.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5EAF721E9B977F4AA4EB7FF4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */,
+				01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D2B7C2AB42458BA0B697642F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,9 +227,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1782EFF1235CBF8F0082F9CD /* Build configuration list for PBXNativeTarget "VPNClient" */;
 			buildPhases = (
+				CC2E9502A33CCF3221430D43 /* [CP] Check Pods Manifest.lock */,
 				1782EFD6235CBF8D0082F9CD /* Sources */,
 				1782EFD7235CBF8D0082F9CD /* Frameworks */,
 				1782EFD8235CBF8D0082F9CD /* Resources */,
+				5E93D0F6FC6951F832077413 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,15 +288,67 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5E93D0F6FC6951F832077413 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VPNClient/Pods-VPNClient-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VPNClient/Pods-VPNClient-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VPNClient/Pods-VPNClient-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC2E9502A33CCF3221430D43 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VPNClient-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1782EFD6235CBF8D0082F9CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1782EFE2235CBF8D0082F9CD /* ViewController.swift in Sources */,
 				1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */,
+				1782F013235CC3DD0082F9CD /* OpenVPNConstants.swift in Sources */,
+				1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */,
+				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
+				1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */,
 				1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */,
-				1782EFE0235CBF8D0082F9CD /* SceneDelegate.swift in Sources */,
+				1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */,
+				1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */,
+				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
+				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
+				1782F01D235CE83A0082F9CD /* ServerPickerViewController.swift in Sources */,
+				1782F02B235D0DD90082F9CD /* ServerEntity+CRUD.swift in Sources */,
+				1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */,
+				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,11 +490,13 @@
 		};
 		1782EFF2235CBF8F0082F9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 86PK8S9X9K;
 				INFOPLIST_FILE = VPNClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,11 +510,13 @@
 		};
 		1782EFF3235CBF8F0082F9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 86PK8S9X9K;
 				INFOPLIST_FILE = VPNClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

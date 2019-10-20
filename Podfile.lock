@@ -1,0 +1,60 @@
+PODS:
+  - Alamofire (4.9.0)
+  - Moya (13.0.1):
+    - Moya/Core (= 13.0.1)
+  - Moya/Core (13.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.1)
+  - OpenSSL-Apple (1.1.0l.4)
+  - Result (4.1.0)
+  - SwiftyBeaver (1.8.2)
+  - TunnelKit (2.0.5):
+    - TunnelKit/Protocols/OpenVPN (= 2.0.5)
+  - TunnelKit/AppExtension (2.0.5):
+    - SwiftyBeaver
+    - TunnelKit/Core
+  - TunnelKit/Core (2.0.5):
+    - SwiftyBeaver
+  - TunnelKit/Protocols/OpenVPN (2.0.5):
+    - OpenSSL-Apple (~> 1.1.0j.4)
+    - TunnelKit/AppExtension
+    - TunnelKit/Core
+  - XMLParsing (0.0.3)
+
+DEPENDENCIES:
+  - Alamofire
+  - Moya (~> 13.0)
+  - SwiftyBeaver
+  - TunnelKit
+  - XMLParsing (from `https://github.com/ShawnMoore/XMLParsing.git`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Moya
+    - OpenSSL-Apple
+    - Result
+    - SwiftyBeaver
+    - TunnelKit
+
+EXTERNAL SOURCES:
+  XMLParsing:
+    :git: https://github.com/ShawnMoore/XMLParsing.git
+
+CHECKOUT OPTIONS:
+  XMLParsing:
+    :commit: 594272e4df40798c53ae1735ee65f3f387291670
+    :git: https://github.com/ShawnMoore/XMLParsing.git
+
+SPEC CHECKSUMS:
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  OpenSSL-Apple: f3d1668588ea8f06b076dcfa6177cd90452e3800
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  SwiftyBeaver: aaf2ebd7dac2e952991f46a82ed24ad642867ae2
+  TunnelKit: f33216415cd9d5e37b6acf02edb0c79350598b36
+  XMLParsing: 085edb6fa22c71d6b53a79299f990a91e7414d19
+
+PODFILE CHECKSUM: 913000eeec15ee94a1f53ad14276fa633f45f944
+
+COCOAPODS: 1.8.3
