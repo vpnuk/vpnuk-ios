@@ -12,8 +12,13 @@ import NetworkExtension
 import TunnelKit
 import SwiftyBeaver
 
+enum VPNError: Error {
+    case error(description: String)
+}
+
 protocol VPNServiceDelegate: class {
     func statusUpdated(newStatus status: NEVPNStatus)
+    func raised(error: VPNError)
 }
 
 protocol VPNService {
@@ -126,6 +131,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         }, completionHandler: { (error) in
             if let error = error {
                 print("configure error: \(error)")
+                self.delegate?.raised(error: VPNError.error(description: "Configure error: \(error.localizedDescription)"))
                 return
             }
             let session = self.currentManager?.connection as! NETunnelProviderSession
@@ -133,6 +139,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
                 try session.startTunnel()
             } catch let e {
                 print("error starting tunnel: \(e)")
+                self.delegate?.raised(error: VPNError.error(description: "Error starting tunnel: \(e.localizedDescription)"))
             }
         })
     }
@@ -167,6 +174,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         reloadCurrentManager { (error) in
             if let error = error {
                 print("error reloading preferences: \(error)")
+                self.delegate?.raised(error: VPNError.error(description: "Error reloading preferences: \(error.localizedDescription)"))
                 completionHandler(error)
                 return
             }
@@ -180,6 +188,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
             manager.saveToPreferences { (error) in
                 if let error = error {
                     print("error saving preferences: \(error)")
+                    self.delegate?.raised(error: VPNError.error(description: "Error saving preferences: \(error.localizedDescription)"))
                     completionHandler(error)
                     return
                 }
@@ -187,11 +196,11 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
                 self.reloadCurrentManager(completionHandler)
             }
             
-            
-            let connectRule = NEOnDemandRuleConnect()
-            connectRule.interfaceTypeMatch = .any
-            manager.onDemandRules = [connectRule]
-            manager.isOnDemandEnabled = true
+//
+//            let connectRule = NEOnDemandRuleConnect()
+//            connectRule.interfaceTypeMatch = .any
+//            manager.onDemandRules = [connectRule]
+//            manager.isOnDemandEnabled = true
         }
     }
     

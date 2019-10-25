@@ -36,9 +36,9 @@ extension UserDefaults {
         }
     }
     
-    static var portSetting: Int? {
+    static var portSetting: String? {
         get {
-            return UserDefaults.standard.integer(forKey: "portSetting")
+            return UserDefaults.standard.string(forKey: "portSetting")
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "portSetting")

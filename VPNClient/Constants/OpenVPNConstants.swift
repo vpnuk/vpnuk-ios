@@ -9,12 +9,32 @@
 import Foundation
 import TunnelKit
 
-enum OpenVPNConstants {
+//"443", at: 0, animated: false)
+//    portSegmentedControl.insertSegment(withTitle: "8008", at: 1, animated: false)
+//    portSegmentedControl.insertSegment(withTitle: "80", at: 1, animated: false)
+//case .udp:
+//    portSegmentedControl.removeAllSegments()
+//    portSegmentedControl.insertSegment(withTitle: "1194", at: 0, animated: false)
+//    portSegmentedControl.insertSegment(withTitle: "55194", at: 1, animated: false)
+//    portSegmentedControl.insertSegment(withTitle: "65194"
+
+enum VPNSettings {
+    static let socketPorts: [SocketType: [Int]] = {
+        var settings = [SocketType: [Int]]()
+        settings[.tcp] = [443, 8080, 80]
+        settings[.udp] = [1194, 55194, 65194]
+        return settings
+    }()
     
     static let defaultSettings: (port: Int, socketType: SocketType) = (port: 1194, socketType: .udp)
+}
+
+enum OpenVPNConstants {
     
-    static let appGroup = "group.com.algoritmico.ios.demo.BasicTunnel7u"
-    static let tunnelIdentifier = "com.algoritmico.ios.demo.BasicTunnel7u.BasicTunnelExtension"
+    
+    
+    static let appGroup = "group.info.vpnuk.VPNClient"
+    static let tunnelIdentifier = "info.vpnuk.VPNClient.VPNClientNetworkExtension"
     
     
     static let openVPNStaticKey: [Substring] = [

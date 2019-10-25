@@ -24,9 +24,11 @@ class RestAPI {
                     let data = response.data!
                     do {
                         
+                    
                         let servers = try XMLDecoder().decode([ServerDTO].self, from: data)
                         var mock: [ServerDTO] = [
-                            ServerDTO(location: ServerLocation(name: "UK 61", icon: "UK", city: "Maidenhead"), type: .shared, address: "78.129.194.131", dns: "shared61.vpnuk.net", speed: "1GBPS"),
+                            ServerDTO(location: ServerLocation(name: "ES 2", icon: "ES", city: "Madrid"), type: .shared, address: "37.235.53.23", dns: "shared2-es.vpnuk.net", speed: "1GBPS"),
+                            ServerDTO(location: ServerLocation(name: "CH 1", icon: "CH", city: "Zurich"), type: .shared, address: "80.74.131.84", dns: "shared1-ch.vpnuk.net", speed: "100MBPS"),
                            
                         ]
                         DispatchQueue.main.async {

@@ -17,16 +17,30 @@ protocol MainView: class {
     var password: String? { get }
     func statusUpdated(newStatus status: NEVPNStatus)
     func serverListUpdated()
+    func showError(description: String)
 }
 
 class MainViewModel: NSObject {
     weak var view: MainView?
     private(set) var selectedServer: ServerEntity?
-    var serversType: ServerType = .dedicated {
+    var serversType: ServerType = .shared {
         didSet {
             fetchServers()
         }
     }
+    
+    var serverIP: String? {
+        return vpnService.configuration?.hostname
+    }
+    
+    var socketType: SocketType? {
+        return vpnService.configuration?.socketType
+    }
+    
+    var port: UInt16? {
+        return vpnService.configuration?.port
+    }
+    
     private var vpnService: VPNService
     private let api: RestAPI
     private let coreDataStack: CoreDataStack
@@ -53,7 +67,7 @@ class MainViewModel: NSObject {
     }
     
     func isConnected(toServer server: ServerEntity) -> Bool {
-        return selectedServer?.address == server.address
+        return vpnService.configuration?.hostname == server.address && (vpnService.status != .disconnected && vpnService.status != .invalid)
     }
     
     func viewDidLoad() {
@@ -91,17 +105,26 @@ class MainViewModel: NSObject {
     }
     
     func connectTouched() {
-        let port = UserDefaults.portSetting ?? OpenVPNConstants.defaultSettings.port
-        let type = UserDefaults.socketTypeSetting ?? OpenVPNConstants.defaultSettings.socketType
-        
-        guard let server = selectedServer else {
-            print("please select server from list")
-            return;
-        }
-        
+       
         switch vpnService.status {
         case .invalid, .disconnected:
+            let port = Int(UserDefaults.portSetting ?? String(VPNSettings.defaultSettings.port)) ?? VPNSettings.defaultSettings.port
+            let type = UserDefaults.socketTypeSetting ?? VPNSettings.defaultSettings.socketType
+            guard let server = selectedServer else {
+                view?.showError(description: "Please select server from the list")
+                print("please select server from list")
+                return;
+            }
+            
             if let username = view?.username, let password = view?.password {
+                if username == "" {
+                    view?.showError(description: "Please input username")
+                    return
+                }
+                if password == "" {
+                    view?.showError(description: "Please input password")
+                    return
+                }
                 let credentials = OpenVPN.Credentials(username, password)
                 vpnService.configure(hostname: server.address!, port: UInt16(port), socketType: type, credentials: credentials)
                 vpnService.connectionClicked()
@@ -129,6 +152,16 @@ extension MainViewModel: NSFetchedResultsControllerDelegate {
 }
 
 extension MainViewModel: VPNServiceDelegate {
+    func raised(error: VPNError) {
+        switch error {
+        case .error(let desc):
+            DispatchQueue.main.async {
+                self.view?.showError(description: desc)
+            }
+        }
+        
+    }
+    
     func statusUpdated(newStatus status: NEVPNStatus) {
         view?.statusUpdated(newStatus: status)
     }

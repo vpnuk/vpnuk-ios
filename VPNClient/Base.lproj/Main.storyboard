@@ -215,7 +215,7 @@
                                                                 </label>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7GJ-Wp-l8G">
                                                                     <rect key="frame" x="305" y="50" width="20" height="20"/>
-                                                                    <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="7GJ-Wp-l8G" secondAttribute="height" id="6x8-5t-AZh"/>
                                                                         <constraint firstAttribute="width" constant="20" id="DId-m4-gy5"/>
@@ -227,7 +227,6 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </view>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                             <constraints>
                                                                 <constraint firstItem="7GJ-Wp-l8G" firstAttribute="centerY" secondItem="TJA-eg-kWU" secondAttribute="centerY" id="8t3-HC-ZWB"/>
                                                                 <constraint firstItem="slc-fD-CFE" firstAttribute="leading" secondItem="BbZ-0t-vu0" secondAttribute="leading" id="8x7-aZ-FK0"/>
@@ -284,7 +283,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONI-i6-PmP">
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONI-i6-PmP">
                                         <rect key="frame" x="0.0" y="347" width="335" height="36"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Connect"/>
@@ -316,7 +315,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="connectButton" destination="ONI-i6-PmP" id="5qP-Lc-sMo"/>
-                        <outlet property="connectionStatusLabel" destination="4PV-J4-FSx" id="9nE-ra-CMr"/>
+                        <outlet property="connectionStatusLabel" destination="4PV-J4-FSx" id="V3u-Jv-jvi"/>
                         <outlet property="passwordTextField" destination="BDf-6y-SS0" id="NRW-nW-fhd"/>
                         <outlet property="serversListTableView" destination="Mjm-kt-zM6" id="esO-P2-f2A"/>
                         <outlet property="serversTypeSegmentedControl" destination="FOf-fz-8eO" id="F3m-05-Xtz"/>
@@ -414,7 +413,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Aud-u4-Gcb"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Connection settings" id="7jm-hE-evI"/>
+                    <navigationItem key="navigationItem" title="Connection settings" id="7jm-hE-evI">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="OgZ-ks-DSy">
+                            <connections>
+                                <action selector="saveTouched:" destination="e24-w3-7on" id="npv-IY-0K1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="portSegmentedControl" destination="bFw-iE-tuO" id="H47-Jh-d87"/>
                         <outlet property="protocolSegmentedControl" destination="OhC-Tb-ox2" id="rXY-Fa-sxN"/>

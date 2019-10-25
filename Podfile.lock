@@ -25,7 +25,7 @@ DEPENDENCIES:
   - Alamofire
   - Moya (~> 13.0)
   - SwiftyBeaver
-  - TunnelKit
+  - TunnelKit (from `./`)
   - XMLParsing (from `https://github.com/ShawnMoore/XMLParsing.git`)
 
 SPEC REPOS:
@@ -35,9 +35,10 @@ SPEC REPOS:
     - OpenSSL-Apple
     - Result
     - SwiftyBeaver
-    - TunnelKit
 
 EXTERNAL SOURCES:
+  TunnelKit:
+    :path: "./"
   XMLParsing:
     :git: https://github.com/ShawnMoore/XMLParsing.git
 
@@ -52,9 +53,9 @@ SPEC CHECKSUMS:
   OpenSSL-Apple: f3d1668588ea8f06b076dcfa6177cd90452e3800
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   SwiftyBeaver: aaf2ebd7dac2e952991f46a82ed24ad642867ae2
-  TunnelKit: f33216415cd9d5e37b6acf02edb0c79350598b36
+  TunnelKit: 4805c05a5b376a18d513d910cfb4b027f23f35a1
   XMLParsing: 085edb6fa22c71d6b53a79299f990a91e7414d19
 
-PODFILE CHECKSUM: 913000eeec15ee94a1f53ad14276fa633f45f944
+PODFILE CHECKSUM: 78460ba2e65a1a848bbe6c3eaff146538041e942
 
 COCOAPODS: 1.8.3
