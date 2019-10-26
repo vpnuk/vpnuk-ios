@@ -16,28 +16,35 @@ enum VPNError: Error {
     case error(description: String)
 }
 
+typealias ConnectionSettings = (hostname: String, port: UInt16, dnsServers: [String]?, socketType: SocketType, credentials: OpenVPN.Credentials, onDemandRuleConnect: Bool)
+
 protocol VPNServiceDelegate: class {
     func statusUpdated(newStatus status: NEVPNStatus)
     func raised(error: VPNError)
 }
 
 protocol VPNService {
+    var currentProtocolConfiguration: NETunnelProviderProtocol? { get }
     var delegate: VPNServiceDelegate? { get set }
-    var configuration: (hostname: String, port: UInt16, socketType: SocketType, credentials: OpenVPN.Credentials)? { get }
+    var configuration: ConnectionSettings? { get }
     var status: NEVPNStatus { get }
     func connect()
     func disconnect()
     func connectionClicked()
     func getLog(callback: @escaping (_ log: String?) -> ())
-    func configure(hostname: String, port: UInt16, socketType: SocketType, credentials: OpenVPN.Credentials)
+    func configure(settings: ConnectionSettings)
 }
 
 class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
+    
     static let shared: VPNService = OpenVPNService()
     
     
     weak var delegate: VPNServiceDelegate?
-    var configuration: (hostname: String, port: UInt16, socketType: SocketType, credentials: OpenVPN.Credentials)?
+    var configuration: ConnectionSettings?
+    var currentProtocolConfiguration: NETunnelProviderProtocol? {
+        return currentManager?.protocolConfiguration as? NETunnelProviderProtocol
+    }
  
     
     private var currentManager: NETunnelProviderManager?
@@ -51,10 +58,11 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
     override init() {
         super.init()
         setup()
+        
     }
     
-    func configure(hostname: String, port: UInt16, socketType: SocketType, credentials: OpenVPN.Credentials) {
-        configuration = (hostname: hostname, port: port, socketType: socketType, credentials: credentials)
+    func configure(settings: ConnectionSettings) {
+        configuration = settings
     }
     
     
@@ -68,6 +76,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         sessionBuilder.clientCertificate = OpenVPNConstants.cert
         sessionBuilder.clientKey = OpenVPNConstants.key
         
+        sessionBuilder.dnsServers = ["8.8.8.8", "8.8.4.4", "208.67.222.222", "208.67.220.220"]
         let k = OpenVPN.StaticKey(lines: OpenVPNConstants.openVPNStaticKey, direction: .client)
         sessionBuilder.tlsWrap = OpenVPN.TLSWrap(strategy: .auth, key: k!)
         sessionBuilder.cipher = .aes256gcm
@@ -78,7 +87,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         sessionBuilder.endpointProtocols = [EndpointProtocol(config.socketType, config.port)]
         sessionBuilder.usesPIAPatches = false
         var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
-        builder.mtu = 1000
+        builder.mtu = 1542
         builder.shouldDebug = true
         builder.masksPrivateData = false
         
@@ -145,6 +154,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
     }
     
     func disconnect() {
+        configuration = nil
         configureVPN({ (manager) in
             return nil
         }, completionHandler: { (error) in
@@ -180,9 +190,18 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
             }
             
             let manager = self.currentManager!
+            
+            let connectRule = NEOnDemandRuleConnect()
+            connectRule.interfaceTypeMatch = .any
+            manager.onDemandRules = [connectRule]
+            
             if let protocolConfiguration = configure(manager) {
                 manager.protocolConfiguration = protocolConfiguration
+                manager.isOnDemandEnabled = self.configuration?.onDemandRuleConnect == true
+            } else {
+                manager.isOnDemandEnabled = false
             }
+            
             manager.isEnabled = true
             
             manager.saveToPreferences { (error) in
@@ -196,13 +215,11 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
                 self.reloadCurrentManager(completionHandler)
             }
             
-//
-//            let connectRule = NEOnDemandRuleConnect()
-//            connectRule.interfaceTypeMatch = .any
-//            manager.onDemandRules = [connectRule]
-//            manager.isOnDemandEnabled = true
+            
+            
         }
     }
+    
     
     func reloadCurrentManager(_ completionHandler: ((Error?) -> Void)?) {
         NETunnelProviderManager.loadAllFromPreferences { (managers, error) in

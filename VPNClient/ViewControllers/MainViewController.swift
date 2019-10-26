@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
     
     @IBAction func showAllServersListTouched(_ sender: UIButton) {
     }
+    weak var serversListVC: ServerListViewController?
     
     @IBAction func savePasswordTouched(_ sender: UIButton) {
         savePasswordButton.isSelected = !savePasswordButton.isSelected
@@ -32,6 +33,7 @@ class MainViewController: UIViewController {
     @IBAction func serverTypeChanged(_ sender: UISegmentedControl) {
         vm.serversType = sender.selectedSegmentIndex == 0 ? .shared : .dedicated
     }
+    
     @IBAction func connectTouched(_ sender: UIButton) {
         
         
@@ -56,11 +58,22 @@ class MainViewController: UIViewController {
         serversListTableView.delegate = self
         serversListTableView.dataSource = self
         connectionStatusLabel.text = "Disconnected"
+        connectionStatusLabel.textColor = .red
         updateSavePasswordSelector()
     }
     
     private func updateSavePasswordSelector() {
         savePasswordButton.isSelected = vm.storeCredentials
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == "showServerListSegue", let vc = segue.destination as? ServerListViewController {
+            serversListVC = vc
+            vc.serversType = vm.serversType
+            vc.servers = vm.serverListController.fetchedObjects ?? []
+            vc.delegate = self
+        }
     }
 }
 
@@ -73,6 +86,7 @@ extension MainViewController: MainView {
     
     func serverListUpdated() {
         serversListTableView.reloadData()
+        serversListVC?.servers = vm.serverListController.fetchedObjects ?? []
     }
     
     func statusUpdated(newStatus status: NEVPNStatus) {
@@ -84,6 +98,7 @@ extension MainViewController: MainView {
             } else {
                 connectionStatusLabel.text = "Connecting..."
             }
+            connectionStatusLabel.textColor = .orange
         case .connected:
             connectButton.setTitle("Disconnect", for: .normal)
             if let ip = vm.serverIP, let port = vm.port, let proto = vm.socketType {
@@ -91,12 +106,15 @@ extension MainViewController: MainView {
             } else {
                 connectionStatusLabel.text = "Connected"
             }
+            connectionStatusLabel.textColor = .systemGreen
         case .disconnected:
             connectButton.setTitle("Connect", for: .normal)
             connectionStatusLabel.text = "Disconnected"
+            connectionStatusLabel.textColor = .red
         case .disconnecting:
             connectButton.setTitle("Disconnecting", for: .normal)
             connectionStatusLabel.text = "Disconnecting..."
+            connectionStatusLabel.textColor = .orange
         default:
             break
         }
@@ -123,6 +141,22 @@ extension MainViewController: MainView {
     
 }
 
+extension MainViewController: ServerListDelegate {
+    
+    var selectedServer: ServerEntity? {
+        return vm.selectedServer
+    }
+    
+    func serverPicked(atIndexPath indexPath: IndexPath, server: ServerEntity) {
+        vm.select(server: server)
+        serversListTableView.reloadData()
+        let count = vm.serverListController.fetchedObjects?.count ?? 0
+        if indexPath.row < count {
+            serversListTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
+    }
+}
+
 extension MainViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if vm.storeCredentials {
@@ -134,6 +168,10 @@ extension MainViewController: UITextFieldDelegate {
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    func isConnected(toServer server: ServerEntity) -> Bool {
+        return vm.isConnected(toServer: server)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return vm.serverListController.fetchedObjects?.count ?? 0
     }
@@ -141,7 +179,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ServerItemTableViewCell", for: indexPath) as! ServerItemTableViewCell
         let server = vm.serverListController.object(at: indexPath)
-        cell.update(withServerEntity: server, isConnected: vm.isConnected(toServer: server))
+        cell.update(withServerEntity: server, isConnected: isConnected(toServer: server))
         
         
 //        cell.backgroundColor = server.address == vm.selectedServer?.address ? .red : .white
@@ -156,5 +194,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let server = vm.serverListController.object(at: indexPath)
         vm.select(server: server)
     }
+    
     
 }

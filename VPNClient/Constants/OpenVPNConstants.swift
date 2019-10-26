@@ -26,6 +26,8 @@ enum VPNSettings {
         return settings
     }()
     
+    static let settingsChangedNotification: NSNotification.Name = NSNotification.Name(rawValue: "settingsChangedNotification")
+    
     static let defaultSettings: (port: Int, socketType: SocketType) = (port: 1194, socketType: .udp)
 }
 

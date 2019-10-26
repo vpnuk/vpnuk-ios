@@ -24,6 +24,37 @@
             </objects>
             <point key="canvasLocation" x="-690" y="136"/>
         </scene>
+        <!--Servers-->
+        <scene sceneID="Inj-4L-0Ae">
+            <objects>
+                <viewController id="K3u-Nt-8xW" customClass="ServerListViewController" customModule="VPNUK_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nGm-fP-0A7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nzG-os-rcx">
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="nzG-os-rcx" firstAttribute="leading" secondItem="7QO-2a-ncl" secondAttribute="leading" id="99r-EK-6Ve"/>
+                            <constraint firstItem="7QO-2a-ncl" firstAttribute="bottom" secondItem="nzG-os-rcx" secondAttribute="bottom" id="Clb-ct-d1u"/>
+                            <constraint firstItem="nzG-os-rcx" firstAttribute="top" secondItem="7QO-2a-ncl" secondAttribute="top" id="HeN-R2-ie8"/>
+                            <constraint firstItem="7QO-2a-ncl" firstAttribute="trailing" secondItem="nzG-os-rcx" secondAttribute="trailing" id="t9g-9P-upm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7QO-2a-ncl"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Servers" id="R9e-pv-w9K"/>
+                    <connections>
+                        <outlet property="serversTableView" destination="nzG-os-rcx" id="6pB-sT-jOn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aaw-HH-fYh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="880"/>
+        </scene>
         <!--VPNUK Connection-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -130,6 +161,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="showAllServersListTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YmN-lO-O6t"/>
+                                                    <segue destination="K3u-Nt-8xW" kind="show" identifier="showServerListSegue" id="pxq-KK-onI"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -362,10 +394,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="kwG-v7-wap">
-                                <rect key="frame" x="20" y="64" width="275" height="143"/>
+                                <rect key="frame" x="20" y="64" width="335" height="122.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="aAR-C3-LAp">
-                                        <rect key="frame" x="0.0" y="0.0" width="275" height="31"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="31"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Socket type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXz-K3-Wea">
                                                 <rect key="frame" x="0.0" y="0.0" width="96" height="31"/>
@@ -374,7 +406,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="OhC-Tb-ox2">
-                                                <rect key="frame" x="116" y="0.0" width="159" height="32"/>
+                                                <rect key="frame" x="116" y="0.0" width="219" height="32"/>
                                                 <segments>
                                                     <segment title="TCP"/>
                                                     <segment title="UDP"/>
@@ -386,7 +418,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mm7-l4-fmX">
-                                        <rect key="frame" x="0.0" y="51" width="275" height="31"/>
+                                        <rect key="frame" x="0.0" y="51" width="335" height="31"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jfh-qZ-qlG">
                                                 <rect key="frame" x="0.0" y="0.0" width="37" height="31"/>
@@ -395,7 +427,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-iE-tuO">
-                                                <rect key="frame" x="57" y="0.0" width="218" height="32"/>
+                                                <rect key="frame" x="57" y="0.0" width="278" height="32"/>
                                                 <segments>
                                                     <segment title="TCP"/>
                                                     <segment title="UDP"/>
@@ -407,25 +439,25 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Qdn-Dr-yb3">
-                                        <rect key="frame" x="0.0" y="102" width="275" height="41"/>
+                                        <rect key="frame" x="0.0" y="102" width="335" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" horizontalCompressionResistancePriority="999" text="Reconnect on network change:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wg3-M3-gVT">
-                                                <rect key="frame" x="0.0" y="0.0" width="127.5" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="237.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZoO-ap-Xvv">
-                                                <rect key="frame" x="147.5" y="0.0" width="127.5" height="41"/>
+                                                <rect key="frame" x="257.5" y="0.0" width="77.5" height="20.5"/>
                                                 <subviews>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Dq-ZL-3oa">
-                                                        <rect key="frame" x="0.0" y="0.0" width="129.5" height="31"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="79.5" height="20.5"/>
                                                         <connections>
                                                             <action selector="reconnectSwitcherChanged:" destination="e24-w3-7on" eventType="valueChanged" id="Nsa-dD-Qy4"/>
                                                         </connections>
                                                     </switch>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q9V-Bg-seF">
-                                                        <rect key="frame" x="0.0" y="31" width="127.5" height="10"/>
+                                                        <rect key="frame" x="0.0" y="20.5" width="77.5" height="0.0"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     </view>
                                                 </subviews>

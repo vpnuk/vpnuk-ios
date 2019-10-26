@@ -30,15 +30,28 @@ class MainViewModel: NSObject {
     }
     
     var serverIP: String? {
-        return vpnService.configuration?.hostname
+        return vpnService.currentProtocolConfiguration?.serverAddress
+    }
+    
+    private func getPortAndProtocol(from providerConfiguration: [String : Any]?) -> (port: UInt16, protocol: SocketType)? {
+        if let tuple = (providerConfiguration?["EndpointProtocols"] as? [String])?.first {
+            let arr = String(describing: tuple).split(separator: ":")
+            guard let p = arr.last, let port = UInt16(p), let type = arr.first else {
+                return nil
+            }
+            return (port: port, protocol: type == "TCP" ? .tcp : .udp)
+        }
+       return nil
     }
     
     var socketType: SocketType? {
-        return vpnService.configuration?.socketType
+        let proto = getPortAndProtocol(from: vpnService.currentProtocolConfiguration?.providerConfiguration)?.protocol
+        return proto ?? vpnService.configuration?.socketType
     }
     
     var port: UInt16? {
-        return vpnService.configuration?.port
+        let port = getPortAndProtocol(from: vpnService.currentProtocolConfiguration?.providerConfiguration)?.port
+        return port ?? vpnService.configuration?.port
     }
     
     private var savedCredentialsInKeychain: (username: String, password: String)? {
@@ -99,9 +112,7 @@ class MainViewModel: NSObject {
             } else {
                 savedCredentialsInKeychain = nil
             }
-            
         }
-        
     }
     
     private var vpnService: VPNService
@@ -109,7 +120,7 @@ class MainViewModel: NSObject {
     private let coreDataStack: CoreDataStack
     private(set) lazy var serverListController: NSFetchedResultsController<ServerEntity> = {
         let request = NSFetchRequest<ServerEntity>(entityName: "ServerEntity")
-        request.sortDescriptors = []
+        request.sortDescriptors = [NSSortDescriptor(key: "type", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
         request.predicate = getFetchServersPredicate()
         let controller = NSFetchedResultsController<ServerEntity>(fetchRequest: request, managedObjectContext: coreDataStack.context, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
@@ -130,7 +141,7 @@ class MainViewModel: NSObject {
     }
     
     func isConnected(toServer server: ServerEntity) -> Bool {
-        return vpnService.configuration?.hostname == server.address && (vpnService.status != .disconnected && vpnService.status != .invalid)
+        return vpnService.currentProtocolConfiguration?.serverAddress == server.address && (vpnService.status != .disconnected && vpnService.status != .invalid)
     }
     
     func viewDidLoad() {
@@ -149,6 +160,16 @@ class MainViewModel: NSObject {
         }
         view?.username = savedCredentialsInKeychain?.username
         view?.password = savedCredentialsInKeychain?.password
+        setupSettingsObservers()
+    }
+    
+    private func setupSettingsObservers() {
+         NotificationCenter.default.addObserver(self, selector: #selector(settingsUpdated), name: VPNSettings.settingsChangedNotification, object: nil)
+    }
+    
+    @objc func settingsUpdated() {
+        vpnService.disconnect()
+//        vpnService.onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
     }
     
     func fetchServers() {
@@ -191,7 +212,10 @@ class MainViewModel: NSObject {
                     return
                 }
                 let credentials = OpenVPN.Credentials(username, password)
-                vpnService.configure(hostname: server.address!, port: UInt16(port), socketType: type, credentials: credentials)
+                let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
+                let dnsServers = server.dns == nil ? nil : [server.dns!]
+                vpnService.configure(settings: (hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
+//                vpnService.onDemandRuleConnect = onDemandRuleConnect
                 vpnService.connectionClicked()
             }
         case .connected, .connecting:
@@ -205,8 +229,6 @@ class MainViewModel: NSObject {
     private func save(credentials: OpenVPN.Credentials?) {
         
     }
-
-    
     
 }
 
