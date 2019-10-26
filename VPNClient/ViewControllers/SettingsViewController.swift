@@ -15,12 +15,17 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var portSegmentedControl: UISegmentedControl!
     @IBOutlet weak var reconnectSwitcher: UISwitch!
     
+    @IBAction func reconnectSwitcherChanged(_ sender: UISwitch) {
+        
+    }
+    
     @IBAction func saveTouched(_ sender: UIBarButtonItem) {
         let socketType: SocketType = protocolSegmentedControl.selectedSegmentIndex == 0 ? .tcp : .udp
         let port = VPNSettings.socketPorts[socketType]?[portSegmentedControl.selectedSegmentIndex]
         
         UserDefaults.socketTypeSetting = socketType
         UserDefaults.portSetting = "\(port!)"
+        UserDefaults.reconnectOnNetworkChangeSetting = reconnectSwitcher.isOn
         navigationController?.popViewController(animated: true)
     }
     
@@ -58,7 +63,7 @@ class SettingsViewController: UIViewController {
     
     private func restoreFromSettings() {
         let socketType = UserDefaults.socketTypeSetting ?? VPNSettings.defaultSettings.socketType
-       
+        reconnectSwitcher.setOn(UserDefaults.reconnectOnNetworkChangeSetting, animated: false)
         updatePort(type: socketType)
         if let portStr = UserDefaults.portSetting, let port = Int(portStr), let index = VPNSettings.socketPorts[socketType]?.firstIndex(of: port) {
             portSegmentedControl.selectedSegmentIndex = index

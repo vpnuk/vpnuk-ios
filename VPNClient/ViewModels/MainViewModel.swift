@@ -13,8 +13,8 @@ import NetworkExtension
 import Alamofire
 
 protocol MainView: class {
-    var username: String? { get }
-    var password: String? { get }
+    var username: String? { get set }
+    var password: String? { get set }
     func statusUpdated(newStatus status: NEVPNStatus)
     func serverListUpdated()
     func showError(description: String)
@@ -39,6 +39,69 @@ class MainViewModel: NSObject {
     
     var port: UInt16? {
         return vpnService.configuration?.port
+    }
+    
+    private var savedCredentialsInKeychain: (username: String, password: String)? {
+        get {
+            let keychain = Keychain(group: OpenVPNConstants.appGroup)
+            let passwordKey = OpenVPNConstants.keychainPasswordKey
+            let usernameKey = OpenVPNConstants.keychainUsernameKey
+            
+            guard let passwordReference = try? keychain.passwordReference(for: passwordKey) else {
+                print("Couldn't get password reference")
+                return nil
+            }
+            guard let fetchedPassword = try? Keychain.password(for: passwordKey, reference: passwordReference) else {
+                print("Couldn't fetch password")
+                return nil
+            }
+            
+            guard let usernameReference = try? keychain.passwordReference(for: usernameKey) else {
+                print("Couldn't get username reference")
+                return nil
+            }
+            guard let fetchedUsername = try? Keychain.password(for: usernameKey, reference: usernameReference) else {
+                print("Couldn't fetch username")
+                return nil
+            }
+            return (username: fetchedUsername, password: fetchedPassword)
+        }
+        set {
+            let keychain = Keychain(group: OpenVPNConstants.appGroup)
+            let passwordKey = OpenVPNConstants.keychainPasswordKey
+            let usernameKey = OpenVPNConstants.keychainUsernameKey
+            
+            if let creds = newValue {
+                guard let _ = try? keychain.set(password: creds.username, for: usernameKey) else {
+                    print("Couldn't set username")
+                    return
+                }
+                guard let _ = try? keychain.set(password: creds.password, for: passwordKey) else {
+                    print("Couldn't set password")
+                    return
+                }
+            } else {
+                keychain.removePassword(for: usernameKey)
+                keychain.removePassword(for: passwordKey)
+            }
+        }
+    }
+    
+    var storeCredentials: Bool {
+        get {
+            return savedCredentialsInKeychain != nil
+        }
+        set {
+            let pass = newValue ? view?.password : nil
+            let username = newValue ? view?.username : nil
+            if let username = username, let password = pass {
+                savedCredentialsInKeychain = (username: username, password: password)
+            } else {
+                savedCredentialsInKeychain = nil
+            }
+            
+        }
+        
     }
     
     private var vpnService: VPNService
@@ -84,6 +147,8 @@ class MainViewModel: NSObject {
                 break
             }
         }
+        view?.username = savedCredentialsInKeychain?.username
+        view?.password = savedCredentialsInKeychain?.password
     }
     
     func fetchServers() {

@@ -18,6 +18,16 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var connectionStatusLabel: UILabel!
     @IBOutlet weak var serversListTableView: UITableView!
+    @IBOutlet weak var savePasswordButton: UIButton!
+    
+    @IBAction func showAllServersListTouched(_ sender: UIButton) {
+    }
+    
+    @IBAction func savePasswordTouched(_ sender: UIButton) {
+        savePasswordButton.isSelected = !savePasswordButton.isSelected
+        vm.storeCredentials = savePasswordButton.isSelected
+        updateSavePasswordSelector()
+    }
     
     @IBAction func serverTypeChanged(_ sender: UISegmentedControl) {
         vm.serversType = sender.selectedSegmentIndex == 0 ? .shared : .dedicated
@@ -39,11 +49,18 @@ class MainViewController: UIViewController {
     private func setupViews() {
 //        usernameTextField.text = "stan"
 //        passwordTextField.text = "stan"
+        passwordTextField.delegate = self
+        usernameTextField.delegate = self
         vm.view = self
         serversTypeSegmentedControl.selectedSegmentIndex = vm.serversType == .shared ? 0 : 1
         serversListTableView.delegate = self
         serversListTableView.dataSource = self
         connectionStatusLabel.text = "Disconnected"
+        updateSavePasswordSelector()
+    }
+    
+    private func updateSavePasswordSelector() {
+        savePasswordButton.isSelected = vm.storeCredentials
     }
 }
 
@@ -87,13 +104,33 @@ extension MainViewController: MainView {
     }
     
     var username: String? {
-        return usernameTextField.text
+        get {
+            return usernameTextField.text
+        }
+        set {
+            usernameTextField.text = newValue
+        }
     }
     
     var password: String? {
-        return passwordTextField.text
+        get {
+            return passwordTextField.text
+        }
+        set {
+            passwordTextField.text = newValue
+        }
     }
     
+}
+
+extension MainViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if vm.storeCredentials {
+            vm.storeCredentials = false
+            updateSavePasswordSelector()
+        }
+        return true
+    }
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
@@ -105,8 +142,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ServerItemTableViewCell", for: indexPath) as! ServerItemTableViewCell
         let server = vm.serverListController.object(at: indexPath)
         cell.update(withServerEntity: server, isConnected: vm.isConnected(toServer: server))
+        
+        
+//        cell.backgroundColor = server.address == vm.selectedServer?.address ? .red : .white
         if server.address == vm.selectedServer?.address {
-            cell.setSelected(true, animated: false)
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+//            cell.setSelected(true, animated: false)
         }
         return cell
     }
