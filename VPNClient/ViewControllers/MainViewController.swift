@@ -11,6 +11,7 @@ import NetworkExtension
 
 class MainViewController: UIViewController {
 
+    @IBOutlet weak var refreshServersIndicator: UIActivityIndicatorView!
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var serversTypeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -23,6 +24,7 @@ class MainViewController: UIViewController {
     @IBAction func showAllServersListTouched(_ sender: UIButton) {
     }
     weak var serversListVC: ServerListViewController?
+    let vm: MainViewModel = MainViewModel()
     
     @IBAction func savePasswordTouched(_ sender: UIButton) {
         savePasswordButton.isSelected = !savePasswordButton.isSelected
@@ -30,16 +32,20 @@ class MainViewController: UIViewController {
         updateSavePasswordSelector()
     }
     
+    @IBAction func refreshServersTouched(_ sender: UIButton) {
+        vm.updateServersIfNeeded(forceReload: true)
+    }
+    
     @IBAction func serverTypeChanged(_ sender: UISegmentedControl) {
-        vm.serversType = sender.selectedSegmentIndex == 0 ? .shared : .dedicated
+        let newType: ServerType = sender.selectedSegmentIndex == 0 ? .shared : .dedicated
+        if newType != vm.serversType {
+             vm.serversType = newType
+        }
     }
     
     @IBAction func connectTouched(_ sender: UIButton) {
-        
-        
         vm.connectTouched()
     }
-    var vm: MainViewModel = MainViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +84,14 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: MainView {
+    func serversLoadingIndicator(show: Bool) {
+        if show {
+            refreshServersIndicator.startAnimating()
+        } else {
+            refreshServersIndicator.stopAnimating()
+        }
+    }
+    
     func showError(description: String) {
         let ac = UIAlertController(title: nil, message: description, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -94,7 +108,7 @@ extension MainViewController: MainView {
         case .connecting:
             connectButton.setTitle("Disconnect", for: .normal)
             if let ip = vm.serverIP, let port = vm.port, let proto = vm.socketType {
-                connectionStatusLabel.text = "Connecting to \(ip):\(port), protocol: \(proto.rawValue) ..."
+                connectionStatusLabel.text = "Connecting to \(ip):\(port), \(proto.rawValue)..."
             } else {
                 connectionStatusLabel.text = "Connecting..."
             }
@@ -102,7 +116,7 @@ extension MainViewController: MainView {
         case .connected:
             connectButton.setTitle("Disconnect", for: .normal)
             if let ip = vm.serverIP, let port = vm.port, let proto = vm.socketType {
-                connectionStatusLabel.text = "Connected to \(ip):\(port), protocol: \(proto.rawValue)"
+                connectionStatusLabel.text = "Connected to \(ip):\(port), \(proto.rawValue)"
             } else {
                 connectionStatusLabel.text = "Connected"
             }
@@ -152,7 +166,7 @@ extension MainViewController: ServerListDelegate {
         serversListTableView.reloadData()
         let count = vm.serverListController.fetchedObjects?.count ?? 0
         if indexPath.row < count {
-            serversListTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            serversListTableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
     }
 }
@@ -163,6 +177,11 @@ extension MainViewController: UITextFieldDelegate {
             vm.storeCredentials = false
             updateSavePasswordSelector()
         }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

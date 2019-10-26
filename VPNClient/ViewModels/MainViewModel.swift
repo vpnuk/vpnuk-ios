@@ -18,6 +18,7 @@ protocol MainView: class {
     func statusUpdated(newStatus status: NEVPNStatus)
     func serverListUpdated()
     func showError(description: String)
+    func serversLoadingIndicator(show: Bool)
 }
 
 class MainViewModel: NSObject {
@@ -25,6 +26,7 @@ class MainViewModel: NSObject {
     private(set) var selectedServer: ServerEntity?
     var serversType: ServerType = .shared {
         didSet {
+            selectedServer = nil
             fetchServers()
         }
     }
@@ -146,21 +148,38 @@ class MainViewModel: NSObject {
     
     func viewDidLoad() {
         fetchServers()
-        api.getServerList { (result) in
-            switch result {
-            case .success(let servers):
-                ServerEntity.update(withDtos: servers, in: self.coreDataStack.context) {
-                    self.coreDataStack.saveContext()
-                    self.fetchServers()
-                }
-            case .failure(let error):
-                print(error)
-                break
-            }
-        }
+        updateServersIfNeeded()
         view?.username = savedCredentialsInKeychain?.username
         view?.password = savedCredentialsInKeychain?.password
         setupSettingsObservers()
+    }
+    
+    func updateServersIfNeeded(forceReload: Bool = false) {
+        let localServersCount = serverListController.fetchedObjects?.count ?? 0
+        view?.serversLoadingIndicator(show: true)
+        api.getServersVersion { [weak self] (result) in
+            guard let `self` = self else { return }
+            let sVersion = result.value?.servers
+            if let lastServersVersion = UserDefaults.lastServersVersion, let sVersion = sVersion, let currentServerVersion = Int(sVersion), let currentClientVersion = Int(lastServersVersion), currentClientVersion == currentServerVersion, localServersCount > 0, !forceReload {
+                print("Servers are actual")
+                self.view?.serversLoadingIndicator(show: false)
+            } else {
+                print("Servers are not actual, updating...")
+                self.api.getServerList { (result) in
+                    switch result {
+                    case .success(let servers):
+                        ServerEntity.update(withDtos: servers, in: self.coreDataStack.context) {
+                            self.coreDataStack.saveContext()
+                            self.fetchServers()
+                            UserDefaults.lastServersVersion = sVersion
+                        }
+                    case .failure(let error):
+                        self.view?.showError(description: "Error occurred during update")
+                    }
+                    self.view?.serversLoadingIndicator(show: false)
+                }
+            }
+        }
     }
     
     private func setupSettingsObservers() {
@@ -169,7 +188,6 @@ class MainViewModel: NSObject {
     
     @objc func settingsUpdated() {
         vpnService.disconnect()
-//        vpnService.onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
     }
     
     func fetchServers() {
@@ -191,7 +209,6 @@ class MainViewModel: NSObject {
     }
     
     func connectTouched() {
-       
         switch vpnService.status {
         case .invalid, .disconnected:
             let port = Int(UserDefaults.portSetting ?? String(VPNSettings.defaultSettings.port)) ?? VPNSettings.defaultSettings.port
@@ -215,7 +232,6 @@ class MainViewModel: NSObject {
                 let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
                 let dnsServers = server.dns == nil ? nil : [server.dns!]
                 vpnService.configure(settings: (hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
-//                vpnService.onDemandRuleConnect = onDemandRuleConnect
                 vpnService.connectionClicked()
             }
         case .connected, .connecting:

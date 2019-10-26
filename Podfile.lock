@@ -19,14 +19,14 @@ PODS:
     - OpenSSL-Apple (~> 1.1.0j.4)
     - TunnelKit/AppExtension
     - TunnelKit/Core
-  - XMLParsing (0.0.3)
+  - XMLParsing (0.0.1)
 
 DEPENDENCIES:
   - Alamofire
   - Moya (~> 13.0)
   - SwiftyBeaver
   - TunnelKit (from `./`)
-  - XMLParsing (from `https://github.com/ShawnMoore/XMLParsing.git`)
+  - XMLParsing (from `https://github.com/bitcrank/XMLParsing`)
 
 SPEC REPOS:
   trunk:
@@ -40,12 +40,12 @@ EXTERNAL SOURCES:
   TunnelKit:
     :path: "./"
   XMLParsing:
-    :git: https://github.com/ShawnMoore/XMLParsing.git
+    :git: https://github.com/bitcrank/XMLParsing
 
 CHECKOUT OPTIONS:
   XMLParsing:
-    :commit: 594272e4df40798c53ae1735ee65f3f387291670
-    :git: https://github.com/ShawnMoore/XMLParsing.git
+    :commit: c6ba1ddc1e26be154ac5564b222402485db59f93
+    :git: https://github.com/bitcrank/XMLParsing
 
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
@@ -54,8 +54,8 @@ SPEC CHECKSUMS:
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   SwiftyBeaver: aaf2ebd7dac2e952991f46a82ed24ad642867ae2
   TunnelKit: 4805c05a5b376a18d513d910cfb4b027f23f35a1
-  XMLParsing: 085edb6fa22c71d6b53a79299f990a91e7414d19
+  XMLParsing: f5ea51b40ec2f50bd57e0d6a8222120b7443546b
 
-PODFILE CHECKSUM: 78460ba2e65a1a848bbe6c3eaff146538041e942
+PODFILE CHECKSUM: 920848207769b626c9d905274d263f10b4f628a7
 
 COCOAPODS: 1.8.3

@@ -6,7 +6,7 @@ target 'VPNClient' do
 
   pod 'SwiftyBeaver'
   pod 'Alamofire'
-  pod 'XMLParsing', :git => 'https://github.com/ShawnMoore/XMLParsing.git'
+  pod 'XMLParsing', :git => 'https://github.com/bitcrank/XMLParsing'
   pod 'Moya', '~> 13.0'
    pod 'TunnelKit', :path => './'
 

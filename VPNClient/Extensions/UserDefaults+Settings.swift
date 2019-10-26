@@ -62,4 +62,13 @@ extension UserDefaults {
             UserDefaults.standard.set(newValue, forKey: "selectedServerIP")
         }
     }
+    
+    static var lastServersVersion: String? {
+        get {
+            return UserDefaults.standard.string(forKey: "lastServersVersion")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "lastServersVersion")
+        }
+    }
 }
