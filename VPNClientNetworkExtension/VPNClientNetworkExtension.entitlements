@@ -8,11 +8,11 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.info.vpnuk.VPNClient</string>
+		<string>group.info.vpnuk.VPN</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)group.info.vpnuk.VPNClient</string>
+		<string>$(AppIdentifierPrefix)group.info.vpnuk.VPN</string>
 	</array>
 </dict>
 </plist>

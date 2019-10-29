@@ -35,8 +35,8 @@ enum OpenVPNConstants {
     static let keychainUsernameKey = "keychainUsernameKey"
     static let keychainPasswordKey = "keychainPasswordKey"
     
-    static let appGroup = "group.info.vpnuk.VPNClient"
-    static let tunnelIdentifier = "info.vpnuk.VPNClient.VPNClientNetworkExtension"
+    static let appGroup = "group.info.vpnuk.VPN"
+    static let tunnelIdentifier = "info.vpnuk.VPN.VPNClientNetworkExtension"
     
     
     static let openVPNStaticKey: [Substring] = [
