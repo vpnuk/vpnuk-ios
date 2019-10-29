@@ -59,6 +59,7 @@ class MainViewController: UIViewController {
 //        passwordTextField.text = "stan"
         passwordTextField.delegate = self
         usernameTextField.delegate = self
+        serversListTableView.register(UINib(nibName: "ServerItemTableViewCell", bundle: nil), forCellReuseIdentifier: "ServerItemTableViewCell")
         vm.view = self
         serversTypeSegmentedControl.selectedSegmentIndex = vm.serversType == .shared ? 0 : 1
         serversListTableView.delegate = self
@@ -66,6 +67,7 @@ class MainViewController: UIViewController {
         connectionStatusLabel.text = "Disconnected"
         connectionStatusLabel.textColor = .red
         updateSavePasswordSelector()
+        
     }
     
     private func updateSavePasswordSelector() {
