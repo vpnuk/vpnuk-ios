@@ -11,6 +11,15 @@ import TunnelKit
 
 extension UserDefaults {
     
+    static var isFirstLaunch: Bool {
+        get {
+            return UserDefaults.standard.string(forKey: "isFirstLaunch") == nil
+        }
+        set {
+            UserDefaults.standard.set(newValue ? nil : "notFirstLaunch", forKey: "isFirstLaunch")
+        }
+    }
+    
     static var socketTypeSetting: SocketType? {
         get {
             let setting = UserDefaults.standard.string(forKey: "socketTypeSetting")

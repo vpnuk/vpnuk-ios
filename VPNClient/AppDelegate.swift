@@ -10,6 +10,7 @@
 import UIKit
 import NetworkExtension
 import SwiftyBeaver
+import TunnelKit
 
 private let log = SwiftyBeaver.self
 
@@ -20,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        clearCredentialsIfFirstLaunch()
+        
         let logDestination = ConsoleDestination()
         logDestination.minLevel = .debug
         logDestination.format = "$DHH:mm:ss$d $L $N.$F:$l - $M"
@@ -27,6 +30,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         return true
+    }
+    
+    private func clearCredentialsIfFirstLaunch() {
+        if UserDefaults.isFirstLaunch {
+            let passwordKey = OpenVPNConstants.keychainPasswordKey
+            let usernameKey = OpenVPNConstants.keychainUsernameKey
+            let keychain = Keychain(group: OpenVPNConstants.appGroup)
+            keychain.removePassword(for: usernameKey)
+            keychain.removePassword(for: passwordKey)
+            UserDefaults.isFirstLaunch = false
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
