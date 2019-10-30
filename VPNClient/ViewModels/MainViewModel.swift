@@ -19,14 +19,18 @@ protocol MainView: class {
     func serverListUpdated()
     func showError(description: String)
     func serversLoadingIndicator(show: Bool)
+    func serverPicked(atIndexPath indexPath: IndexPath, server: ServerEntity)
 }
 
 class MainViewModel: NSObject {
     weak var view: MainView?
-    private(set) var selectedServer: ServerEntity?
+    private(set) var selectedServer: ServerEntity? {
+        didSet {
+            UserDefaults.selectedServerIP = selectedServer?.address
+        }
+    }
     var serversType: ServerType = .shared {
         didSet {
-            selectedServer = nil
             fetchServers()
         }
     }
@@ -122,7 +126,7 @@ class MainViewModel: NSObject {
     private let coreDataStack: CoreDataStack
     private(set) lazy var serverListController: NSFetchedResultsController<ServerEntity> = {
         let request = NSFetchRequest<ServerEntity>(entityName: "ServerEntity")
-        request.sortDescriptors = [NSSortDescriptor(key: "type", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "type", ascending: false), NSSortDescriptor(key: "order", ascending: true), NSSortDescriptor(key: "name", ascending: true)]
         request.predicate = getFetchServersPredicate()
         let controller = NSFetchedResultsController<ServerEntity>(fetchRequest: request, managedObjectContext: coreDataStack.context, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
@@ -135,7 +139,6 @@ class MainViewModel: NSObject {
         self.api = api
         super.init()
         self.vpnService.delegate = self
-        tryToRestoreLastSelectedServer()
     }
     
     private func getFetchServersPredicate() -> NSPredicate {
@@ -148,10 +151,14 @@ class MainViewModel: NSObject {
     
     func viewDidLoad() {
         fetchServers()
+        tryToRestoreLastSelectedServer()
         updateServersIfNeeded()
         view?.username = savedCredentialsInKeychain?.username
         view?.password = savedCredentialsInKeychain?.password
         setupSettingsObservers()
+    }
+    
+    func viewWillAppear() {
     }
     
     func updateServersIfNeeded(forceReload: Bool = false) {
@@ -197,8 +204,15 @@ class MainViewModel: NSObject {
     }
     
     private func tryToRestoreLastSelectedServer() {
-        if let ip = UserDefaults.selectedServerIP, let server = ServerEntity.find(byIP: ip, in: coreDataStack.context) {
+        if let ip = UserDefaults.selectedServerIP,
+            let server = ServerEntity.find(byIP: ip, in: coreDataStack.context),
+            let type = server.type, let serverType = ServerType(rawValue: type) {
             selectedServer = server
+            self.serversType = serverType
+            let servers = serverListController.fetchedObjects ?? []
+            if let index = servers.firstIndex(of: server) {
+                view?.serverPicked(atIndexPath: IndexPath(row: Int(index), section: 0), server: server)
+            }
         } else {
             print("server not restored")
         }

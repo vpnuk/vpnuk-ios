@@ -62,7 +62,8 @@
 /* Begin PBXFileReference section */
 		01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.release.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.release.xcconfig"; sourceTree = "<group>"; };
 		0CD297D895FE5A9A1E2595F2 /* Pods_VPNClientNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClientNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1782EFDA235CBF8D0082F9CD /* VPNUK Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VPNUK Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		175105A8236A126D0097D78C /* VPNClient 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "VPNClient 2.xcdatamodel"; sourceTree = "<group>"; };
+		1782EFDA235CBF8D0082F9CD /* VPNUK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNUK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1782EFE4235CBF8D0082F9CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1782EFE7235CBF8D0082F9CD /* VPNClient.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VPNClient.xcdatamodel; sourceTree = "<group>"; };
@@ -132,7 +133,7 @@
 		1782EFDB235CBF8D0082F9CD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1782EFDA235CBF8D0082F9CD /* VPNUK Client.app */,
+				1782EFDA235CBF8D0082F9CD /* VPNUK.app */,
 				1782F032235D2BB70082F9CD /* VPNClientNetworkExtension.appex */,
 			);
 			name = Products;
@@ -315,7 +316,7 @@
 			);
 			name = VPNClient;
 			productName = VPNClient;
-			productReference = 1782EFDA235CBF8D0082F9CD /* VPNUK Client.app */;
+			productReference = 1782EFDA235CBF8D0082F9CD /* VPNUK.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1782F031235D2BB70082F9CD /* VPNClientNetworkExtension */ = {
@@ -652,7 +653,7 @@
 				);
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN;
-				PRODUCT_NAME = "VPNUK Client";
+				PRODUCT_NAME = VPNUK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -676,7 +677,7 @@
 				);
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN;
-				PRODUCT_NAME = "VPNUK Client";
+				PRODUCT_NAME = VPNUK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -766,9 +767,10 @@
 		1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				175105A8236A126D0097D78C /* VPNClient 2.xcdatamodel */,
 				1782EFE7235CBF8D0082F9CD /* VPNClient.xcdatamodel */,
 			);
-			currentVersion = 1782EFE7235CBF8D0082F9CD /* VPNClient.xcdatamodel */;
+			currentVersion = 175105A8236A126D0097D78C /* VPNClient 2.xcdatamodel */;
 			path = VPNClient.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

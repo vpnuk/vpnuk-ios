@@ -39,14 +39,14 @@ extension ServerEntity {
         let itemsToDelete = (try? context.fetch(request)) ?? []
         itemsToDelete.forEach { context.delete($0) }
         
-        for dto in dtos {
+        for (index, dto) in dtos.enumerated() {
             var server: ServerEntity
             if let foundServer = ServerEntity.find(byIP: dto.address!, in: context) {
                 server = foundServer
             } else {
                 server = ServerEntity(context: context)
             }
-            
+            server.order = Int64(index)
             server.update(withDTO: dto)
         }
         try? context.save()

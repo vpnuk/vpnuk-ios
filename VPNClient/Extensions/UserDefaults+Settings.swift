@@ -17,6 +17,7 @@ extension UserDefaults {
         }
         set {
             UserDefaults.standard.set(newValue ? nil : "notFirstLaunch", forKey: "isFirstLaunch")
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -42,6 +43,7 @@ extension UserDefaults {
             default:
                 UserDefaults.standard.set(nil, forKey: "socketTypeSetting")
             }
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -51,6 +53,7 @@ extension UserDefaults {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "portSetting")
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -60,6 +63,7 @@ extension UserDefaults {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "reconnectOnNetworkChange")
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -69,6 +73,7 @@ extension UserDefaults {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "selectedServerIP")
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -78,6 +83,7 @@ extension UserDefaults {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "lastServersVersion")
+            UserDefaults.standard.synchronize()
         }
     }
 }

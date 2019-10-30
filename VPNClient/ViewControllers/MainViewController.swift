@@ -54,20 +54,27 @@ class MainViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        vm.viewWillAppear()
+    }
+    
     private func setupViews() {
-//        usernameTextField.text = "stan"
-//        passwordTextField.text = "stan"
         passwordTextField.delegate = self
         usernameTextField.delegate = self
         serversListTableView.register(UINib(nibName: "ServerItemTableViewCell", bundle: nil), forCellReuseIdentifier: "ServerItemTableViewCell")
         vm.view = self
-        serversTypeSegmentedControl.selectedSegmentIndex = vm.serversType == .shared ? 0 : 1
+        updateServerTypeSwitcher()
         serversListTableView.delegate = self
         serversListTableView.dataSource = self
         connectionStatusLabel.text = "Disconnected"
         connectionStatusLabel.textColor = .red
         updateSavePasswordSelector()
         
+    }
+    
+    private func updateServerTypeSwitcher() {
+        serversTypeSegmentedControl.selectedSegmentIndex = vm.serversType == .shared ? 0 : 1
     }
     
     private func updateSavePasswordSelector() {
@@ -166,9 +173,12 @@ extension MainViewController: ServerListDelegate {
     func serverPicked(atIndexPath indexPath: IndexPath, server: ServerEntity) {
         vm.select(server: server)
         serversListTableView.reloadData()
-        let count = vm.serverListController.fetchedObjects?.count ?? 0
-        if indexPath.row < count {
-            serversListTableView.scrollToRow(at: indexPath, at: .top, animated: false)
+        self.updateServerTypeSwitcher()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+            let count = self.tableView(self.serversListTableView, numberOfRowsInSection: 0)
+            if indexPath.row < count {
+                self.serversListTableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            }
         }
     }
 }
@@ -201,12 +211,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ServerItemTableViewCell", for: indexPath) as! ServerItemTableViewCell
         let server = vm.serverListController.object(at: indexPath)
         cell.update(withServerEntity: server, isConnected: isConnected(toServer: server))
-        
-        
-//        cell.backgroundColor = server.address == vm.selectedServer?.address ? .red : .white
         if server.address == vm.selectedServer?.address {
             tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-//            cell.setSelected(true, animated: false)
         }
         return cell
     }
