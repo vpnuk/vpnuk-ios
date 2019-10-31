@@ -158,9 +158,6 @@ class MainViewModel: NSObject {
         setupSettingsObservers()
     }
     
-    func viewWillAppear() {
-    }
-    
     func updateServersIfNeeded(forceReload: Bool = false) {
         let localServersCount = serverListController.fetchedObjects?.count ?? 0
         view?.serversLoadingIndicator(show: true)

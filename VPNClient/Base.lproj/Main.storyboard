@@ -27,7 +27,7 @@
         <!--Servers-->
         <scene sceneID="Inj-4L-0Ae">
             <objects>
-                <viewController id="K3u-Nt-8xW" customClass="ServerListViewController" customModule="VPNUK_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="K3u-Nt-8xW" customClass="ServerListViewController" customModule="VPNUK" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nGm-fP-0A7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,7 +58,7 @@
         <!--VPNUK Connection-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="MainViewController" customModule="VPNUK_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="MainViewController" customModule="VPNUK" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,7 +182,7 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mjm-kt-zM6">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" estimatedRowHeight="120" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Mjm-kt-zM6">
                                         <rect key="frame" x="0.0" y="30.5" width="280" height="190.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                     </tableView>
@@ -256,7 +256,7 @@
         <!--Connection settings-->
         <scene sceneID="odQ-rb-EEw">
             <objects>
-                <viewController id="e24-w3-7on" customClass="SettingsViewController" customModule="VPNUK_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="e24-w3-7on" customClass="SettingsViewController" customModule="VPNUK" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gd2-oI-ZCX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

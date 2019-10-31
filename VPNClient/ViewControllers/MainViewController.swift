@@ -54,11 +54,6 @@ class MainViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        vm.viewWillAppear()
-    }
-    
     private func setupViews() {
         passwordTextField.delegate = self
         usernameTextField.delegate = self
