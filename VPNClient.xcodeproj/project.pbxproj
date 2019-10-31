@@ -689,7 +689,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = VPNClientNetworkExtension/VPNClientNetworkExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				INFOPLIST_FILE = VPNClientNetworkExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -712,7 +712,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = VPNClientNetworkExtension/VPNClientNetworkExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = VPNClientNetworkExtension/Info.plist;
