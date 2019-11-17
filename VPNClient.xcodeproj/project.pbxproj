@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		10A16BAFEB6E574F7EF16304 /* Pods_VPNClientNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD297D895FE5A9A1E2595F2 /* Pods_VPNClientNetworkExtension.framework */; };
+		171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1710675F2381851B00A72FDE /* GoogleService-Info.plist */; };
+		171067612381851B00A72FDE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1710675F2381851B00A72FDE /* GoogleService-Info.plist */; };
 		1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */; };
 		1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1782EFE3235CBF8D0082F9CD /* Main.storyboard */; };
 		1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */; };
@@ -62,6 +64,7 @@
 /* Begin PBXFileReference section */
 		01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.release.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.release.xcconfig"; sourceTree = "<group>"; };
 		0CD297D895FE5A9A1E2595F2 /* Pods_VPNClientNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClientNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1710675F2381851B00A72FDE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		175105A8236A126D0097D78C /* VPNClient 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "VPNClient 2.xcdatamodel"; sourceTree = "<group>"; };
 		1782EFDA235CBF8D0082F9CD /* VPNUK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNUK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +145,7 @@
 		1782EFDC235CBF8D0082F9CD /* VPNClient */ = {
 			isa = PBXGroup;
 			children = (
+				1710675F2381851B00A72FDE /* GoogleService-Info.plist */,
 				1782F041235D2CAE0082F9CD /* VPNClient.entitlements */,
 				1782F025235D07A10082F9CD /* Extensions */,
 				1782F019235CE3B70082F9CD /* ViewControllers */,
@@ -308,6 +312,7 @@
 				1782EFD8235CBF8D0082F9CD /* Resources */,
 				5E93D0F6FC6951F832077413 /* [CP] Embed Pods Frameworks */,
 				1782F03E235D2BB70082F9CD /* Embed App Extensions */,
+				171067622381871100A72FDE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -381,6 +386,7 @@
 			files = (
 				1782EFED235CBF8F0082F9CD /* LaunchScreen.storyboard in Resources */,
 				17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */,
+				171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */,
 				1782EFEA235CBF8F0082F9CD /* Assets.xcassets in Resources */,
 				1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */,
 			);
@@ -390,12 +396,30 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				171067612381851B00A72FDE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		171067622381871100A72FDE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 		5E93D0F6FC6951F832077413 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

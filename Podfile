@@ -3,7 +3,9 @@ platform :ios, '11.0'
 use_frameworks!
 
 target 'VPNClient' do
-
+  pod 'Fabric'
+  pod 'Crashlytics'
+  pod 'Firebase/Analytics'
   pod 'SwiftyBeaver'
   pod 'Alamofire'
   pod 'XMLParsing', :git => 'https://github.com/bitcrank/XMLParsing'

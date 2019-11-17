@@ -11,6 +11,7 @@ import UIKit
 import NetworkExtension
 import SwiftyBeaver
 import TunnelKit
+import Firebase
 
 private let log = SwiftyBeaver.self
 
@@ -21,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
         clearCredentialsIfFirstLaunch()
         
         let logDestination = ConsoleDestination()
