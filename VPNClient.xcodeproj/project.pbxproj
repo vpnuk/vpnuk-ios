@@ -713,7 +713,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = VPNClientNetworkExtension/VPNClientNetworkExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				INFOPLIST_FILE = VPNClientNetworkExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -721,7 +721,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN.VPNClientNetworkExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -736,7 +736,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = VPNClientNetworkExtension/VPNClientNetworkExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = VPNClientNetworkExtension/Info.plist;
@@ -745,7 +745,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN.VPNClientNetworkExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
