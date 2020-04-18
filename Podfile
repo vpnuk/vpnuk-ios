@@ -9,10 +9,10 @@ target 'VPNClient' do
   pod 'SwiftyBeaver'
   pod 'Alamofire'
   pod 'XMLParsing', :git => 'https://github.com/bitcrank/XMLParsing'
-  pod 'Moya', '~> 13.0'
-   pod 'TunnelKit', :path => './'
+  #pod 'Moya', '~> 13.0'
+  pod 'TunnelKit'
 
 end
 target 'VPNClientNetworkExtension' do
-        pod 'TunnelKit', :path => './'
+  pod 'TunnelKit'
 end

@@ -164,7 +164,7 @@ class MainViewModel: NSObject {
         view?.serversLoadingIndicator(show: true)
         api.getServersVersion { [weak self] (result) in
             guard let `self` = self else { return }
-            let sVersion = result.value?.servers
+            let sVersion = try? result.get().servers
             if let lastServersVersion = UserDefaults.lastServersVersion, let sVersion = sVersion, let currentServerVersion = Int(sVersion), let currentClientVersion = Int(lastServersVersion), currentClientVersion == currentServerVersion, localServersCount > 0, !forceReload {
                 print("Servers are actual")
                 self.view?.serversLoadingIndicator(show: false)
