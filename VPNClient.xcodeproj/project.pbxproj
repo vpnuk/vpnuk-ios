@@ -35,6 +35,15 @@
 		17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D61E212364BD4100ECAEBE /* ServerItemTableViewCell.xib */; };
 		17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */; };
 		4A5DF31520B9F03E4A7629CB /* Pods_VPNClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */; };
+		783B35E4244CE35A00425A9F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783B35E3244CE35A00425A9F /* Auth.storyboard */; };
+		783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E5244CEAA300425A9F /* SignInViewController.swift */; };
+		783B35E8244CEAAE00425A9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E7244CEAAE00425A9F /* SignUpViewController.swift */; };
+		783B35EA244CEC4000425A9F /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E9244CEC4000425A9F /* SignUpViewModel.swift */; };
+		783B35ED244CEF6A00425A9F /* SignUpRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35EC244CEF6A00425A9F /* SignUpRequestDTO.swift */; };
+		783B35EF244CF11C00425A9F /* SignInCredentialsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35EE244CF11C00425A9F /* SignInCredentialsDTO.swift */; };
+		783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */; };
+		783B35F4244D00FA00425A9F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F3244D00FA00425A9F /* UserService.swift */; };
+		783B35F6244D018500425A9F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F5244D018500425A9F /* UserData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +104,15 @@
 		17D61E212364BD4100ECAEBE /* ServerItemTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServerItemTableViewCell.xib; sourceTree = "<group>"; };
 		17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersVersionDTO.swift; sourceTree = "<group>"; };
 		6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.debug.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.debug.xcconfig"; sourceTree = "<group>"; };
+		783B35E3244CE35A00425A9F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
+		783B35E5244CEAA300425A9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		783B35E7244CEAAE00425A9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		783B35E9244CEC4000425A9F /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		783B35EC244CEF6A00425A9F /* SignUpRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRequestDTO.swift; sourceTree = "<group>"; };
+		783B35EE244CF11C00425A9F /* SignInCredentialsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCredentialsDTO.swift; sourceTree = "<group>"; };
+		783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseDTO.swift; sourceTree = "<group>"; };
+		783B35F3244D00FA00425A9F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		783B35F5244D018500425A9F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87E5941B03938A911B623791 /* Pods-VPNClientNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
 		D9D650901D3CDC7F32EC06FA /* Pods-VPNClientNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -153,12 +171,9 @@
 				1782F014235CC6C80082F9CD /* Entities */,
 				1782F011235CC3D10082F9CD /* Constants */,
 				1782EFF4235CC0270082F9CD /* Services */,
+				783B35E1244CE31900425A9F /* Resources */,
 				1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */,
-				1782EFE3235CBF8D0082F9CD /* Main.storyboard */,
-				1782EFE9235CBF8F0082F9CD /* Assets.xcassets */,
-				1782EFEB235CBF8F0082F9CD /* LaunchScreen.storyboard */,
 				1782EFEE235CBF8F0082F9CD /* Info.plist */,
-				1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */,
 			);
 			path = VPNClient;
 			sourceTree = "<group>";
@@ -166,6 +181,7 @@
 		1782EFF4235CC0270082F9CD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				783B35F2244D00EB00425A9F /* User */,
 				1782F00E235CC3A10082F9CD /* VPN */,
 				1782EFF5235CC0300082F9CD /* Data */,
 			);
@@ -184,6 +200,7 @@
 		1782EFF6235CC0360082F9CD /* Rest */ = {
 			isa = PBXGroup;
 			children = (
+				783B35EB244CEF5800425A9F /* DTO */,
 				1782F02C235D1F310082F9CD /* RestAPI.swift */,
 			);
 			path = Rest;
@@ -233,6 +250,7 @@
 		1782F018235CE3AE0082F9CD /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				783B35DF244CE2DB00425A9F /* Auth */,
 				1782F020235CFD5A0082F9CD /* MainViewModel.swift */,
 			);
 			path = ViewModels;
@@ -241,6 +259,7 @@
 		1782F019235CE3B70082F9CD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				783B35E0244CE2ED00425A9F /* Auth */,
 				1782F022235D02300082F9CD /* Cell */,
 				1782F01A235CE8110082F9CD /* MainViewController.swift */,
 				1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */,
@@ -287,6 +306,62 @@
 				87E5941B03938A911B623791 /* Pods-VPNClientNetworkExtension.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		783B35DF244CE2DB00425A9F /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				783B35E9244CEC4000425A9F /* SignUpViewModel.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		783B35E0244CE2ED00425A9F /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				783B35E5244CEAA300425A9F /* SignInViewController.swift */,
+				783B35E7244CEAAE00425A9F /* SignUpViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		783B35E1244CE31900425A9F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */,
+				1782EFE9235CBF8F0082F9CD /* Assets.xcassets */,
+				783B35E2244CE32000425A9F /* Storyboards */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		783B35E2244CE32000425A9F /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				1782EFE3235CBF8D0082F9CD /* Main.storyboard */,
+				1782EFEB235CBF8F0082F9CD /* LaunchScreen.storyboard */,
+				783B35E3244CE35A00425A9F /* Auth.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		783B35EB244CEF5800425A9F /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				783B35EC244CEF6A00425A9F /* SignUpRequestDTO.swift */,
+				783B35EE244CF11C00425A9F /* SignInCredentialsDTO.swift */,
+				783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		783B35F2244D00EB00425A9F /* User */ = {
+			isa = PBXGroup;
+			children = (
+				783B35F3244D00FA00425A9F /* UserService.swift */,
+				783B35F5244D018500425A9F /* UserData.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		D2B7C2AB42458BA0B697642F /* Frameworks */ = {
@@ -384,6 +459,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				783B35E4244CE35A00425A9F /* Auth.storyboard in Resources */,
 				1782EFED235CBF8F0082F9CD /* LaunchScreen.storyboard in Resources */,
 				17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */,
 				171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */,
@@ -493,15 +569,23 @@
 				1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */,
 				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
 				1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */,
+				783B35EA244CEC4000425A9F /* SignUpViewModel.swift in Sources */,
 				1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */,
+				783B35F4244D00FA00425A9F /* UserService.swift in Sources */,
+				783B35E8244CEAAE00425A9F /* SignUpViewController.swift in Sources */,
+				783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */,
 				1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */,
+				783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */,
 				1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
 				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				1782F01D235CE83A0082F9CD /* ServerPickerViewController.swift in Sources */,
 				1782F02B235D0DD90082F9CD /* ServerEntity+CRUD.swift in Sources */,
+				783B35F6244D018500425A9F /* UserData.swift in Sources */,
 				17D61E202364BA6900ECAEBE /* ServerListViewController.swift in Sources */,
+				783B35EF244CF11C00425A9F /* SignInCredentialsDTO.swift in Sources */,
+				783B35ED244CEF6A00425A9F /* SignUpRequestDTO.swift in Sources */,
 				1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */,
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
 			);
