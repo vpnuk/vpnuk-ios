@@ -50,23 +50,13 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U92-k9-kgF">
-                                <rect key="frame" x="144" y="618" width="87" height="33"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <state key="normal" title="New User?"/>
-                                <connections>
-                                    <segue destination="g8q-Tn-gsC" kind="show" id="28q-vR-AqX"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="nkq-eR-lKg" firstAttribute="centerY" secondItem="hlT-C4-EEy" secondAttribute="centerY" id="AT8-w5-dVW"/>
-                            <constraint firstItem="U92-k9-kgF" firstAttribute="centerX" secondItem="hlT-C4-EEy" secondAttribute="centerX" id="AxW-bM-ZNq"/>
                             <constraint firstItem="dD0-or-6pd" firstAttribute="width" secondItem="zHt-gS-ANl" secondAttribute="width" multiplier="0.7" id="C80-Yl-lZh"/>
                             <constraint firstItem="dD0-or-6pd" firstAttribute="centerX" secondItem="hlT-C4-EEy" secondAttribute="centerX" id="WWm-Fk-oHg"/>
                             <constraint firstItem="nkq-eR-lKg" firstAttribute="centerX" secondItem="hlT-C4-EEy" secondAttribute="centerX" id="YPz-Zc-5Hm"/>
-                            <constraint firstItem="hlT-C4-EEy" firstAttribute="bottom" secondItem="U92-k9-kgF" secondAttribute="bottom" constant="16" id="Z2l-zz-RBP"/>
                             <constraint firstItem="dD0-or-6pd" firstAttribute="top" secondItem="hlT-C4-EEy" secondAttribute="top" constant="50" id="s1V-Ld-RKi"/>
                             <constraint firstItem="nkq-eR-lKg" firstAttribute="width" secondItem="zHt-gS-ANl" secondAttribute="width" multiplier="0.8" id="uAb-fg-HnE"/>
                         </constraints>
@@ -138,11 +128,6 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rPq-rF-GLH">
-                                <rect key="frame" x="130" y="618" width="115" height="33"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <state key="normal" title="Existing User?"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -152,8 +137,6 @@
                             <constraint firstItem="6hP-TY-8uA" firstAttribute="centerY" secondItem="m3M-oC-wDt" secondAttribute="centerY" id="SWb-xu-cIU"/>
                             <constraint firstItem="TZn-Ef-O3f" firstAttribute="width" secondItem="Trf-hv-9Jt" secondAttribute="width" multiplier="0.7" id="a1F-UP-uKI"/>
                             <constraint firstItem="6hP-TY-8uA" firstAttribute="centerX" secondItem="m3M-oC-wDt" secondAttribute="centerX" id="oDD-ab-5gp"/>
-                            <constraint firstItem="rPq-rF-GLH" firstAttribute="centerX" secondItem="m3M-oC-wDt" secondAttribute="centerX" id="s6q-3e-XiF"/>
-                            <constraint firstItem="m3M-oC-wDt" firstAttribute="bottom" secondItem="rPq-rF-GLH" secondAttribute="bottom" constant="16" id="tDt-Z2-XJ1"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="m3M-oC-wDt"/>
                     </view>
@@ -164,22 +147,11 @@
                         <outlet property="lastNameLabel" destination="61x-FH-S6W" id="mFd-00-6pW"/>
                         <outlet property="passwordLabel" destination="QNV-3Q-grP" id="bVq-dr-Np8"/>
                         <outlet property="usernameLabel" destination="hIT-XK-NO7" id="2bR-1N-X9p"/>
-                        <segue destination="Hg3-YM-A1a" kind="show" identifier="MainNavigationSegue" id="xyb-qi-RA6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FGe-OX-Bxr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="774" y="125"/>
-        </scene>
-        <!--MainNavigation-->
-        <scene sceneID="P39-5F-P6U">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="MainNavigation" id="Hg3-YM-A1a" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="uht-0q-ax0"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oZB-GZ-of2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1376" y="124"/>
         </scene>
     </scenes>
     <resources>

@@ -14,9 +14,40 @@ class ParentServerDTO: Codable {
 }
 
 enum ServerType: String, Codable {
-    case dedicated = "dedicated"
     case shared = "shared"
+    case dedicated = "dedicated"
+    case oneToOne = "1:1"
 }
+
+extension ServerType {
+    var title: String {
+        switch self {
+        case .dedicated:
+            return "Dedicated"
+        case .shared:
+            return "Shared"
+        case .oneToOne:
+            return "1:1"
+        }
+    }
+}
+
+extension ServerType: Comparable {
+    static func < (lhs: ServerType, rhs: ServerType) -> Bool {
+        switch (lhs, rhs)
+        {
+        case    (.shared, .dedicated),
+                (.shared, .oneToOne):
+            return true
+        case    (.dedicated, .oneToOne):
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+
 
 
 class ServerDTO: Codable {

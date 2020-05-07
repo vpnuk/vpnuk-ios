@@ -20,7 +20,6 @@
 		1782F013235CC3DD0082F9CD /* OpenVPNConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F012235CC3DD0082F9CD /* OpenVPNConstants.swift */; };
 		1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F016235CC70C0082F9CD /* ServerDto.swift */; };
 		1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F01A235CE8110082F9CD /* MainViewController.swift */; };
-		1782F01D235CE83A0082F9CD /* ServerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */; };
 		1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F01E235CF6380082F9CD /* SettingsViewController.swift */; };
 		1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F020235CFD5A0082F9CD /* MainViewModel.swift */; };
 		1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782F023235D02AE0082F9CD /* ServerItemTableViewCell.swift */; };
@@ -35,6 +34,25 @@
 		17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D61E212364BD4100ECAEBE /* ServerItemTableViewCell.xib */; };
 		17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */; };
 		4A5DF31520B9F03E4A7629CB /* Pods_VPNClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */; };
+		78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DB624606E7900988F14 /* ConnectionStatusView.swift */; };
+		78360DB92461E33000988F14 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DB82461E33000988F14 /* UIView+Extensions.swift */; };
+		78360DBC2461E47D00988F14 /* ServerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DBB2461E47D00988F14 /* ServerPickerViewController.swift */; };
+		78360DC224620B7800988F14 /* CredentialsProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DC124620B7800988F14 /* CredentialsProviderFactory.swift */; };
+		78360DC924620BFA00988F14 /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DC824620BFA00988F14 /* CredentialsProvider.swift */; };
+		78360DCC24620CE300988F14 /* ServerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DCB24620CE300988F14 /* ServerProvider.swift */; };
+		78360DCF24620FD700988F14 /* CredentialsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DCE24620FD700988F14 /* CredentialsStorage.swift */; };
+		78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DD22463474100988F14 /* MainScreenRouter.swift */; };
+		78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DD524634B1B00988F14 /* CustomConnectViewModel.swift */; };
+		78360DD924634B4900988F14 /* AccountVPNUKConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DD824634B4900988F14 /* AccountVPNUKConnectViewModel.swift */; };
+		78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DDC246354FB00988F14 /* AuthVPNUKConnectView.swift */; };
+		78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DE22463564200988F14 /* AccountVPNUKConnectView.swift */; };
+		78360DE52463565E00988F14 /* AuthVPNUKConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DE42463565E00988F14 /* AuthVPNUKConnectViewModel.swift */; };
+		78360DE9246356AD00988F14 /* CustomConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DE8246356AD00988F14 /* CustomConnectView.swift */; };
+		78360DEB2463699500988F14 /* ConnectScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DEA2463699500988F14 /* ConnectScreenFactory.swift */; };
+		78360DED24636CBB00988F14 /* KeychainKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DEC24636CBB00988F14 /* KeychainKeys.swift */; };
+		78360DF024636EFC00988F14 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DEF24636EFC00988F14 /* AuthService.swift */; };
+		78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DF1246375D400988F14 /* VPNUKConnectRouter.swift */; };
+		78360DF42463771800988F14 /* VPNUKConnectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DF32463771800988F14 /* VPNUKConnectFactory.swift */; };
 		783B35E4244CE35A00425A9F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783B35E3244CE35A00425A9F /* Auth.storyboard */; };
 		783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E5244CEAA300425A9F /* SignInViewController.swift */; };
 		783B35E8244CEAAE00425A9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E7244CEAAE00425A9F /* SignUpViewController.swift */; };
@@ -87,7 +105,6 @@
 		1782F012235CC3DD0082F9CD /* OpenVPNConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConstants.swift; sourceTree = "<group>"; };
 		1782F016235CC70C0082F9CD /* ServerDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDto.swift; sourceTree = "<group>"; };
 		1782F01A235CE8110082F9CD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewController.swift; sourceTree = "<group>"; };
 		1782F01E235CF6380082F9CD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1782F020235CFD5A0082F9CD /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		1782F023235D02AE0082F9CD /* ServerItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -104,6 +121,25 @@
 		17D61E212364BD4100ECAEBE /* ServerItemTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServerItemTableViewCell.xib; sourceTree = "<group>"; };
 		17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersVersionDTO.swift; sourceTree = "<group>"; };
 		6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.debug.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.debug.xcconfig"; sourceTree = "<group>"; };
+		78360DB624606E7900988F14 /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
+		78360DB82461E33000988F14 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		78360DBB2461E47D00988F14 /* ServerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewController.swift; sourceTree = "<group>"; };
+		78360DC124620B7800988F14 /* CredentialsProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsProviderFactory.swift; sourceTree = "<group>"; };
+		78360DC824620BFA00988F14 /* CredentialsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsProvider.swift; sourceTree = "<group>"; };
+		78360DCB24620CE300988F14 /* ServerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerProvider.swift; sourceTree = "<group>"; };
+		78360DCE24620FD700988F14 /* CredentialsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsStorage.swift; sourceTree = "<group>"; };
+		78360DD22463474100988F14 /* MainScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenRouter.swift; sourceTree = "<group>"; };
+		78360DD524634B1B00988F14 /* CustomConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomConnectViewModel.swift; sourceTree = "<group>"; };
+		78360DD824634B4900988F14 /* AccountVPNUKConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVPNUKConnectViewModel.swift; sourceTree = "<group>"; };
+		78360DDC246354FB00988F14 /* AuthVPNUKConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVPNUKConnectView.swift; sourceTree = "<group>"; };
+		78360DE22463564200988F14 /* AccountVPNUKConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVPNUKConnectView.swift; sourceTree = "<group>"; };
+		78360DE42463565E00988F14 /* AuthVPNUKConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVPNUKConnectViewModel.swift; sourceTree = "<group>"; };
+		78360DE8246356AD00988F14 /* CustomConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomConnectView.swift; sourceTree = "<group>"; };
+		78360DEA2463699500988F14 /* ConnectScreenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenFactory.swift; sourceTree = "<group>"; };
+		78360DEC24636CBB00988F14 /* KeychainKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainKeys.swift; sourceTree = "<group>"; };
+		78360DEF24636EFC00988F14 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		78360DF1246375D400988F14 /* VPNUKConnectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNUKConnectRouter.swift; sourceTree = "<group>"; };
+		78360DF32463771800988F14 /* VPNUKConnectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNUKConnectFactory.swift; sourceTree = "<group>"; };
 		783B35E3244CE35A00425A9F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		783B35E5244CEAA300425A9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		783B35E7244CEAAE00425A9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +199,7 @@
 		1782EFDC235CBF8D0082F9CD /* VPNClient */ = {
 			isa = PBXGroup;
 			children = (
+				78360DB324606DFE00988F14 /* Features */,
 				1710675F2381851B00A72FDE /* GoogleService-Info.plist */,
 				1782F041235D2CAE0082F9CD /* VPNClient.entitlements */,
 				1782F025235D07A10082F9CD /* Extensions */,
@@ -226,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				1782F012235CC3DD0082F9CD /* OpenVPNConstants.swift */,
+				78360DEC24636CBB00988F14 /* KeychainKeys.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -259,11 +297,8 @@
 		1782F019235CE3B70082F9CD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				783B35E0244CE2ED00425A9F /* Auth */,
 				1782F022235D02300082F9CD /* Cell */,
 				1782F01A235CE8110082F9CD /* MainViewController.swift */,
-				1782F01C235CE83A0082F9CD /* ServerPickerViewController.swift */,
-				1782F01E235CF6380082F9CD /* SettingsViewController.swift */,
 				17D61E1F2364BA6900ECAEBE /* ServerListViewController.swift */,
 			);
 			path = ViewControllers;
@@ -283,6 +318,7 @@
 			children = (
 				1782F026235D07BA0082F9CD /* UserDefaults+Settings.swift */,
 				1782F02A235D0DD90082F9CD /* ServerEntity+CRUD.swift */,
+				78360DB82461E33000988F14 /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -308,19 +344,173 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		783B35DF244CE2DB00425A9F /* Auth */ = {
+		78360DB324606DFE00988F14 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				783B35E9244CEC4000425A9F /* SignUpViewModel.swift */,
+				78360DD12463469200988F14 /* Settings */,
+				78360DD02463467B00988F14 /* Auth */,
+				78360DBA2461E46200988F14 /* ServerPicker */,
+				78360DB424606E0A00988F14 /* MainScreen */,
 			);
-			path = Auth;
+			path = Features;
 			sourceTree = "<group>";
 		};
-		783B35E0244CE2ED00425A9F /* Auth */ = {
+		78360DB424606E0A00988F14 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				78360DD724634B2600988F14 /* ConnectScreen */,
+				78360DCD24620FB600988F14 /* CredentialsStorage */,
+				78360DCA24620CC600988F14 /* Providers */,
+				78360DC024620B5800988F14 /* Factory */,
+				78360DB524606E1F00988F14 /* Views */,
+				78360DD22463474100988F14 /* MainScreenRouter.swift */,
+			);
+			path = MainScreen;
+			sourceTree = "<group>";
+		};
+		78360DB524606E1F00988F14 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				78360DB624606E7900988F14 /* ConnectionStatusView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		78360DBA2461E46200988F14 /* ServerPicker */ = {
+			isa = PBXGroup;
+			children = (
+				78360DBD2461E4A500988F14 /* View */,
+				78360DBB2461E47D00988F14 /* ServerPickerViewController.swift */,
+			);
+			path = ServerPicker;
+			sourceTree = "<group>";
+		};
+		78360DBD2461E4A500988F14 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		78360DC024620B5800988F14 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				78360DC124620B7800988F14 /* CredentialsProviderFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		78360DCA24620CC600988F14 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				78360DCB24620CE300988F14 /* ServerProvider.swift */,
+				78360DC824620BFA00988F14 /* CredentialsProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		78360DCD24620FB600988F14 /* CredentialsStorage */ = {
+			isa = PBXGroup;
+			children = (
+				78360DCE24620FD700988F14 /* CredentialsStorage.swift */,
+			);
+			path = CredentialsStorage;
+			sourceTree = "<group>";
+		};
+		78360DD02463467B00988F14 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
 				783B35E5244CEAA300425A9F /* SignInViewController.swift */,
 				783B35E7244CEAAE00425A9F /* SignUpViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		78360DD12463469200988F14 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1782F01E235CF6380082F9CD /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		78360DD724634B2600988F14 /* ConnectScreen */ = {
+			isa = PBXGroup;
+			children = (
+				78360DE1246355BA00988F14 /* CustomConnect */,
+				78360DE0246355A800988F14 /* VPNUKConnect */,
+				78360DEA2463699500988F14 /* ConnectScreenFactory.swift */,
+			);
+			path = ConnectScreen;
+			sourceTree = "<group>";
+		};
+		78360DDE2463555400988F14 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				78360DDC246354FB00988F14 /* AuthVPNUKConnectView.swift */,
+				78360DE22463564200988F14 /* AccountVPNUKConnectView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		78360DDF2463559600988F14 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				78360DD824634B4900988F14 /* AccountVPNUKConnectViewModel.swift */,
+				78360DE42463565E00988F14 /* AuthVPNUKConnectViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		78360DE0246355A800988F14 /* VPNUKConnect */ = {
+			isa = PBXGroup;
+			children = (
+				78360DEE24636EE800988F14 /* Service */,
+				78360DDF2463559600988F14 /* ViewModel */,
+				78360DDE2463555400988F14 /* View */,
+				78360DF1246375D400988F14 /* VPNUKConnectRouter.swift */,
+				78360DF32463771800988F14 /* VPNUKConnectFactory.swift */,
+			);
+			path = VPNUKConnect;
+			sourceTree = "<group>";
+		};
+		78360DE1246355BA00988F14 /* CustomConnect */ = {
+			isa = PBXGroup;
+			children = (
+				78360DE72463569D00988F14 /* View */,
+				78360DE62463569600988F14 /* ViewModel */,
+			);
+			path = CustomConnect;
+			sourceTree = "<group>";
+		};
+		78360DE62463569600988F14 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				78360DD524634B1B00988F14 /* CustomConnectViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		78360DE72463569D00988F14 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				78360DE8246356AD00988F14 /* CustomConnectView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		78360DEE24636EE800988F14 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				78360DEF24636EFC00988F14 /* AuthService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		783B35DF244CE2DB00425A9F /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				783B35E9244CEC4000425A9F /* SignUpViewModel.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -566,28 +756,46 @@
 			files = (
 				1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */,
 				1782F013235CC3DD0082F9CD /* OpenVPNConstants.swift in Sources */,
+				78360DCF24620FD700988F14 /* CredentialsStorage.swift in Sources */,
 				1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */,
+				78360DC924620BFA00988F14 /* CredentialsProvider.swift in Sources */,
 				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
 				1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */,
 				783B35EA244CEC4000425A9F /* SignUpViewModel.swift in Sources */,
 				1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */,
+				78360DCC24620CE300988F14 /* ServerProvider.swift in Sources */,
 				783B35F4244D00FA00425A9F /* UserService.swift in Sources */,
 				783B35E8244CEAAE00425A9F /* SignUpViewController.swift in Sources */,
 				783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */,
+				78360DBC2461E47D00988F14 /* ServerPickerViewController.swift in Sources */,
 				1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */,
 				783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */,
+				78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */,
+				78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */,
 				1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */,
+				78360DE9246356AD00988F14 /* CustomConnectView.swift in Sources */,
+				78360DC224620B7800988F14 /* CredentialsProviderFactory.swift in Sources */,
+				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
+				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
 				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
-				1782F01D235CE83A0082F9CD /* ServerPickerViewController.swift in Sources */,
+				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,
+				78360DF024636EFC00988F14 /* AuthService.swift in Sources */,
 				1782F02B235D0DD90082F9CD /* ServerEntity+CRUD.swift in Sources */,
+				78360DED24636CBB00988F14 /* KeychainKeys.swift in Sources */,
+				78360DB92461E33000988F14 /* UIView+Extensions.swift in Sources */,
 				783B35F6244D018500425A9F /* UserData.swift in Sources */,
+				78360DE52463565E00988F14 /* AuthVPNUKConnectViewModel.swift in Sources */,
+				78360DEB2463699500988F14 /* ConnectScreenFactory.swift in Sources */,
 				17D61E202364BA6900ECAEBE /* ServerListViewController.swift in Sources */,
 				783B35EF244CF11C00425A9F /* SignInCredentialsDTO.swift in Sources */,
+				78360DF42463771800988F14 /* VPNUKConnectFactory.swift in Sources */,
 				783B35ED244CEF6A00425A9F /* SignUpRequestDTO.swift in Sources */,
 				1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */,
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
+				78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */,
+				78360DD924634B4900988F14 /* AccountVPNUKConnectViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@ target 'VPNClient' do
   pod 'XMLParsing', :git => 'https://github.com/bitcrank/XMLParsing'
   #pod 'Moya', '~> 13.0'
   pod 'TunnelKit'
+  pod 'SnapKit'
 
 end
 target 'VPNClientNetworkExtension' do

@@ -70,6 +70,7 @@ PODS:
   - nanopb/encode (0.3.9011)
   - OpenSSL-Apple (1.1.1d.5a)
   - PromisesObjC (1.2.8)
+  - SnapKit (5.0.1)
   - SwiftyBeaver (1.9.1)
   - TunnelKit (2.2.1):
     - TunnelKit/Protocols/OpenVPN (= 2.2.1)
@@ -89,6 +90,7 @@ DEPENDENCIES:
   - Crashlytics
   - Fabric
   - Firebase/Analytics
+  - SnapKit
   - SwiftyBeaver
   - TunnelKit
   - XMLParsing (from `https://github.com/bitcrank/XMLParsing`)
@@ -111,6 +113,7 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Apple
     - PromisesObjC
+    - SnapKit
     - SwiftyBeaver
     - TunnelKit
 
@@ -140,10 +143,11 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   OpenSSL-Apple: 2c9efbc94e0a1ada434cc197b02bd70052a82281
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: a1f5691458561414bcfab51874b2b7445451602b
   TunnelKit: 554b30f3a37387169d00be45d120fa8df6c8068e
   XMLParsing: f5ea51b40ec2f50bd57e0d6a8222120b7443546b
 
-PODFILE CHECKSUM: f2cbc9e5584a8ae9612f5083b3c8d142a1383ca1
+PODFILE CHECKSUM: cc8c8160a8c708595ccf879f394ead69d76fa78e
 
 COCOAPODS: 1.9.1
