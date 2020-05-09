@@ -11,10 +11,19 @@ import SnapKit
 
 class ConnectionStatusView: UIView {
     
+    private let appearance: Appearance
+    var connectButtonAction: (() -> ())?
+    
+    var connectButtonEnabled: Bool {
+        get { connectButton.isEnabled }
+        set { connectButton.isEnabled = newValue }
+    }
+    
     private lazy var connectButton: UIButton =  {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.backgroundColor = .lightGray
+        button.addTarget(self, action: #selector(connectButtonTouched), for: .touchUpInside)
         return button
     }()
     
@@ -24,14 +33,44 @@ class ConnectionStatusView: UIView {
         return stackView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private lazy var containerView: UIStackView = {
+        let buttonContainer = UIView()
+        buttonContainer.addSubview(connectButton)
+        connectButton.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        let view = UIStackView(arrangedSubviews: [statusStackView, buttonContainer])
+        view.spacing = appearance.detailsAndButtonSpacing
+        view.axis = .horizontal
+        return view
+    }()
+    
+    init(appearance: Appearance = Appearance()) {
+        self.appearance = appearance
+        super.init(frame: .zero)
+        commonInit()
+        update(with: .disconnected)
+    }
+    
+    @objc private func connectButtonTouched() {
+        connectButtonAction?()
+    }
+    
+    private func commonInit() {
         setupSubviews()
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        containerView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview().inset(appearance.containerViewInsets)
+        }
     }
     
     private func setupSubviews() {
-        addSubview(statusStackView)
-        statusStackView.makeEdgesEqualToSuperview()
+        addSubview(containerView)
+        backgroundColor = appearance.bgColor
     }
     
     private func buildStatusView(forDetails details: ConnectionDetails) -> UIView {
@@ -89,11 +128,6 @@ class ConnectionStatusView: UIView {
             statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnecting", descriptionColor: .systemOrange))
         }
     }
-    
-    
-     
-
-    
 }
 
 extension ConnectionStatusView {
@@ -108,5 +142,11 @@ extension ConnectionStatusView {
         let ip: String?
         let port: UInt16?
         let socketType: String?
+    }
+    
+    struct Appearance {
+        let bgColor: UIColor = .yellow
+        let containerViewInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        let detailsAndButtonSpacing: CGFloat = 30
     }
 }

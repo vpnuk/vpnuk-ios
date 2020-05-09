@@ -11,15 +11,11 @@ import UIKit
 
 protocol MainScreenRouterProtocol {
     func presentSettings()
-    func presentServersPicker(delegate: ServerPickerViewModelProtocol)
+    func presentServersPicker(delegate: ServerPickerListViewModelProtocol)
     
     func switchToCustomConnectView()
     func switchToAccountConnectView()
     
-}
-
-protocol MainScreenViewProtocol: class {
-    func replaceConnectView(with view: UIView)
 }
 
 class MainScreenRouter: MainScreenRouterProtocol {
@@ -27,7 +23,7 @@ class MainScreenRouter: MainScreenRouterProtocol {
     
     func switchToCustomConnectView() {
         let factory = ConnectScreenFactory()
-        let view = factory.createCustomConnectModule()
+        let view = factory.createCustomConnectModule(withRouter: self)
         viewController?.replaceConnectView(with: view)
     }
     
@@ -41,7 +37,9 @@ class MainScreenRouter: MainScreenRouterProtocol {
         
     }
     
-    func presentServersPicker(delegate: ServerPickerViewModelProtocol) {
-        
+    func presentServersPicker(delegate: ServerPickerListViewModelProtocol) {
+        let view = ServerPickerListViewController(viewModel: delegate)
+        view.modalPresentationStyle = .fullScreen
+        viewController?.present(view, animated: true, completion: nil)
     }
 }

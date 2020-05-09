@@ -23,6 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        setupFrameworks()
+        setupWindow()
+        return true
+    }
+    
+    private func setupFrameworks() {
         FirebaseApp.configure()
         clearCredentialsIfFirstLaunch()
         
@@ -30,9 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logDestination.minLevel = .debug
         logDestination.format = "$DHH:mm:ss$d $L $N.$F:$l - $M"
         log.addDestination(logDestination)
-        
-        // Override point for customization after application launch.
-        return true
+    }
+    
+    private func setupWindow() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        if let window = window {
+            window.backgroundColor = UIColor.white
+            let viewController = MainScreenFactory().create()
+            window.rootViewController = viewController
+            window.makeKeyAndVisible()
+        }
     }
     
     private func clearCredentialsIfFirstLaunch() {

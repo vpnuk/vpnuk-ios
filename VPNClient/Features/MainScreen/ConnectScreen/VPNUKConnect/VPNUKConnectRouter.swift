@@ -28,14 +28,14 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
     }
     
     func switchToAccountScreen() {
-        containerView?.subviews.forEach { $0.removeFromSuperview() }
+        containerView?.removeSubviews()
         let view = vpnukFactory.createAccountVPNUKConnectModule(withRouter: self)
         containerView?.addSubview(view)
         view.makeEdgesEqualToSuperview()
     }
     
     func switchToAuthorizationScreen() {
-        containerView?.subviews.forEach { $0.removeFromSuperview() }
+        containerView?.removeSubviews()
         let view = vpnukFactory.createAuthVPNUKConnectModule(withRouter: self)
         containerView?.addSubview(view)
         view.makeEdgesEqualToSuperview()

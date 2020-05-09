@@ -8,17 +8,15 @@
 
 import UIKit
 
-protocol ServerPickerViewModelProtocol {
+protocol ServerPickerListViewModelProtocol {
     var selectedType: ServerType { get }
     var servers: [ServerType : [ServerEntity]] { get }
     func isConnected(toServer server: ServerEntity) -> Bool
     func select(server: ServerEntity)
 }
 
-class ServerPickerViewController: UIViewController {
-    private let viewModel: ServerPickerViewModelProtocol
-    
-    
+class ServerPickerListViewController: UIViewController {
+    private let viewModel: ServerPickerListViewModelProtocol
     private lazy var contentView = UIView()
     
     private lazy var containerStackView: UIStackView = {
@@ -43,7 +41,7 @@ class ServerPickerViewController: UIViewController {
         view = contentView
     }
     
-    init(viewModel: ServerPickerViewModelProtocol) {
+    init(viewModel: ServerPickerListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -82,7 +80,7 @@ class ServerPickerViewController: UIViewController {
 
 }
 
-extension ServerPickerViewController: UITableViewDelegate, UITableViewDataSource {
+extension ServerPickerListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.servers[viewModel.selectedType]?.count ?? 0

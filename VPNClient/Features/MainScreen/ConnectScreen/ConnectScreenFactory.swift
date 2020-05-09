@@ -11,12 +11,12 @@ import UIKit
 
 class ConnectScreenFactory {
 
-    func createCustomConnectModule() -> UIView {
+    func createCustomConnectModule(withRouter router: MainScreenRouterProtocol) -> UIView {
         let storage = KeychainCredentialsStorage(
             usernameKey: KeychainKeys.VPN.usernameKey,
             passwordKey: KeychainKeys.VPN.passwordKey
         )
-        let viewModel = CustomConnectViewModel(customCredentialsStorage: storage)
+        let viewModel = CustomConnectViewModel(router: router, customCredentialsStorage: storage)
         let view = CustomConnectView(viewModel: viewModel)
         viewModel.view = view
         return view

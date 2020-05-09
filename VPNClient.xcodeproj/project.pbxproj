@@ -36,7 +36,7 @@
 		4A5DF31520B9F03E4A7629CB /* Pods_VPNClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */; };
 		78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DB624606E7900988F14 /* ConnectionStatusView.swift */; };
 		78360DB92461E33000988F14 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DB82461E33000988F14 /* UIView+Extensions.swift */; };
-		78360DBC2461E47D00988F14 /* ServerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DBB2461E47D00988F14 /* ServerPickerViewController.swift */; };
+		78360DBC2461E47D00988F14 /* ServerPickerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DBB2461E47D00988F14 /* ServerPickerListViewController.swift */; };
 		78360DC224620B7800988F14 /* CredentialsProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DC124620B7800988F14 /* CredentialsProviderFactory.swift */; };
 		78360DC924620BFA00988F14 /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DC824620BFA00988F14 /* CredentialsProvider.swift */; };
 		78360DCC24620CE300988F14 /* ServerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DCB24620CE300988F14 /* ServerProvider.swift */; };
@@ -53,6 +53,7 @@
 		78360DF024636EFC00988F14 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DEF24636EFC00988F14 /* AuthService.swift */; };
 		78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DF1246375D400988F14 /* VPNUKConnectRouter.swift */; };
 		78360DF42463771800988F14 /* VPNUKConnectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DF32463771800988F14 /* VPNUKConnectFactory.swift */; };
+		78360DF82465DE2800988F14 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DF72465DE2800988F14 /* MainScreenViewController.swift */; };
 		783B35E4244CE35A00425A9F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783B35E3244CE35A00425A9F /* Auth.storyboard */; };
 		783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E5244CEAA300425A9F /* SignInViewController.swift */; };
 		783B35E8244CEAAE00425A9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35E7244CEAAE00425A9F /* SignUpViewController.swift */; };
@@ -62,6 +63,12 @@
 		783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */; };
 		783B35F4244D00FA00425A9F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F3244D00FA00425A9F /* UserService.swift */; };
 		783B35F6244D018500425A9F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F5244D018500425A9F /* UserData.swift */; };
+		78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0124672E120004161B /* MainScreenViewModel.swift */; };
+		78FE0A042467329B0004161B /* MainScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A032467329B0004161B /* MainScreenFactory.swift */; };
+		78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A09246752670004161B /* ServerPickerPickedView.swift */; };
+		78FE0A0C246752750004161B /* ServerPickerPickedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78FE0A0B246752750004161B /* ServerPickerPickedView.xib */; };
+		78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0E24675BF80004161B /* ServerPickerNotPickedView.swift */; };
+		78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A1024675DF80004161B /* ServerPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,7 +130,7 @@
 		6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.debug.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.debug.xcconfig"; sourceTree = "<group>"; };
 		78360DB624606E7900988F14 /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
 		78360DB82461E33000988F14 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		78360DBB2461E47D00988F14 /* ServerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewController.swift; sourceTree = "<group>"; };
+		78360DBB2461E47D00988F14 /* ServerPickerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerListViewController.swift; sourceTree = "<group>"; };
 		78360DC124620B7800988F14 /* CredentialsProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsProviderFactory.swift; sourceTree = "<group>"; };
 		78360DC824620BFA00988F14 /* CredentialsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsProvider.swift; sourceTree = "<group>"; };
 		78360DCB24620CE300988F14 /* ServerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerProvider.swift; sourceTree = "<group>"; };
@@ -140,6 +147,7 @@
 		78360DEF24636EFC00988F14 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		78360DF1246375D400988F14 /* VPNUKConnectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNUKConnectRouter.swift; sourceTree = "<group>"; };
 		78360DF32463771800988F14 /* VPNUKConnectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNUKConnectFactory.swift; sourceTree = "<group>"; };
+		78360DF72465DE2800988F14 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
 		783B35E3244CE35A00425A9F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		783B35E5244CEAA300425A9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		783B35E7244CEAAE00425A9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +157,12 @@
 		783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseDTO.swift; sourceTree = "<group>"; };
 		783B35F3244D00FA00425A9F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		783B35F5244D018500425A9F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		78FE0A0124672E120004161B /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
+		78FE0A032467329B0004161B /* MainScreenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenFactory.swift; sourceTree = "<group>"; };
+		78FE0A09246752670004161B /* ServerPickerPickedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerPickedView.swift; sourceTree = "<group>"; };
+		78FE0A0B246752750004161B /* ServerPickerPickedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServerPickerPickedView.xib; sourceTree = "<group>"; };
+		78FE0A0E24675BF80004161B /* ServerPickerNotPickedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerNotPickedView.swift; sourceTree = "<group>"; };
+		78FE0A1024675DF80004161B /* ServerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerView.swift; sourceTree = "<group>"; };
 		8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87E5941B03938A911B623791 /* Pods-VPNClientNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
 		D9D650901D3CDC7F32EC06FA /* Pods-VPNClientNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -364,6 +378,8 @@
 				78360DC024620B5800988F14 /* Factory */,
 				78360DB524606E1F00988F14 /* Views */,
 				78360DD22463474100988F14 /* MainScreenRouter.swift */,
+				78FE0A0124672E120004161B /* MainScreenViewModel.swift */,
+				78FE0A032467329B0004161B /* MainScreenFactory.swift */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
@@ -372,6 +388,7 @@
 			isa = PBXGroup;
 			children = (
 				78360DB624606E7900988F14 /* ConnectionStatusView.swift */,
+				78360DF72465DE2800988F14 /* MainScreenViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -380,7 +397,6 @@
 			isa = PBXGroup;
 			children = (
 				78360DBD2461E4A500988F14 /* View */,
-				78360DBB2461E47D00988F14 /* ServerPickerViewController.swift */,
 			);
 			path = ServerPicker;
 			sourceTree = "<group>";
@@ -388,6 +404,8 @@
 		78360DBD2461E4A500988F14 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				78FE0A0D24675BD90004161B /* PickerView */,
+				78360DBB2461E47D00988F14 /* ServerPickerListViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -554,6 +572,17 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		78FE0A0D24675BD90004161B /* PickerView */ = {
+			isa = PBXGroup;
+			children = (
+				78FE0A09246752670004161B /* ServerPickerPickedView.swift */,
+				78FE0A0B246752750004161B /* ServerPickerPickedView.xib */,
+				78FE0A0E24675BF80004161B /* ServerPickerNotPickedView.swift */,
+				78FE0A1024675DF80004161B /* ServerPickerView.swift */,
+			);
+			path = PickerView;
+			sourceTree = "<group>";
+		};
 		D2B7C2AB42458BA0B697642F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -653,6 +682,7 @@
 				1782EFED235CBF8F0082F9CD /* LaunchScreen.storyboard in Resources */,
 				17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */,
 				171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */,
+				78FE0A0C246752750004161B /* ServerPickerPickedView.xib in Resources */,
 				1782EFEA235CBF8F0082F9CD /* Assets.xcassets in Resources */,
 				1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */,
 			);
@@ -755,6 +785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */,
+				78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */,
 				1782F013235CC3DD0082F9CD /* OpenVPNConstants.swift in Sources */,
 				78360DCF24620FD700988F14 /* CredentialsStorage.swift in Sources */,
 				1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */,
@@ -762,13 +793,17 @@
 				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
 				1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */,
 				783B35EA244CEC4000425A9F /* SignUpViewModel.swift in Sources */,
+				78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */,
+				78FE0A042467329B0004161B /* MainScreenFactory.swift in Sources */,
 				1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */,
 				78360DCC24620CE300988F14 /* ServerProvider.swift in Sources */,
 				783B35F4244D00FA00425A9F /* UserService.swift in Sources */,
 				783B35E8244CEAAE00425A9F /* SignUpViewController.swift in Sources */,
 				783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */,
-				78360DBC2461E47D00988F14 /* ServerPickerViewController.swift in Sources */,
+				78360DBC2461E47D00988F14 /* ServerPickerListViewController.swift in Sources */,
+				78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */,
 				1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */,
+				78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */,
 				783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */,
 				78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */,
 				78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */,
@@ -778,6 +813,7 @@
 				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
+				78360DF82465DE2800988F14 /* MainScreenViewController.swift in Sources */,
 				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,

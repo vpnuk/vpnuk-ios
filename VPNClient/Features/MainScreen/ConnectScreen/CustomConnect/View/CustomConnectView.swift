@@ -14,7 +14,9 @@ protocol CustomConnectViewProtocol: class {
     var username: String? { get set }
     var password: String? { get set }
     
-    func update()
+    func updateCredentials()
+    
+    func updateServerPicker(state: ServerPickerView.State, action: @escaping Action)
 }
 
 class CustomConnectView: UIView {
@@ -32,7 +34,10 @@ class CustomConnectView: UIView {
     }()
     
     private lazy var containerUsernameView: UIStackView = {
-        let stackView = UIStackView()
+        let stackView = UIStackView(arrangedSubviews: [
+            usernameLabel,
+            usernameTextField
+        ])
         stackView.axis = .vertical
         return stackView
     }()
@@ -63,22 +68,69 @@ class CustomConnectView: UIView {
     }()
     
     private lazy var containerPasswordView: UIStackView = {
-        let stackView = UIStackView()
+        let passwordDescriptionStackView = UIStackView()
+        passwordDescriptionStackView.axis = .horizontal
+        passwordDescriptionStackView.addArrangedSubview(passwordLabel)
+        passwordDescriptionStackView.addArrangedSubview(UIView())
+        passwordDescriptionStackView.addArrangedSubview(saveCredentialsButton)
+        
+        let stackView = UIStackView(arrangedSubviews: [
+            passwordDescriptionStackView,
+            passwordTextField
+        ])
+        
         stackView.axis = .vertical
         return stackView
     }()
     
-    private lazy var containerStackView: UIStackView = {
-        let stackView = UIStackView()
+    private lazy var containerCredentialsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            containerUsernameView,
+            containerPasswordView
+        ])
         stackView.axis = .vertical
         return stackView
     }()
+    
+    // server picker
+      
+    private lazy var serverPickerView: ServerPickerView = {
+        let view = ServerPickerView()
+        return view
+    }()
+    
+    private lazy var containerServerPickerView: UIView = {
+        let view = UIView()
+        view.addSubview(serverPickerView)
+        serverPickerView.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+        return view
+    }()
+    
+    //
+    
+    private lazy var containerStackView: UIStackView = {
+         let stackView = UIStackView(arrangedSubviews: [
+             containerCredentialsStackView,
+             containerServerPickerView
+         ])
+         stackView.axis = .vertical
+         return stackView
+     }()
+    
+  
     
     init(viewModel: CustomConnectViewModelProtocol) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         commonInit()
-        update()
+        updateAll()
+    }
+    
+    private func updateAll() {
+        updateCredentials()
     }
     
     private func commonInit() {
@@ -87,24 +139,10 @@ class CustomConnectView: UIView {
     }
     
     @objc private func saveCredentialsTouched() {
-        viewModel.storeCredentials = !viewModel.storeCredentials
+        viewModel.storeCredentials(!viewModel.credentialsIsStoring)
     }
     
     private func setupSubviews() {
-        containerUsernameView.addArrangedSubview(usernameLabel)
-        containerUsernameView.addArrangedSubview(usernameTextField)
-        
-        let passwordDescriptionStackView = UIStackView()
-        passwordDescriptionStackView.axis = .horizontal
-        passwordDescriptionStackView.addArrangedSubview(passwordLabel)
-        passwordDescriptionStackView.addArrangedSubview(UIView())
-        passwordDescriptionStackView.addArrangedSubview(saveCredentialsButton)
-        containerPasswordView.addArrangedSubview(passwordDescriptionStackView)
-        containerPasswordView.addArrangedSubview(passwordTextField)
-        
-        containerStackView.addArrangedSubview(containerUsernameView)
-        containerStackView.addArrangedSubview(containerPasswordView)
-        
         addSubview(containerStackView)
     }
     
@@ -119,6 +157,11 @@ class CustomConnectView: UIView {
 
 
 extension CustomConnectView: CustomConnectViewProtocol {
+    func updateServerPicker(state: ServerPickerView.State, action: @escaping Action) {
+        serverPickerView.state = state
+        serverPickerView.viewTappedAction = action
+    }
+    
     var username: String? {
         get {
             return usernameTextField.text
@@ -137,8 +180,8 @@ extension CustomConnectView: CustomConnectViewProtocol {
         }
     }
     
-    func update() {
-        saveCredentialsButton.isSelected = viewModel.storeCredentials
+    func updateCredentials() {
+        saveCredentialsButton.isSelected = viewModel.credentialsIsStoring
         let credentials = try? viewModel.getCredentials()
         username = credentials?.username
         password = credentials?.password
