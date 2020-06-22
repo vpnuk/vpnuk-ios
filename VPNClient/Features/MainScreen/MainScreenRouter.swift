@@ -9,27 +9,34 @@
 import Foundation
 import UIKit
 
-protocol MainScreenRouterProtocol {
+protocol MainScreenRouterProtocol: AlertPresentable {
     func presentSettings()
-    func presentServersPicker(delegate: ServerPickerListViewModelProtocol)
+    func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
     
-    func switchToCustomConnectView()
-    func switchToAccountConnectView()
+    func switchToCustomConnectView(connectionStatusView: ConnectionStatusViewProtocol)
+    func switchToAccountConnectView(connectionStatusView: ConnectionStatusViewProtocol)
     
 }
+
 
 class MainScreenRouter: MainScreenRouterProtocol {
     weak var viewController: (UIViewController & MainScreenViewProtocol)?
     
-    func switchToCustomConnectView() {
+    func switchToCustomConnectView(connectionStatusView: ConnectionStatusViewProtocol) {
         let factory = ConnectScreenFactory()
-        let view = factory.createCustomConnectModule(withRouter: self)
+        let view = factory.createCustomConnectModule(
+            withRouter: self,
+            connectionStatusView: connectionStatusView
+        )
         viewController?.replaceConnectView(with: view)
     }
     
-    func switchToAccountConnectView() {
+    func switchToAccountConnectView(connectionStatusView: ConnectionStatusViewProtocol) {
         let factory = ConnectScreenFactory()
-        let view = factory.createAccountConnectModule(withRouter: self)
+        let view = factory.createAccountConnectModule(
+            withRouter: self,
+            connectionStatusView: connectionStatusView
+        )
         viewController?.replaceConnectView(with: view)
     }
     
@@ -37,8 +44,13 @@ class MainScreenRouter: MainScreenRouterProtocol {
         
     }
     
-    func presentServersPicker(delegate: ServerPickerListViewModelProtocol) {
-        let view = ServerPickerListViewController(viewModel: delegate)
+    func presentAlert(message: String) {
+        viewController?.presentAlert(message: message)
+    }
+    
+    func presentServersPicker(viewModel: ServerPickerListViewModelProtocol) {
+        let view = ServerPickerListViewController(viewModel: viewModel)
+        viewModel.view = view
         view.modalPresentationStyle = .fullScreen
         viewController?.present(view, animated: true, completion: nil)
     }

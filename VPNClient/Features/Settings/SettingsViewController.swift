@@ -12,12 +12,17 @@ import TunnelKit
 
 class SettingsViewController: UIViewController {
 
+    @IBOutlet weak var logTextView: UITextView!
     @IBOutlet weak var protocolSegmentedControl: UISegmentedControl!
     @IBOutlet weak var portSegmentedControl: UISegmentedControl!
     @IBOutlet weak var reconnectSwitcher: UISwitch!
     
     @IBAction func reconnectSwitcherChanged(_ sender: UISwitch) {
         
+    }
+    
+    @IBAction func closeView(_ sender: Any) {
+        close()
     }
     
     @IBAction func saveTouched(_ sender: UIBarButtonItem) {
@@ -30,7 +35,7 @@ class SettingsViewController: UIViewController {
         
         NotificationCenter.default.post(name: VPNSettings.settingsChangedNotification, object: nil, userInfo: nil)
         
-        navigationController?.popViewController(animated: true)
+        close()
     }
     
     @IBAction func protocolChanged(_ sender: UISegmentedControl) {
@@ -72,8 +77,10 @@ class SettingsViewController: UIViewController {
         if let portStr = UserDefaults.portSetting, let port = Int(portStr), let index = VPNSettings.socketPorts[socketType]?.firstIndex(of: port) {
             portSegmentedControl.selectedSegmentIndex = index
         }
-        
+    }
     
+    private func close() {
+        dismiss(animated: true, completion: nil)
     }
 
 }

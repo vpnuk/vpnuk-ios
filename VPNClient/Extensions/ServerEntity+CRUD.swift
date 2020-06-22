@@ -18,8 +18,13 @@ extension ServerEntity {
         return try? context.fetch(request).first
     }
     
-    static func find(byServerType type: ServerType, in context: NSManagedObjectContext) -> [ServerEntity] {
-        return []
+    static func find(byTypes types: [ServerType], in context: NSManagedObjectContext) -> [ServerEntity] {
+        let request = NSFetchRequest<ServerEntity>(entityName: "ServerEntity")
+        request.sortDescriptors = []
+        let predicates = types.map { NSPredicate(format: "type == %@", $0.rawValue) }
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+        let items = (try? context.fetch(request)) ?? []
+        return items
     }
 
     func update(withDTO dto: ServerDTO) {

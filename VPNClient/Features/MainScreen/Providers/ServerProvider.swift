@@ -9,6 +9,6 @@
 import Foundation
 
 protocol ServerProvider {
-    var server: ServerEntity { get }
-    var serverChangedListener: ((_ newServer: ServerEntity) -> ())? { get set }
+    func getServer() throws -> ServerEntity?
+    var serverChangedListener: ((_ newServer: ServerEntity?) -> ())? { get set }
 }

@@ -63,6 +63,11 @@
 		783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */; };
 		783B35F4244D00FA00425A9F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F3244D00FA00425A9F /* UserService.swift */; };
 		783B35F6244D018500425A9F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F5244D018500425A9F /* UserData.swift */; };
+		7846416B249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */; };
+		7846416D249E3E4E00F7BA40 /* SubscriptionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */; };
+		7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416E249E42E600F7BA40 /* ServersRepository.swift */; };
+		78464173249E4E6500F7BA40 /* ServerPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */; };
+		78A382BA2470878F003AB50B /* LastConnectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A382B92470878F003AB50B /* LastConnectionStorage.swift */; };
 		78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0124672E120004161B /* MainScreenViewModel.swift */; };
 		78FE0A042467329B0004161B /* MainScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A032467329B0004161B /* MainScreenFactory.swift */; };
 		78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A09246752670004161B /* ServerPickerPickedView.swift */; };
@@ -157,6 +162,11 @@
 		783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseDTO.swift; sourceTree = "<group>"; };
 		783B35F3244D00FA00425A9F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		783B35F5244D018500425A9F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCreateResponseDTO.swift; sourceTree = "<group>"; };
+		7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDTO.swift; sourceTree = "<group>"; };
+		7846416E249E42E600F7BA40 /* ServersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersRepository.swift; sourceTree = "<group>"; };
+		78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewModel.swift; sourceTree = "<group>"; };
+		78A382B92470878F003AB50B /* LastConnectionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastConnectionStorage.swift; sourceTree = "<group>"; };
 		78FE0A0124672E120004161B /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
 		78FE0A032467329B0004161B /* MainScreenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenFactory.swift; sourceTree = "<group>"; };
 		78FE0A09246752670004161B /* ServerPickerPickedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerPickedView.swift; sourceTree = "<group>"; };
@@ -219,7 +229,6 @@
 				1782F025235D07A10082F9CD /* Extensions */,
 				1782F019235CE3B70082F9CD /* ViewControllers */,
 				1782F018235CE3AE0082F9CD /* ViewModels */,
-				1782F014235CC6C80082F9CD /* Entities */,
 				1782F011235CC3D10082F9CD /* Constants */,
 				1782EFF4235CC0270082F9CD /* Services */,
 				783B35E1244CE31900425A9F /* Resources */,
@@ -261,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				1782EFF8235CC06C0082F9CD /* CoreDataStack.swift */,
+				7846416E249E42E600F7BA40 /* ServersRepository.swift */,
 			);
 			path = DB;
 			sourceTree = "<group>";
@@ -280,23 +290,6 @@
 				78360DEC24636CBB00988F14 /* KeychainKeys.swift */,
 			);
 			path = Constants;
-			sourceTree = "<group>";
-		};
-		1782F014235CC6C80082F9CD /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				1782F015235CC6D50082F9CD /* DTOs */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		1782F015235CC6D50082F9CD /* DTOs */ = {
-			isa = PBXGroup;
-			children = (
-				1782F016235CC70C0082F9CD /* ServerDto.swift */,
-				17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */,
-			);
-			path = DTOs;
 			sourceTree = "<group>";
 		};
 		1782F018235CE3AE0082F9CD /* ViewModels */ = {
@@ -372,6 +365,7 @@
 		78360DB424606E0A00988F14 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
+				78A382B824708767003AB50B /* LastConnectionStorage */,
 				78360DD724634B2600988F14 /* ConnectScreen */,
 				78360DCD24620FB600988F14 /* CredentialsStorage */,
 				78360DCA24620CC600988F14 /* Providers */,
@@ -397,6 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				78360DBD2461E4A500988F14 /* View */,
+				78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */,
 			);
 			path = ServerPicker;
 			sourceTree = "<group>";
@@ -556,9 +551,9 @@
 		783B35EB244CEF5800425A9F /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				783B35EC244CEF6A00425A9F /* SignUpRequestDTO.swift */,
-				783B35EE244CF11C00425A9F /* SignInCredentialsDTO.swift */,
-				783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */,
+				78464169249E3DE000F7BA40 /* Servers */,
+				78464168249E3DDA00F7BA40 /* Auth */,
+				78464167249E3DCF00F7BA40 /* Subscriptions */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -570,6 +565,42 @@
 				783B35F5244D018500425A9F /* UserData.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		78464167249E3DCF00F7BA40 /* Subscriptions */ = {
+			isa = PBXGroup;
+			children = (
+				7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */,
+				7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */,
+			);
+			path = Subscriptions;
+			sourceTree = "<group>";
+		};
+		78464168249E3DDA00F7BA40 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				783B35EC244CEF6A00425A9F /* SignUpRequestDTO.swift */,
+				783B35EE244CF11C00425A9F /* SignInCredentialsDTO.swift */,
+				783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		78464169249E3DE000F7BA40 /* Servers */ = {
+			isa = PBXGroup;
+			children = (
+				1782F016235CC70C0082F9CD /* ServerDto.swift */,
+				17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */,
+			);
+			path = Servers;
+			sourceTree = "<group>";
+		};
+		78A382B824708767003AB50B /* LastConnectionStorage */ = {
+			isa = PBXGroup;
+			children = (
+				78A382B92470878F003AB50B /* LastConnectionStorage.swift */,
+			);
+			path = LastConnectionStorage;
 			sourceTree = "<group>";
 		};
 		78FE0A0D24675BD90004161B /* PickerView */ = {
@@ -787,7 +818,9 @@
 				1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */,
 				78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */,
 				1782F013235CC3DD0082F9CD /* OpenVPNConstants.swift in Sources */,
+				78464173249E4E6500F7BA40 /* ServerPickerViewModel.swift in Sources */,
 				78360DCF24620FD700988F14 /* CredentialsStorage.swift in Sources */,
+				78A382BA2470878F003AB50B /* LastConnectionStorage.swift in Sources */,
 				1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */,
 				78360DC924620BFA00988F14 /* CredentialsProvider.swift in Sources */,
 				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
@@ -804,6 +837,7 @@
 				78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */,
 				1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */,
 				78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */,
+				7846416B249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift in Sources */,
 				783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */,
 				78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */,
 				78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */,
@@ -826,7 +860,9 @@
 				78360DEB2463699500988F14 /* ConnectScreenFactory.swift in Sources */,
 				17D61E202364BA6900ECAEBE /* ServerListViewController.swift in Sources */,
 				783B35EF244CF11C00425A9F /* SignInCredentialsDTO.swift in Sources */,
+				7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */,
 				78360DF42463771800988F14 /* VPNUKConnectFactory.swift in Sources */,
+				7846416D249E3E4E00F7BA40 /* SubscriptionDTO.swift in Sources */,
 				783B35ED244CEF6A00425A9F /* SignUpRequestDTO.swift in Sources */,
 				1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */,
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,

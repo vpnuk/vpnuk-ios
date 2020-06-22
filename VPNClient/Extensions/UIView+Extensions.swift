@@ -19,6 +19,23 @@ extension UIStackView {
 }
 
 extension UIView {
+    func addSubviews(_ subviews: UIView...) {
+        subviews.forEach(addSubview(_:))
+    }
+    
+    func contained(with insets: UIEdgeInsets) -> UIView {
+        let container = UIView()
+        container.addSubview(self)
+        makeEdgesEqual(to: insets)
+        return container
+    }
+    
+    func makeEdgesEqual(to edges: UIEdgeInsets) {
+        snp.makeConstraints { make in
+            make.edges.equalTo(edges)
+        }
+    }
+    
     func makeEdgesEqualToSuperview() {
         snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -39,5 +56,22 @@ extension UIView {
     
     func removeSubviews() {
         subviews.forEach { $0.removeFromSuperview() }
+    }
+}
+
+protocol AlertPresentable {
+    func presentAlert(message: String)
+}
+
+protocol LoaderPresentable {
+    func presentLoader(_ present: Bool)
+}
+
+extension UIViewController: AlertPresentable {
+    func presentAlert(message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok"), style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
     }
 }

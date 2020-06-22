@@ -9,14 +9,23 @@
 import UIKit
 import SnapKit
 
-protocol MainScreenViewProtocol: class {
+protocol MainScreenViewProtocol: AnyObject, AlertPresentable {
     func replaceConnectView(with view: UIView)
+    func setConnectScreenType(_ type: ConnectScreenType)
+    var connectionStatusView: ConnectionStatusViewProtocol { get }
 }
 
 class MainScreenViewController: UIViewController {
     
     private let viewModel: MainScreenViewModelProtocol
     // header
+    
+    private lazy var settingsButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "gear"), for: .normal)
+        button.addTarget(self, action: #selector(settingsTouched), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var headerImageView: UIImageView = {
         let imageView = UIImageView()
@@ -34,7 +43,7 @@ class MainScreenViewController: UIViewController {
             animated: false
         )
         control.insertSegment(
-            withTitle: NSLocalizedString("Account", comment: ""),
+            withTitle: NSLocalizedString("From account", comment: ""),
             at: 0,
             animated: false
         )
@@ -44,7 +53,8 @@ class MainScreenViewController: UIViewController {
     
     private lazy var connectScreenSegmentedControlLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Connection:", comment: "")
+        label.text = NSLocalizedString("VPN credentials:", comment: "")
+        label.font = .systemFont(ofSize: 17, weight: .bold)
         return label
     }()
     
@@ -69,6 +79,7 @@ class MainScreenViewController: UIViewController {
             make.width.equalTo(rigthV.snp.width)
         }
         connectScreenStackView.axis = .horizontal
+        connectScreenStackView.spacing = 16
         
         
         let headerStackView = UIStackView(
@@ -78,7 +89,7 @@ class MainScreenViewController: UIViewController {
             ]
         )
         headerStackView.axis = .vertical
-        
+        headerStackView.spacing = 16
         return headerStackView
     }()
     
@@ -86,13 +97,13 @@ class MainScreenViewController: UIViewController {
     
     private lazy var connectView: UIView = {
         let view = UIView()
-        view.backgroundColor = .cyan
+//        view.backgroundColor = .cyan
         return view
     }()
     
     // bottom connection status
     
-    private lazy var connectionStatusView: ConnectionStatusView = {
+    var statusView: ConnectionStatusView = {
         return ConnectionStatusView()
     }()
     
@@ -103,13 +114,14 @@ class MainScreenViewController: UIViewController {
         spacerView.backgroundColor = .clear
         let stackView = UIStackView(
             arrangedSubviews: [
-                headerStackView,
+                headerStackView.contained(with: .init(top: 16, left: 0, bottom: 0, right: 0)),
                 connectView,
                 spacerView,
-                connectionStatusView
+                statusView
             ]
         )
         stackView.axis = .vertical
+        stackView.spacing = 16
         return stackView
     }()
     
@@ -125,6 +137,7 @@ class MainScreenViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(contentStackView)
+        view.addSubview(settingsButton)
     }
     
     private func setupConstraints() {
@@ -135,17 +148,22 @@ class MainScreenViewController: UIViewController {
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailingMargin)
         }
         
-        
         headerStackView.snp.makeConstraints { (make) in
 //            make.height.equalTo(150)
         }
+        
         headerImageView.snp.makeConstraints { (make) in
             make.height.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)
             make.center.equalToSuperview()
         }
-        connectionStatusView.snp.makeConstraints { (make) in
+        
+        statusView.snp.makeConstraints { (make) in
             make.height.equalTo(90)
+        }
+        
+        settingsButton.snp.makeConstraints { make in
+            make.top.right.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
     }
     
@@ -160,15 +178,31 @@ class MainScreenViewController: UIViewController {
         viewModel.viewLoaded()
     }
     
-    @objc private func connectScreenSegmentedControlSelected(sender: UISegmentedControl) {
+    @objc
+    private func connectScreenSegmentedControlSelected(sender: UISegmentedControl) {
         if let type = ConnectScreenType(rawValue: sender.selectedSegmentIndex) {
             viewModel.connectTypeChanged(type: type)
         }
+    }
+    
+    @objc
+    private func settingsTouched() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController")
+        
+        present(vc, animated: true)
     }
 
 }
 
 extension MainScreenViewController: MainScreenViewProtocol {
+    var connectionStatusView: ConnectionStatusViewProtocol {
+        statusView
+    }
+    
+    func setConnectScreenType(_ type: ConnectScreenType) {
+        connectScreenSegmentedControl.selectedSegmentIndex = type.rawValue
+    }
+    
     func replaceConnectView(with view: UIView) {
         connectView.removeSubviews()
         connectView.addSubview(view)

@@ -17,12 +17,28 @@ protocol AuthAPI {
     func signIn(withCredentials credentials: SignInCredentialsDTO, completion: @escaping (_ result: Result<SignInResponseDTO, Error>) -> ())
 }
 
+protocol ServersAPI {
+    func getServerList(callback: @escaping (_ servers: Result<[ServerDTO], Error>) -> ())
+    func getServersVersion(callback: @escaping (_ servers: Result<ServersVersionDTO, Error>) -> ())
+}
+
+protocol SubscripionsAPI {
+    func getSubscriptions(callback: @escaping (_ subscriptions: Result<[SubscriptionDTO], Error>) -> ())
+    func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
+    func createSubscription(subscription: SubscriptionDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
+    func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
+}
+
 class RestAPI {
     static let shared = RestAPI()
     
+    private let baseUrl = "https://www.vpnuk.info"
     private let queue = DispatchQueue.global(qos: .userInitiated)
+}
+
+extension RestAPI: ServersAPI {
     func getServerList(callback: @escaping (_ servers: Result<[ServerDTO], Error>) -> ()) {
-        AF.request(URL(string: "https://www.vpnuk.info/serverlist/servers.xml")!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
+        AF.request(URL(string: baseUrl + "/serverlist/servers.xml")!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
             .validate()
             .responseData(queue: queue) { (response) in
                 if let error = response.error {
@@ -48,9 +64,8 @@ class RestAPI {
     }
     
     func getServersVersion(callback: @escaping (_ servers: Result<ServersVersionDTO, Error>) -> ()) {
-        
         AF.request(
-            URL(string: "https://www.vpnuk.info/serverlist/versions.xml")!,
+            URL(string: baseUrl + "/serverlist/versions.xml")!,
             method: .get,
             parameters: nil,
             encoding: URLEncoding.default,
@@ -77,14 +92,12 @@ class RestAPI {
                 }
         }
     }
-    
-    
 }
 
 extension RestAPI: AuthAPI {
     func signUp(withData data: SignUpRequestDTO, completion: @escaping (Result<Void, Error>) -> ()) {
         AF.request(
-            URL(string: "https://vpnuk.info/wp-json/vpnuk/v1/customers")!,
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/customers")!,
             method: .post,
             parameters: data,
             encoder: JSONParameterEncoder.default,
@@ -105,7 +118,7 @@ extension RestAPI: AuthAPI {
     
     func signIn(withCredentials credentials: SignInCredentialsDTO, completion: @escaping (Result<SignInResponseDTO, Error>) -> ()) {
          AF.request(
-                   URL(string: "https://vpnuk.net/wp-json/vpnuk/v1/token")!,
+                   URL(string: baseUrl + "/wp-json/vpnuk/v1/token")!,
                    method: .post,
                    parameters: credentials,
                    encoder: URLEncodedFormParameterEncoder.default,

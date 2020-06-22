@@ -24,12 +24,14 @@ class CustomConnectView: UIView {
     
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Username:"
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.text = NSLocalizedString("Username:", comment: "Username:")
         return label
     }()
     
     private lazy var usernameTextField: UITextField = {
         let textField = UITextField()
+        textField.placeholder = NSLocalizedString("VPN username", comment: "Username")
         return textField
     }()
     
@@ -39,18 +41,21 @@ class CustomConnectView: UIView {
             usernameTextField
         ])
         stackView.axis = .vertical
+        stackView.spacing = 8
         return stackView
     }()
     
     private lazy var passwordLabel: UILabel = {
         let label = UILabel()
-        label.text = "Password:"
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.text = NSLocalizedString("Password:", comment: "Password:")
         return label
     }()
     
     private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.isSecureTextEntry = true
+        textField.placeholder = NSLocalizedString("VPN password", comment: "password")
         return textField
     }()
     
@@ -61,6 +66,8 @@ class CustomConnectView: UIView {
         button.setImage(UIImage(named: "black-check-box-with-white-check"), for: .selected)
         button.setTitle("Save credentials", for: .selected)
         button.tintColor = .black
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.black, for: .selected)
         button.contentEdgeInsets = .init(top: 0, left: 10, bottom: 0, right: 0)
         button.imageEdgeInsets = .init(top: 0, left: -10, bottom: 0, right: 0)
         button.addTarget(self, action: #selector(saveCredentialsTouched), for: .touchUpInside)
@@ -78,7 +85,7 @@ class CustomConnectView: UIView {
             passwordDescriptionStackView,
             passwordTextField
         ])
-        
+        stackView.spacing = 8
         stackView.axis = .vertical
         return stackView
     }()
@@ -89,6 +96,7 @@ class CustomConnectView: UIView {
             containerPasswordView
         ])
         stackView.axis = .vertical
+        stackView.spacing = 16
         return stackView
     }()
     
@@ -111,14 +119,16 @@ class CustomConnectView: UIView {
     
     //
     
-    private lazy var containerStackView: UIStackView = {
-         let stackView = UIStackView(arrangedSubviews: [
-             containerCredentialsStackView,
-             containerServerPickerView
-         ])
-         stackView.axis = .vertical
-         return stackView
-     }()
+    private lazy var containerStackView: UIView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            containerCredentialsStackView,
+            containerServerPickerView
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 32
+        return stackView
+            .contained(with: .init(top: 0, left: 16, bottom: 0, right: 16))
+    }()
     
   
     

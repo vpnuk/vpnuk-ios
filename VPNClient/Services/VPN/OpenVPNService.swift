@@ -263,3 +263,44 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
     
     
 }
+
+struct ConnectionData {
+    let serverIP: String
+    let socketType: SocketType
+    let port: UInt16
+}
+
+extension NETunnelProviderProtocol {
+
+    var connectionData: ConnectionData? {
+        guard let serverIP = serverIP, let socketType = socketType, let port = port else {
+            return nil
+        }
+        return .init(serverIP: serverIP, socketType: socketType, port: port)
+    }
+    
+    private var serverIP: String? {
+        return serverAddress
+    }
+    
+    private func getPortAndProtocol(from providerConfiguration: [String : Any]?) -> (port: UInt16, protocol: SocketType)? {
+        if let tuple = (providerConfiguration?["EndpointProtocols"] as? [String])?.first {
+            let arr = String(describing: tuple).split(separator: ":")
+            guard let p = arr.last, let port = UInt16(p), let type = arr.first else {
+                return nil
+            }
+            return (port: port, protocol: type == "TCP" ? .tcp : .udp)
+        }
+        return nil
+    }
+    
+    private var socketType: SocketType? {
+        let proto = getPortAndProtocol(from: providerConfiguration)?.protocol
+        return proto
+    }
+    
+    private var port: UInt16? {
+        let port = getPortAndProtocol(from: providerConfiguration)?.port
+        return port
+    }
+}

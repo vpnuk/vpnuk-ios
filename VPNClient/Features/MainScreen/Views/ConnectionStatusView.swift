@@ -9,10 +9,15 @@
 import UIKit
 import SnapKit
 
-class ConnectionStatusView: UIView {
+protocol ConnectionStatusViewProtocol: AnyObject {
+    var connectButtonAction: Action? { get set }
+    func update(with status: ConnectionStatusView.Status)
+}
+
+class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
     
     private let appearance: Appearance
-    var connectButtonAction: (() -> ())?
+    var connectButtonAction: Action?
     
     var connectButtonEnabled: Bool {
         get { connectButton.isEnabled }
@@ -46,6 +51,12 @@ class ConnectionStatusView: UIView {
         return view
     }()
     
+    private lazy var separatorView: UIView = {
+       let view = UIView()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        return view
+    }()
+    
     init(appearance: Appearance = Appearance()) {
         self.appearance = appearance
         super.init(frame: .zero)
@@ -53,7 +64,8 @@ class ConnectionStatusView: UIView {
         update(with: .disconnected)
     }
     
-    @objc private func connectButtonTouched() {
+    @objc
+    private func connectButtonTouched() {
         connectButtonAction?()
     }
     
@@ -66,11 +78,25 @@ class ConnectionStatusView: UIView {
         containerView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview().inset(appearance.containerViewInsets)
         }
+        
+        separatorView.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.left.right.top.equalToSuperview()
+        }
+        
     }
     
     private func setupSubviews() {
         addSubview(containerView)
+        addSubview(separatorView)
         backgroundColor = appearance.bgColor
+        
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.04).cgColor
+        layer.shadowOpacity = 1
+        layer.shadowOffset = .init(width: 0, height: -3)
+        layer.shadowRadius = 1
+        
+        
     }
     
     private func buildStatusView(forDetails details: ConnectionDetails) -> UIView {
@@ -143,9 +169,9 @@ extension ConnectionStatusView {
         let port: UInt16?
         let socketType: String?
     }
-    
+
     struct Appearance {
-        let bgColor: UIColor = .yellow
+        let bgColor: UIColor = .white
         let containerViewInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let detailsAndButtonSpacing: CGFloat = 30
     }

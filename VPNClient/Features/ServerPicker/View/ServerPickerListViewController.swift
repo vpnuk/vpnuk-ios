@@ -8,11 +8,9 @@
 
 import UIKit
 
-protocol ServerPickerListViewModelProtocol {
-    var selectedType: ServerType { get }
-    var servers: [ServerType : [ServerEntity]] { get }
-    func isConnected(toServer server: ServerEntity) -> Bool
-    func select(server: ServerEntity)
+protocol ServerPickerListViewProtocol: AnyObject {
+    func update()
+    func dismissView()
 }
 
 class ServerPickerListViewController: UIViewController {
@@ -26,7 +24,9 @@ class ServerPickerListViewController: UIViewController {
     }()
     
     private lazy var segmentedControl: UISegmentedControl = {
-        return UISegmentedControl(frame: .zero)
+        let control = UISegmentedControl(frame: .zero)
+        control.addTarget(self, action: #selector(serverTypeUpdated), for: .valueChanged)
+        return control
     }()
     
     private lazy var tableView: UITableView = {
@@ -35,6 +35,15 @@ class ServerPickerListViewController: UIViewController {
         tableview.delegate = self
         tableview.dataSource = self
         return tableview
+    }()
+    
+    private lazy var navbar: UINavigationBar = {
+        let navbar = UINavigationBar()
+        let item = UINavigationItem(title: "Choose server")
+        item.setLeftBarButton(.init(title: "Close", style: .done, target: self, action: #selector(closeButtonTouched)), animated: false)
+        
+        navbar.setItems([item], animated: false)
+        return navbar
     }()
     
     override func loadView() {
@@ -54,17 +63,44 @@ class ServerPickerListViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         update()
-        // Do any additional setup after loading the view.
     }
-    
 
     private func setupView() {
+        view.backgroundColor = .white
         view.addSubview(containerStackView)
+        view.addSubview(navbar)
         containerStackView.addArrangedSubview(segmentedControl)
         containerStackView.addArrangedSubview(tableView)
-        containerStackView.makeEdgesEqualToSuperview()
+        
+        tableView.rowHeight = 120
+        tableView.estimatedRowHeight = 120
+        
+        navbar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.left.right.equalToSuperview()
+        }
+        
+        containerStackView.snp.makeConstraints { make in
+            make.bottom.left.right.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(navbar.snp.bottom)
+        }
     }
     
+    @objc
+    private func serverTypeUpdated() {
+        let types = viewModel.servers.keys.sorted()
+        let newSelectedType = types[segmentedControl.selectedSegmentIndex]
+        viewModel.selectedType = newSelectedType
+    }
+    
+    @objc
+    private func closeButtonTouched() {
+        dismissView()
+    }
+
+}
+
+extension ServerPickerListViewController: ServerPickerListViewProtocol {
     func update() {
         segmentedControl.removeAllSegments()
         let types = viewModel.servers.keys.sorted()
@@ -77,7 +113,10 @@ class ServerPickerListViewController: UIViewController {
         
         tableView.reloadData()
     }
-
+    
+    func dismissView() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension ServerPickerListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -87,18 +126,18 @@ extension ServerPickerListViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let selectedType = viewModel.selectedType
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ServerItemTableViewCell.self), for: indexPath) as! ServerItemTableViewCell
-        if let server = viewModel.servers[viewModel.selectedType]?[indexPath.row] {
-            cell.update(withServerEntity: server, isConnected: viewModel.isConnected(toServer: server))
+        if let server = viewModel.servers[selectedType]?[indexPath.row] {
+            cell.update(
+                withServerEntity: server,
+                isConnected: viewModel.isConnected(toServerAt: .init(type: selectedType, index: indexPath.row))
+            )
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let server = viewModel.servers[viewModel.selectedType]?[indexPath.row] {
-            viewModel.select(server: server)
-        }
+        viewModel.select(serverAt: .init(type: viewModel.selectedType, index: indexPath.row))
     }
-    
-    
 }

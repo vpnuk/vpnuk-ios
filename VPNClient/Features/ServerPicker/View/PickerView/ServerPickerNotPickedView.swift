@@ -17,7 +17,8 @@ class ServerPickerNotPickedView: UIView {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Pick server...", comment: "")
+        label.text = NSLocalizedString("Pick a VPN server...", comment: "")
+        label.font = .systemFont(ofSize: 20, weight: .regular)
         return label
     }()
     

@@ -13,7 +13,7 @@ class ParentServerDTO: Codable {
     var server: [ServerDTO]?
 }
 
-enum ServerType: String, Codable {
+enum ServerType: String, Codable, CaseIterable {
     case shared = "shared"
     case dedicated = "dedicated"
     case oneToOne = "1:1"
@@ -46,9 +46,6 @@ extension ServerType: Comparable {
         }
     }
 }
-
-
-
 
 class ServerDTO: Codable {
     var location: ServerLocation?

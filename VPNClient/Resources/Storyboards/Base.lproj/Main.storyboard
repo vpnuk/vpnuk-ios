@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yyc-tQ-GIH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yyc-tQ-GIH">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -232,11 +233,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="VPNUK Connection" id="lND-QZ-nbn">
-                        <barButtonItem key="rightBarButtonItem" title="Settings" image="gear" id="8qQ-lC-942">
-                            <connections>
-                                <segue destination="e24-w3-7on" kind="show" id="lwI-e9-v7J"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Settings" image="gear" id="8qQ-lC-942"/>
                     </navigationItem>
                     <connections>
                         <outlet property="connectButton" destination="ONI-i6-PmP" id="5qP-Lc-sMo"/>
@@ -256,25 +253,25 @@
         <!--Connection settings-->
         <scene sceneID="odQ-rb-EEw">
             <objects>
-                <viewController id="e24-w3-7on" customClass="SettingsViewController" customModule="VPNUK" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="e24-w3-7on" customClass="SettingsViewController" customModule="VPNUK" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gd2-oI-ZCX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="kwG-v7-wap">
-                                <rect key="frame" x="20" y="64" width="275" height="143"/>
+                                <rect key="frame" x="16" y="60" width="288" height="492"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="aAR-C3-LAp">
-                                        <rect key="frame" x="0.0" y="0.0" width="275" height="31"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="25"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Socket type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXz-K3-Wea">
-                                                <rect key="frame" x="0.0" y="0.0" width="96" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="96" height="25"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="OhC-Tb-ox2">
-                                                <rect key="frame" x="116" y="0.0" width="159" height="32"/>
+                                                <rect key="frame" x="116" y="0.0" width="172" height="26"/>
                                                 <segments>
                                                     <segment title="TCP"/>
                                                     <segment title="UDP"/>
@@ -286,7 +283,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mm7-l4-fmX">
-                                        <rect key="frame" x="0.0" y="51" width="275" height="31"/>
+                                        <rect key="frame" x="0.0" y="45" width="288" height="31"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jfh-qZ-qlG">
                                                 <rect key="frame" x="0.0" y="0.0" width="37" height="31"/>
@@ -295,7 +292,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-iE-tuO">
-                                                <rect key="frame" x="57" y="0.0" width="218" height="32"/>
+                                                <rect key="frame" x="57" y="0.0" width="231" height="32"/>
                                                 <segments>
                                                     <segment title="TCP"/>
                                                     <segment title="UDP"/>
@@ -307,39 +304,78 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Qdn-Dr-yb3">
-                                        <rect key="frame" x="0.0" y="102" width="275" height="41"/>
+                                        <rect key="frame" x="0.0" y="96" width="288" height="41"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" horizontalCompressionResistancePriority="999" text="Reconnect on network change:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wg3-M3-gVT">
-                                                <rect key="frame" x="0.0" y="0.0" width="127.5" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="134" height="41"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZoO-ap-Xvv">
-                                                <rect key="frame" x="147.5" y="0.0" width="127.5" height="41"/>
+                                                <rect key="frame" x="154" y="0.0" width="134" height="41"/>
                                                 <subviews>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Dq-ZL-3oa">
-                                                        <rect key="frame" x="0.0" y="0.0" width="129.5" height="31"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="136" height="31"/>
                                                         <connections>
                                                             <action selector="reconnectSwitcherChanged:" destination="e24-w3-7on" eventType="valueChanged" id="Nsa-dD-Qy4"/>
                                                         </connections>
                                                     </switch>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q9V-Bg-seF">
-                                                        <rect key="frame" x="0.0" y="31" width="127.5" height="10"/>
+                                                        <rect key="frame" x="0.0" y="31" width="134" height="10"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     </view>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
                                     </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="npe-P2-fAf">
+                                        <rect key="frame" x="0.0" y="157" width="288" height="335"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JNP-lR-33N">
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9tX-vL-aMq">
+                                                <rect key="frame" x="0.0" y="28.5" width="288" height="306.5"/>
+                                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9SP-Mz-wgI">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <items>
+                                    <navigationItem title="Settings" id="KAx-gT-Ebg">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="UQd-ep-gHl">
+                                            <connections>
+                                                <action selector="closeView:" destination="e24-w3-7on" id="nxC-Ob-hGM"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Save" style="done" id="ikm-Xv-oFW">
+                                            <connections>
+                                                <action selector="saveTouched:" destination="e24-w3-7on" id="zoC-h3-8Q6"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="kwG-v7-wap" firstAttribute="leading" secondItem="Aud-u4-Gcb" secondAttribute="leading" constant="20" id="d7K-Is-gYc"/>
-                            <constraint firstItem="Aud-u4-Gcb" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kwG-v7-wap" secondAttribute="trailing" constant="20" id="fwR-bF-RiF"/>
-                            <constraint firstItem="kwG-v7-wap" firstAttribute="top" secondItem="Aud-u4-Gcb" secondAttribute="top" constant="20" id="or9-bF-WII"/>
+                            <constraint firstItem="9SP-Mz-wgI" firstAttribute="leading" secondItem="Aud-u4-Gcb" secondAttribute="leading" id="6T4-n7-A45"/>
+                            <constraint firstItem="kwG-v7-wap" firstAttribute="top" secondItem="9SP-Mz-wgI" secondAttribute="bottom" constant="16" id="7SJ-4X-tj0"/>
+                            <constraint firstItem="Aud-u4-Gcb" firstAttribute="trailing" secondItem="9SP-Mz-wgI" secondAttribute="trailing" id="GQu-ro-nZf"/>
+                            <constraint firstItem="Aud-u4-Gcb" firstAttribute="bottom" secondItem="kwG-v7-wap" secondAttribute="bottom" constant="16" id="MXM-iU-y4i"/>
+                            <constraint firstItem="kwG-v7-wap" firstAttribute="leading" secondItem="Aud-u4-Gcb" secondAttribute="leading" constant="16" id="d7K-Is-gYc"/>
+                            <constraint firstItem="Aud-u4-Gcb" firstAttribute="trailing" secondItem="kwG-v7-wap" secondAttribute="trailing" constant="16" id="fwR-bF-RiF"/>
+                            <constraint firstItem="9SP-Mz-wgI" firstAttribute="top" secondItem="Aud-u4-Gcb" secondAttribute="top" id="gNQ-0L-Bx8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Aud-u4-Gcb"/>
                     </view>
@@ -351,6 +387,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="logTextView" destination="9tX-vL-aMq" id="B2C-xR-p52"/>
                         <outlet property="portSegmentedControl" destination="bFw-iE-tuO" id="H47-Jh-d87"/>
                         <outlet property="protocolSegmentedControl" destination="OhC-Tb-ox2" id="rXY-Fa-sxN"/>
                         <outlet property="reconnectSwitcher" destination="7Dq-ZL-3oa" id="Wzo-NY-cmh"/>
@@ -358,7 +395,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uUL-B5-MD7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="897.10144927536237" y="136.95652173913044"/>
+            <point key="canvasLocation" x="896.25" y="136.26760563380282"/>
         </scene>
     </scenes>
     <resources>
