@@ -148,10 +148,6 @@ class MainScreenViewController: UIViewController {
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailingMargin)
         }
         
-        headerStackView.snp.makeConstraints { (make) in
-//            make.height.equalTo(150)
-        }
-        
         headerImageView.snp.makeConstraints { (make) in
             make.height.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)

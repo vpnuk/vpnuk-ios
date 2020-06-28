@@ -9,17 +9,29 @@
 import Foundation
 
 protocol AccountVPNUKConnectViewModelProtocol {
-    
+    func viewDidLoad()
 }
 
-class AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol  {
+class AccountVPNUKConnectViewModel  {
     private let router: AccountVPNUKConnectRouterProtocol
     private weak var connectorDelegate: VPNConnectorDelegate?
     
-    weak var view: AccountVPNUKConnectViewProtocol?
+    weak var view: AccountVPNUKConnectViewProtocol? {
+        didSet {
+            viewDidLoad()
+        }
+    }
     
     init(router: AccountVPNUKConnectRouterProtocol, connectorDelegate: VPNConnectorDelegate?) {
         self.router = router
         self.connectorDelegate = connectorDelegate
+    }
+    
+    
+}
+
+extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
+    func viewDidLoad() {
+        
     }
 }
