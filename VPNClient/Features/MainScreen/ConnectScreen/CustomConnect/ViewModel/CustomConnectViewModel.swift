@@ -20,33 +20,32 @@ class CustomConnectViewModel {
             viewLoaded()
         }
     }
+    
+    private var connectedServerData: ConnectionData? {
+        return connectorDelegate?.connectedServerData
+    }
+    
     private let router: MainScreenRouterProtocol
     
     private let credentialsStorage: CredentialsStorage
     private var connectionStateStorage: CustomConnectionStateStorage
     var credentialsChangedListener: ((UsernamePasswordCredentials) -> ())?
     private let serversRepository: ServersRepository
-    private let vpnService: VPNService
-    private weak var connectionStatusView: ConnectionStatusViewProtocol?
+    private weak var connectorDelegate: VPNConnectorDelegate?
     
-    private var connectedServerData: ConnectionData? {
-        return vpnService.currentProtocolConfiguration?.connectionData
-    }
     
     init(
         router: MainScreenRouterProtocol,
         customCredentialsStorage: CredentialsStorage,
         connectionStateStorage: CustomConnectionStateStorage,
         serversRepository: ServersRepository,
-        vpnService: VPNService,
-        connectionStatusView: ConnectionStatusViewProtocol
+        connectorDelegate: VPNConnectorDelegate
     ) {
         self.credentialsStorage = customCredentialsStorage
         self.router = router
         self.connectionStateStorage = connectionStateStorage
         self.serversRepository = serversRepository
-        self.vpnService = vpnService
-        self.connectionStatusView = connectionStatusView
+        self.connectorDelegate = connectorDelegate
     }
     
     private func viewLoaded() {
@@ -54,8 +53,7 @@ class CustomConnectViewModel {
             print(result)
         }
         updateServerPicker()
-        
-        connectionStatusView?.connectButtonAction = { [weak self] in
+        connectorDelegate?.connectPressedAction = { [weak self] in
             self?.connectTouched()
         }
     }
@@ -89,37 +87,38 @@ extension CustomConnectViewModel {
     }
     
     func connectTouched() {
-        switch vpnService.status {
-        case .invalid, .disconnected:
-            let port = Int(UserDefaults.portSetting ?? String(VPNSettings.defaultSettings.port)) ?? VPNSettings.defaultSettings.port
-            let type = UserDefaults.socketTypeSetting ?? VPNSettings.defaultSettings.socketType
-            guard let server = selectedServer else {
-                router.presentAlert(message: "Please select server from the list")
-                print("please select server from list")
-                return;
-            }
-            
-            if let username = view?.username, let password = view?.password {
-                if username == "" {
-                    router.presentAlert(message: "Please input username")
-                    return
-                }
-                if password == "" {
-                    router.presentAlert(message: "Please input password")
-                    return
-                }
-                let credentials = OpenVPN.Credentials(username, password)
-                let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
-                let dnsServers = server.dns == nil ? nil : [server.dns!]
-                vpnService.configure(settings: (hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
-                vpnService.connectionClicked()
-            }
-        case .connected, .connecting:
-            vpnService.connectionClicked()
-        default:
-            break
+        let port = Int(UserDefaults.portSetting ?? String(VPNSettings.defaultSettings.port)) ?? VPNSettings.defaultSettings.port
+        let type = UserDefaults.socketTypeSetting ?? VPNSettings.defaultSettings.socketType
+        guard let server = selectedServer else {
+            router.presentAlert(message: "Please select server from the list")
+            print("please select server from list")
+            return;
         }
         
+        if let username = view?.username, let password = view?.password {
+            if username == "" {
+                router.presentAlert(message: "Please input username")
+                return
+            }
+            if password == "" {
+                router.presentAlert(message: "Please input password")
+                return
+            }
+            let credentials = OpenVPN.Credentials(username, password)
+            let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
+            let dnsServers = server.dns == nil ? nil : [server.dns!]
+            
+            let connectionSettings = ConnectionSettings(
+                hostname: server.address!,
+                port: UInt16(port),
+                dnsServers: dnsServers,
+                socketType: type,
+                credentials: credentials,
+                onDemandRuleConnect: onDemandRuleConnect
+            )
+            connectorDelegate?.connect(withSettings: connectionSettings)
+            
+        }
     }
 }
 

@@ -25,8 +25,27 @@ class VPNUKConnectFactory {
     
     
     func createAuthVPNUKConnectModule(withRouter router: AuthVPNUKConnectRouterProtocol) -> UIView {
-        let viewModel = AuthVPNUKConnectViewModel(router: router)
+        let viewModel = AuthVPNUKConnectViewModel(
+            deps: .init(
+                router: router,
+                authApi: RestAPI.shared,
+                authService: authService
+            )
+        )
         let view = AuthVPNUKConnectView(viewModel: viewModel)
+        viewModel.view = view
+        return view
+    }
+    
+    func createRegistrationVPNUKConnectModule(withRouter router: AuthVPNUKConnectRouterProtocol) -> UIView {
+        let viewModel = RegistrationVPNUKConnectViewModel(
+            deps: .init(
+                router: router,
+                authApi: RestAPI.shared,
+                authService: authService
+            )
+        )
+        let view = RegistrationVPNUKConnectView(viewModel: viewModel)
         viewModel.view = view
         return view
     }

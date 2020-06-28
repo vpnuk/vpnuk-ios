@@ -9,15 +9,18 @@
 import Foundation
 import UIKit
 
-protocol AccountVPNUKConnectRouterProtocol {
+protocol AccountVPNUKConnectRouterProtocol: AlertPresentable {
     func switchToAuthorizationScreen()
 }
 
-protocol AuthVPNUKConnectRouterProtocol {
+protocol AuthVPNUKConnectRouterProtocol: AlertPresentable {
     func switchToAccountScreen()
+    func switchToAuthorizationScreen()
+    func switchToRegistrationScreen()
 }
 
 class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRouterProtocol {
+    
     weak var containerView: UIView?
     private let parentRouter: MainScreenRouterProtocol
     private let vpnukFactory: VPNUKConnectFactory
@@ -41,4 +44,18 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
         view.makeEdgesEqualToSuperview()
     }
     
+    func switchToRegistrationScreen() {
+        containerView?.removeSubviews()
+        let view = vpnukFactory.createRegistrationVPNUKConnectModule(withRouter: self)
+        containerView?.addSubview(view)
+        view.makeEdgesEqualToSuperview()
+    }
+    
+    func presentAlert(message: String) {
+        parentRouter.presentAlert(message: message)
+    }
+    
+    func presentAlert(message: String, completion: @escaping () -> ()) {
+        parentRouter.presentAlert(message: message, completion: completion)
+    }
 }

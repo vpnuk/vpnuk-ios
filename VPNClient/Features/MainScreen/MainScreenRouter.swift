@@ -13,29 +13,31 @@ protocol MainScreenRouterProtocol: AlertPresentable {
     func presentSettings()
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
     
-    func switchToCustomConnectView(connectionStatusView: ConnectionStatusViewProtocol)
-    func switchToAccountConnectView(connectionStatusView: ConnectionStatusViewProtocol)
+    func switchToCustomConnectView(connectorDelegate: VPNConnectorDelegate)
+    func switchToAccountConnectView(connectorDelegate: VPNConnectorDelegate)
     
 }
 
 
 class MainScreenRouter: MainScreenRouterProtocol {
+
+    
     weak var viewController: (UIViewController & MainScreenViewProtocol)?
     
-    func switchToCustomConnectView(connectionStatusView: ConnectionStatusViewProtocol) {
+    func switchToCustomConnectView(connectorDelegate: VPNConnectorDelegate) {
         let factory = ConnectScreenFactory()
         let view = factory.createCustomConnectModule(
             withRouter: self,
-            connectionStatusView: connectionStatusView
+            connectorDelegate: connectorDelegate
         )
         viewController?.replaceConnectView(with: view)
     }
     
-    func switchToAccountConnectView(connectionStatusView: ConnectionStatusViewProtocol) {
+    func switchToAccountConnectView(connectorDelegate: VPNConnectorDelegate) {
         let factory = ConnectScreenFactory()
         let view = factory.createAccountConnectModule(
             withRouter: self,
-            connectionStatusView: connectionStatusView
+            connectorDelegate: connectorDelegate
         )
         viewController?.replaceConnectView(with: view)
     }
@@ -46,6 +48,10 @@ class MainScreenRouter: MainScreenRouterProtocol {
     
     func presentAlert(message: String) {
         viewController?.presentAlert(message: message)
+    }
+    
+    func presentAlert(message: String, completion: @escaping () -> ()) {
+        viewController?.presentAlert(message: message, completion: completion)
     }
     
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol) {

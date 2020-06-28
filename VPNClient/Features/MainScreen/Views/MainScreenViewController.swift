@@ -114,14 +114,14 @@ class MainScreenViewController: UIViewController {
         spacerView.backgroundColor = .clear
         let stackView = UIStackView(
             arrangedSubviews: [
-                headerStackView.contained(with: .init(top: 16, left: 0, bottom: 0, right: 0)),
+                headerStackView.contained(with: .init(top: 16, left: 0, bottom: 16, right: 0)),
                 connectView,
                 spacerView,
                 statusView
             ]
         )
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = 0
         return stackView
     }()
     

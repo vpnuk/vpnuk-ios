@@ -17,7 +17,15 @@ enum VPNError: Error {
     case error(description: String)
 }
 
-typealias ConnectionSettings = (hostname: String, port: UInt16, dnsServers: [String]?, socketType: SocketType, credentials: OpenVPN.Credentials, onDemandRuleConnect: Bool)
+
+struct ConnectionSettings {
+    let hostname: String
+    let port: UInt16
+    let dnsServers: [String]?
+    let socketType: SocketType
+    let credentials: OpenVPN.Credentials
+    let onDemandRuleConnect: Bool
+}
 
 protocol VPNServiceDelegate: class {
     func statusUpdated(newStatus status: NEVPNStatus)

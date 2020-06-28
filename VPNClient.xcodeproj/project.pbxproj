@@ -68,6 +68,8 @@
 		7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416E249E42E600F7BA40 /* ServersRepository.swift */; };
 		78464173249E4E6500F7BA40 /* ServerPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */; };
 		78A382BA2470878F003AB50B /* LastConnectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A382B92470878F003AB50B /* LastConnectionStorage.swift */; };
+		78C0491424A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */; };
+		78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */; };
 		78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0124672E120004161B /* MainScreenViewModel.swift */; };
 		78FE0A042467329B0004161B /* MainScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A032467329B0004161B /* MainScreenFactory.swift */; };
 		78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A09246752670004161B /* ServerPickerPickedView.swift */; };
@@ -167,6 +169,8 @@
 		7846416E249E42E600F7BA40 /* ServersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersRepository.swift; sourceTree = "<group>"; };
 		78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewModel.swift; sourceTree = "<group>"; };
 		78A382B92470878F003AB50B /* LastConnectionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastConnectionStorage.swift; sourceTree = "<group>"; };
+		78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectViewModel.swift; sourceTree = "<group>"; };
+		78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectView.swift; sourceTree = "<group>"; };
 		78FE0A0124672E120004161B /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
 		78FE0A032467329B0004161B /* MainScreenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenFactory.swift; sourceTree = "<group>"; };
 		78FE0A09246752670004161B /* ServerPickerPickedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerPickedView.swift; sourceTree = "<group>"; };
@@ -460,7 +464,6 @@
 		78360DDE2463555400988F14 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				78360DDC246354FB00988F14 /* AuthVPNUKConnectView.swift */,
 				78360DE22463564200988F14 /* AccountVPNUKConnectView.swift */,
 			);
 			path = View;
@@ -470,7 +473,6 @@
 			isa = PBXGroup;
 			children = (
 				78360DD824634B4900988F14 /* AccountVPNUKConnectViewModel.swift */,
-				78360DE42463565E00988F14 /* AuthVPNUKConnectViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -478,9 +480,8 @@
 		78360DE0246355A800988F14 /* VPNUKConnect */ = {
 			isa = PBXGroup;
 			children = (
-				78360DEE24636EE800988F14 /* Service */,
-				78360DDF2463559600988F14 /* ViewModel */,
-				78360DDE2463555400988F14 /* View */,
+				78C0491224A7BE9900932E0A /* Account */,
+				78C0491024A7BE4D00932E0A /* Auth */,
 				78360DF1246375D400988F14 /* VPNUKConnectRouter.swift */,
 				78360DF32463771800988F14 /* VPNUKConnectFactory.swift */,
 			);
@@ -595,12 +596,49 @@
 			path = Servers;
 			sourceTree = "<group>";
 		};
+		789EABB224A3AFF30076C708 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				78360DDC246354FB00988F14 /* AuthVPNUKConnectView.swift */,
+				78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		78A382B824708767003AB50B /* LastConnectionStorage */ = {
 			isa = PBXGroup;
 			children = (
 				78A382B92470878F003AB50B /* LastConnectionStorage.swift */,
 			);
 			path = LastConnectionStorage;
+			sourceTree = "<group>";
+		};
+		78C0491024A7BE4D00932E0A /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				78C0491124A7BE8400932E0A /* ViewModel */,
+				789EABB224A3AFF30076C708 /* View */,
+				78360DEE24636EE800988F14 /* Service */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		78C0491124A7BE8400932E0A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				78360DE42463565E00988F14 /* AuthVPNUKConnectViewModel.swift */,
+				78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		78C0491224A7BE9900932E0A /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				78360DDF2463559600988F14 /* ViewModel */,
+				78360DDE2463555400988F14 /* View */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		78FE0A0D24675BD90004161B /* PickerView */ = {
@@ -839,6 +877,7 @@
 				78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */,
 				7846416B249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift in Sources */,
 				783B35E6244CEAA300425A9F /* SignInViewController.swift in Sources */,
+				78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */,
 				78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */,
 				78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */,
 				1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */,
@@ -854,6 +893,7 @@
 				78360DF024636EFC00988F14 /* AuthService.swift in Sources */,
 				1782F02B235D0DD90082F9CD /* ServerEntity+CRUD.swift in Sources */,
 				78360DED24636CBB00988F14 /* KeychainKeys.swift in Sources */,
+				78C0491424A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift in Sources */,
 				78360DB92461E33000988F14 /* UIView+Extensions.swift in Sources */,
 				783B35F6244D018500425A9F /* UserData.swift in Sources */,
 				78360DE52463565E00988F14 /* AuthVPNUKConnectViewModel.swift in Sources */,

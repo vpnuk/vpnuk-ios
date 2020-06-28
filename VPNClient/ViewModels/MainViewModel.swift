@@ -243,7 +243,7 @@ class MainViewModel: NSObject {
                 let credentials = OpenVPN.Credentials(username, password)
                 let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
                 let dnsServers = server.dns == nil ? nil : [server.dns!]
-                vpnService.configure(settings: (hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
+                vpnService.configure(settings: .init(hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
                 vpnService.connectionClicked()
             }
         case .connected, .connecting:

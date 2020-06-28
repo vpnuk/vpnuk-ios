@@ -11,7 +11,7 @@ import SnapKit
 
 protocol ConnectionStatusViewProtocol: AnyObject {
     var connectButtonAction: Action? { get set }
-    func update(with status: ConnectionStatusView.Status)
+    func update(with status: ConnectionStatusView.Model)
 }
 
 class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
@@ -61,7 +61,7 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         self.appearance = appearance
         super.init(frame: .zero)
         commonInit()
-        update(with: .disconnected)
+        update(with: .init(status: .disconnected))
     }
     
     @objc
@@ -135,9 +135,9 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with status: Status) {
+    func update(with model: Model) {
         statusStackView.removeArrangedSubviews()
-        switch status {
+        switch model.status {
         case .connecting(let details):
             connectButton.setTitle("Disconnect", for: .normal)
             statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Connecting", descriptionColor: .systemOrange))
@@ -157,6 +157,16 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
 }
 
 extension ConnectionStatusView {
+    struct Model {
+        let status: Status
+        let isInteractionsEnabled: Bool
+        
+        init(status: ConnectionStatusView.Status, isInteractionsEnabled: Bool = true) {
+            self.status = status
+            self.isInteractionsEnabled = isInteractionsEnabled
+        }
+    }
+    
     enum Status {
         case connecting(details: ConnectionDetails)
         case connected(details: ConnectionDetails)

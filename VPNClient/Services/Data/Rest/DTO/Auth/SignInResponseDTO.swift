@@ -9,8 +9,8 @@
 import Foundation
 
 struct SignInResponseDTO: Codable {
-    let accessToken: String?
-    let tokenType: String?
+    let accessToken: String
+    let tokenType: String
     
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"

@@ -9,6 +9,12 @@
 import Foundation
 import NetworkExtension
 
+protocol VPNConnectorDelegate: AnyObject {
+    var connectPressedAction: Action? { get set }
+    var connectedServerData: ConnectionData? { get }
+    func connect(withSettings settings: ConnectionSettings)
+}
+
 enum ConnectScreenType: Int {
     case account = 0
     case custom = 1
@@ -23,6 +29,8 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     private let router: MainScreenRouterProtocol
     weak var view: MainScreenViewProtocol?
     private var vpnService: VPNService
+    
+    var connectPressedAction: Action?
     
     private var lastConnectScreenType: ConnectScreenType? {
         get {
@@ -43,20 +51,49 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         let lastConnectType = lastConnectScreenType ?? .custom
         connectTypeChanged(type: lastConnectType)
         vpnService.delegate = self
+        view?.connectionStatusView.connectButtonAction = { [weak self] in
+            self?.connectButtonTouched()
+        }
     }
     
     func connectTypeChanged(type: ConnectScreenType) {
-        guard let connectionStatusView = view?.connectionStatusView else {
-            return
-        }
         switch type {
         case .account:
-            router.switchToAccountConnectView(connectionStatusView: connectionStatusView)
+            router.switchToAccountConnectView(connectorDelegate: self)
         case .custom:
-            router.switchToCustomConnectView(connectionStatusView: connectionStatusView)
+            router.switchToCustomConnectView(connectorDelegate: self)
         }
         lastConnectScreenType = type
         view?.setConnectScreenType(type)
+    }
+}
+
+extension MainScreenViewModel: VPNConnectorDelegate {
+    private func connectButtonTouched() {
+        switch vpnService.status {
+        case .invalid, .disconnected:
+            connectPressedAction?()
+        case .connected, .connecting:
+            vpnService.connectionClicked()
+        default:
+            break
+        }
+    }
+    
+    var connectedServerData: ConnectionData? {
+        return vpnService.currentProtocolConfiguration?.connectionData
+    }
+    
+    func connect(withSettings settings: ConnectionSettings) {
+        switch vpnService.status {
+        case .invalid, .disconnected:
+            vpnService.configure(settings: settings)
+            vpnService.connectionClicked()
+        case .connected, .connecting:
+            vpnService.connectionClicked()
+        default:
+            break
+        }
     }
 }
 
@@ -88,13 +125,17 @@ extension MainScreenViewModel: VPNServiceDelegate {
         let connectionData = vpnService.currentProtocolConfiguration?.connectionData
         switch status {
         case .connecting:
-            view?.connectionStatusView.update(with: .connecting(details: .init(connectionData: connectionData)))
+            view?.connectionStatusView.update(
+                with: .init(
+                    status: .connecting(details: .init(connectionData: connectionData))
+                )
+            )
         case .connected:
-            view?.connectionStatusView.update(with: .connected(details: .init(connectionData: connectionData)))
+            view?.connectionStatusView.update(with: .init(status: .connected(details: .init(connectionData: connectionData))))
         case .disconnected:
-            view?.connectionStatusView.update(with: .disconnected)
+            view?.connectionStatusView.update(with: .init(status: .disconnected))
         case .disconnecting:
-            view?.connectionStatusView.update(with: .disconnecting)
+            view?.connectionStatusView.update(with: .init(status: .disconnecting))
         default:
             break
         }
