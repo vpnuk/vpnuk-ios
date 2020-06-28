@@ -14,10 +14,12 @@ protocol AccountVPNUKConnectViewModelProtocol {
 
 class AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol  {
     private let router: AccountVPNUKConnectRouterProtocol
+    private weak var connectorDelegate: VPNConnectorDelegate?
     
     weak var view: AccountVPNUKConnectViewProtocol?
     
-    init(router: AccountVPNUKConnectRouterProtocol) {
+    init(router: AccountVPNUKConnectRouterProtocol, connectorDelegate: VPNConnectorDelegate?) {
         self.router = router
+        self.connectorDelegate = connectorDelegate
     }
 }

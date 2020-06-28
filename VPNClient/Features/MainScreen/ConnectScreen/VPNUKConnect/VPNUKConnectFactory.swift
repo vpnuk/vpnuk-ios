@@ -11,13 +11,15 @@ import UIKit
 
 class VPNUKConnectFactory {
     private let authService: AuthService
+    private weak var connectorDelegate: VPNConnectorDelegate?
     
-    init(accountCredentialsStorage: CredentialsStorage) {
+    init(accountCredentialsStorage: CredentialsStorage, connectorDelegate: VPNConnectorDelegate) {
         authService = VPNUKAuthService(userCredentialsStorage: accountCredentialsStorage)
+        self.connectorDelegate = connectorDelegate
     }
     
     func createAccountVPNUKConnectModule(withRouter router: AccountVPNUKConnectRouterProtocol) -> UIView {
-        let viewModel = AccountVPNUKConnectViewModel(router: router)
+        let viewModel = AccountVPNUKConnectViewModel(router: router, connectorDelegate: connectorDelegate)
         let view = AccountVPNUKConnectView(viewModel: viewModel)
         viewModel.view = view
         return view

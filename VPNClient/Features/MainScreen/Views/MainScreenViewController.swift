@@ -187,9 +187,7 @@ class MainScreenViewController: UIViewController {
     
     @objc
     private func settingsTouched() {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController")
-        
-        present(vc, animated: true)
+        viewModel.openSettingsTouched()
     }
 
 }

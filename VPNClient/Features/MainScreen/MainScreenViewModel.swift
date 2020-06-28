@@ -22,6 +22,7 @@ enum ConnectScreenType: Int {
 
 protocol MainScreenViewModelProtocol {
     func viewLoaded()
+    func openSettingsTouched()
     func connectTypeChanged(type: ConnectScreenType)
 }
 
@@ -65,6 +66,10 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         }
         lastConnectScreenType = type
         view?.setConnectScreenType(type)
+    }
+    
+    func openSettingsTouched() {
+        router.presentSettings()
     }
 }
 

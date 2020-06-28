@@ -18,10 +18,7 @@ protocol MainScreenRouterProtocol: AlertPresentable {
     
 }
 
-
 class MainScreenRouter: MainScreenRouterProtocol {
-
-    
     weak var viewController: (UIViewController & MainScreenViewProtocol)?
     
     func switchToCustomConnectView(connectorDelegate: VPNConnectorDelegate) {
@@ -43,7 +40,8 @@ class MainScreenRouter: MainScreenRouterProtocol {
     }
     
     func presentSettings() {
-        
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController")
+        viewController?.present(vc, animated: true)
     }
     
     func presentAlert(message: String) {

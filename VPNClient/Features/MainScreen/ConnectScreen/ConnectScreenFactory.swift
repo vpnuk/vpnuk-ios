@@ -40,7 +40,7 @@ class ConnectScreenFactory {
             usernameKey: KeychainKeys.VPNUKAccount.usernameKey,
             passwordKey: KeychainKeys.VPNUKAccount.passwordKey
         )
-        let factory = VPNUKConnectFactory(accountCredentialsStorage: storage)
+        let factory = VPNUKConnectFactory(accountCredentialsStorage: storage, connectorDelegate: connectorDelegate)
         let view = factory.createAccountConnectContainerModule(withRouter: router)
         
         return view
