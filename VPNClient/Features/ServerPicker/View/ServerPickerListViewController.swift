@@ -34,6 +34,7 @@ class ServerPickerListViewController: UIViewController {
         tableview.register(UINib(nibName: String(describing: ServerItemTableViewCell.self), bundle: nil), forCellReuseIdentifier: String(describing: ServerItemTableViewCell.self))
         tableview.delegate = self
         tableview.dataSource = self
+        tableview.tableFooterView = UIView()
         return tableview
     }()
     
@@ -69,11 +70,11 @@ class ServerPickerListViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(containerStackView)
         view.addSubview(navbar)
-        containerStackView.addArrangedSubview(segmentedControl)
+        containerStackView.addArrangedSubview(segmentedControl.contained(with: .init(top: 15, left: 15, bottom: 15, right: 15)))
         containerStackView.addArrangedSubview(tableView)
         
-        tableView.rowHeight = 120
-        tableView.estimatedRowHeight = 120
+        tableView.rowHeight = 105
+        tableView.estimatedRowHeight = 105
         
         navbar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)

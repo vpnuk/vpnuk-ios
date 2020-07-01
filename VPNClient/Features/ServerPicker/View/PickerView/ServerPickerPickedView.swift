@@ -15,7 +15,6 @@ class ServerPickerPickedView: UIView {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dnsLabel: UILabel!
-    @IBOutlet weak var speedLabel: UILabel!
     @IBOutlet weak var serverTypeLabel: UILabel!
     @IBOutlet weak var isConnectedView: UIView!
     
@@ -29,8 +28,11 @@ class ServerPickerPickedView: UIView {
         cityLabel.text = server.city
         addressLabel.text = server.address
         dnsLabel.text = server.dns
-        speedLabel.text = server.speed
-        serverTypeLabel.text = server.type
+        if let type = server.type {
+            serverTypeLabel.text = ServerType(rawValue: type)?.shortTitle
+        } else {
+            serverTypeLabel.text = nil
+        }
         isConnectedView.isHidden = !isConnected
     }
     

@@ -8,10 +8,10 @@ target 'VPNClient' do
   pod 'Firebase/Analytics'
   pod 'SwiftyBeaver'
   pod 'Alamofire'
-  pod 'XMLParsing', :git => 'https://github.com/bitcrank/XMLParsing'
-  #pod 'Moya', '~> 13.0'
   pod 'TunnelKit'
   pod 'SnapKit'
+  pod 'SVProgressHUD'
+  pod 'IQKeyboardManagerSwift'
 
 end
 target 'VPNClientNetworkExtension' do

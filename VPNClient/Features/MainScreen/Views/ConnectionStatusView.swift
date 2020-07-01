@@ -26,8 +26,15 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
     
     private lazy var connectButton: UIButton =  {
         let button = UIButton()
-        button.layer.cornerRadius = 8
-        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = 25
+        
+        button.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        button.layer.shadowOpacity = 0.7
+        button.layer.shadowOffset = .init(width: 0, height: 2)
+        button.layer.shadowRadius = 2
+        
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        
         button.addTarget(self, action: #selector(connectButtonTouched), for: .touchUpInside)
         return button
     }()
@@ -44,8 +51,25 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         connectButton.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
             make.width.equalToSuperview()
+            make.height.equalTo(50)
         }
-        let view = UIStackView(arrangedSubviews: [statusStackView, buttonContainer])
+        
+        let spacer1 = UIView()
+        let spacer2 = UIView()
+       
+        let statusContainer = UIStackView(
+            arrangedSubviews: [
+                spacer1,
+                statusStackView,
+                spacer2
+            ]
+        )
+        spacer1.snp.makeConstraints { make in
+            make.height.equalTo(spacer2.snp.height)
+        }
+        
+        statusContainer.axis = .vertical
+        let view = UIStackView(arrangedSubviews: [statusContainer, buttonContainer])
         view.spacing = appearance.detailsAndButtonSpacing
         view.axis = .horizontal
         return view
@@ -83,7 +107,6 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
             make.height.equalTo(1)
             make.left.right.top.equalToSuperview()
         }
-        
     }
     
     private func setupSubviews() {
@@ -121,6 +144,7 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         ipSV.spacing = 3
         let titleLabel = UILabel()
         titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         
         let descLabel = UILabel()
         descLabel.text = description
@@ -140,18 +164,22 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         switch model.status {
         case .connecting(let details):
             connectButton.setTitle("Disconnect", for: .normal)
-            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Connecting", descriptionColor: .systemOrange))
+            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Connecting", descriptionColor: appearance.connectingStatusColor))
             statusStackView.addArrangedSubview(buildStatusView(forDetails: details))
+            connectButton.backgroundColor = appearance.disconnectButtonColor
         case .connected(let details):
             connectButton.setTitle("Disconnect", for: .normal)
-            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Connected", descriptionColor: .systemGreen))
+            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Connected", descriptionColor: appearance.connectedStatusColor))
             statusStackView.addArrangedSubview(buildStatusView(forDetails: details))
+            connectButton.backgroundColor = appearance.disconnectButtonColor
         case .disconnected:
             connectButton.setTitle("Connect", for: .normal)
-            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnected", descriptionColor: .systemRed))
+            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnected", descriptionColor: appearance.disconnectedStatusColor))
+             connectButton.backgroundColor = appearance.connectButtonColor
         case .disconnecting:
             connectButton.setTitle("Disconnecting", for: .normal)
-            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnecting", descriptionColor: .systemOrange))
+            statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnecting", descriptionColor: appearance.disconnectingStatusColor))
+            connectButton.backgroundColor = appearance.disconnectButtonColor
         }
     }
 }
@@ -182,6 +210,15 @@ extension ConnectionStatusView {
 
     struct Appearance {
         let bgColor: UIColor = .white
+        
+        let disconnectButtonColor: UIColor = .systemOrange
+        let connectButtonColor: UIColor = .systemGreen
+        
+        let disconnectingStatusColor: UIColor = .systemOrange
+        let connectingStatusColor: UIColor = .systemOrange
+        let connectedStatusColor: UIColor = .systemGreen
+        let disconnectedStatusColor: UIColor = .systemRed
+        
         let containerViewInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let detailsAndButtonSpacing: CGFloat = 30
     }

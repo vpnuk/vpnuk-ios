@@ -43,11 +43,23 @@ class RegistrationVPNUKConnectViewModel: RegistrationVPNUKConnectViewModelProtoc
     }
     
     private func signUpTouched(withData data: RegistrationVPNUKConnectView.RegistrationData) {
-        // TODO: validate
-        signUp(withData: data)
+        if !data.username.isEmpty
+            && !data.password.isEmpty
+            && !data.firstName.isEmpty
+            && !data.lastName.isEmpty
+            && !data.email.isEmpty
+        {
+            // all fiels were filled
+            signUp(withData: data)
+        } else {
+            deps.router.presentAlert(
+                message: NSLocalizedString("Please fill in all fields", comment: "Please fill in all fields")
+            )
+        }
     }
     
     private func signUp(withData data: RegistrationVPNUKConnectView.RegistrationData) {
+        deps.router.setLoading(true)
         deps.authApi.signUp(
             withData: .init(
                 username: data.username,
@@ -58,13 +70,17 @@ class RegistrationVPNUKConnectViewModel: RegistrationVPNUKConnectViewModelProtoc
             )
         )
         { [weak self] result in
+            self?.deps.router.setLoading(false)
+            
             switch result {
             case .success(_):
                 self?.deps.router.presentAlert(message: NSLocalizedString("Successful. Please sign in", comment: ""), completion: {
                     self?.deps.router.switchToAuthorizationScreen()
                 })
-            case .failure(let error):
-                self?.deps.router.presentAlert(message: error.localizedDescription)
+            case .failure(_):
+                self?.deps.router.presentAlert(
+                    message: NSLocalizedString("Registration failed. Please check all fields and try again.", comment: "Registration failed.")
+                )
             }
         }
     }

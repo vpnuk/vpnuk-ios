@@ -165,13 +165,23 @@ class RegistrationVPNUKConnectView: UIView {
         return stackView
     }()
     
+    private lazy var firstLastNameContainerView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            firstNameContainerView,
+            lastNameContainerView,
+        ])
+        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        return stackView
+    }()
+    
     private lazy var containerCredentialsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             containerUsernameView,
             containerPasswordView,
             emailContainerView,
-            firstNameContainerView,
-            lastNameContainerView
+            firstLastNameContainerView
         ])
         stackView.axis = .vertical
         stackView.spacing = 16

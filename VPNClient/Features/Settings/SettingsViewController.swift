@@ -11,8 +11,16 @@ import UIKit
 import TunnelKit
 
 class SettingsViewController: UIViewController {
-
+    
+    private let vpnService: VPNService = OpenVPNService.shared
+    private var logReloadTimer: Timer?
+    private var logText: String = "" {
+        didSet {
+            logTextView.text = logText
+        }
+    }
     @IBOutlet weak var logTextView: UITextView!
+
     @IBOutlet weak var protocolSegmentedControl: UISegmentedControl!
     @IBOutlet weak var portSegmentedControl: UISegmentedControl!
     @IBOutlet weak var reconnectSwitcher: UISwitch!
@@ -67,7 +75,29 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         restoreFromSettings()
-        // Do any additional setup after loading the view.
+        setupLogReloadTimer()
+    }
+    
+    private func setupLogReloadTimer() {
+        logReloadTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] _ in
+            self?.vpnService.getLog { log in
+                DispatchQueue.main.async {
+                    if let log = log {
+                        self?.logText = log
+                    }
+                }
+            }
+        })
+        logReloadTimer?.fire()
+    }
+    
+    private func removeLogReloadTimer() {
+        logReloadTimer?.invalidate()
+        logReloadTimer = nil
+    }
+    
+    deinit {
+        removeLogReloadTimer()
     }
     
     private func restoreFromSettings() {

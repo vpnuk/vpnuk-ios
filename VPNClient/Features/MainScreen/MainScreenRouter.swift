@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol MainScreenRouterProtocol: AlertPresentable {
+protocol MainScreenRouterProtocol: AlertPresentable, LoaderPresentable {
     func presentSettings()
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
     
@@ -41,6 +41,7 @@ class MainScreenRouter: MainScreenRouterProtocol {
     
     func presentSettings() {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController")
+        vc.modalPresentationStyle = .fullScreen
         viewController?.present(vc, animated: true)
     }
     
@@ -55,7 +56,6 @@ class MainScreenRouter: MainScreenRouterProtocol {
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol) {
         let view = ServerPickerListViewController(viewModel: viewModel)
         viewModel.view = view
-        view.modalPresentationStyle = .fullScreen
         viewController?.present(view, animated: true, completion: nil)
     }
 }

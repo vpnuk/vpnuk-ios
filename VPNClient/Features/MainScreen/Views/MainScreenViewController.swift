@@ -38,12 +38,12 @@ class MainScreenViewController: UIViewController {
         let control = UISegmentedControl()
         
         control.insertSegment(
-            withTitle: NSLocalizedString("Custom", comment: ""),
+            withTitle: NSLocalizedString("VPN Account", comment: ""),
             at: 0,
             animated: false
         )
         control.insertSegment(
-            withTitle: NSLocalizedString("From account", comment: ""),
+            withTitle: NSLocalizedString("User Account", comment: ""),
             at: 0,
             animated: false
         )
@@ -53,7 +53,7 @@ class MainScreenViewController: UIViewController {
     
     private lazy var connectScreenSegmentedControlLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("VPN credentials:", comment: "")
+        label.text = NSLocalizedString("Login with:", comment: "")
         label.font = .systemFont(ofSize: 17, weight: .bold)
         return label
     }()
@@ -155,7 +155,7 @@ class MainScreenViewController: UIViewController {
         }
         
         statusView.snp.makeConstraints { (make) in
-            make.height.equalTo(90)
+            make.height.equalTo(100)
         }
         
         settingsButton.snp.makeConstraints { make in

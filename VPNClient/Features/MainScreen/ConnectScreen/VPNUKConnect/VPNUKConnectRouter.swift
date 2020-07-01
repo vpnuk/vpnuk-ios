@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-protocol AccountVPNUKConnectRouterProtocol: AlertPresentable {
+protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
     func switchToAuthorizationScreen()
 }
 
-protocol AuthVPNUKConnectRouterProtocol: AlertPresentable {
+protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
     func switchToAccountScreen()
     func switchToAuthorizationScreen()
     func switchToRegistrationScreen()

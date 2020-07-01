@@ -42,15 +42,27 @@ class AuthVPNUKConnectViewModel: AuthVPNUKConnectViewModelProtocol {
     }
     
     private func signInTouched(withData data: AuthVPNUKConnectView.AuthData) {
-        // TODO: validate
-        signIn(withData: data)
+        if !data.username.isEmpty
+            && !data.password.isEmpty
+        {
+            // all fiels were filled
+            signIn(withData: data)
+        } else {
+            deps.router.presentAlert(
+                message: NSLocalizedString("Please fill in all fields", comment: "Please fill in all fields")
+            )
+        }
+        
     }
     
     private func signIn(withData data: AuthVPNUKConnectView.AuthData) {
+        deps.router.setLoading(true)
         deps.authApi.signIn(
             withCredentials: .init(grantType: .password, username: data.username, password: data.password)
             )
         { [weak self] result in
+            self?.deps.router.setLoading(false)
+            
             switch result {
             case .success(let authResponse):
                 do {
@@ -59,8 +71,10 @@ class AuthVPNUKConnectViewModel: AuthVPNUKConnectViewModelProtocol {
                 } catch {
                     self?.deps.router.presentAlert(message: error.localizedDescription)
                 }
-            case .failure(let error):
-                self?.deps.router.presentAlert(message: error.localizedDescription)
+            case .failure(_):
+                self?.deps.router.presentAlert(
+                    message: NSLocalizedString("Login failed. Please check all fields and try again.", comment: "Login failed")
+                )
             }
         }
     }

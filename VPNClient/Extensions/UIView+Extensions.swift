@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import SVProgressHUD
 
 extension UIStackView {
     func removeArrangedSubviews() {
@@ -65,7 +66,18 @@ protocol AlertPresentable {
 }
 
 protocol LoaderPresentable {
-    func presentLoader(_ present: Bool)
+    func setLoading(_ present: Bool)
+}
+
+extension LoaderPresentable {
+    func setLoading(_ present: Bool) {
+        if present {
+            SVProgressHUD.setDefaultMaskType(.clear)
+            SVProgressHUD.show(withStatus: NSLocalizedString("Please wait...", comment: "Please wait..."))
+        } else {
+            SVProgressHUD.dismiss()
+        }
+    }
 }
 
 extension UIViewController: AlertPresentable {

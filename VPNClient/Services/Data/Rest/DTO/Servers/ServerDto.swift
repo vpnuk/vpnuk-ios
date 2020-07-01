@@ -10,17 +10,28 @@
 import Foundation
 
 class ParentServerDTO: Codable {
-    var server: [ServerDTO]?
+    var servers: [ServerDTO]?
 }
 
 enum ServerType: String, Codable, CaseIterable {
     case shared = "shared"
     case dedicated = "dedicated"
-    case oneToOne = "1:1"
+    case oneToOne = "dedicated11"
 }
 
 extension ServerType {
     var title: String {
+        switch self {
+        case .dedicated:
+            return "Dedicated IP"
+        case .shared:
+            return "Shared IP"
+        case .oneToOne:
+            return "1:1 Dedicated IP"
+        }
+    }
+    
+    var shortTitle: String {
         switch self {
         case .dedicated:
             return "Dedicated"
@@ -54,38 +65,23 @@ class ServerDTO: Codable {
     var dns: String?
     var speed: String?
     
-    internal init(location: ServerLocation?, type: ServerType?, address: String?, dns: String?, speed: String?) {
+    init(location: ServerLocation?, type: ServerType?, address: String?, dns: String?, speed: String?) {
         self.location = location
         self.type = type
         self.address = address
         self.dns = dns
         self.speed = speed
     }
-    
-    enum CodingKeys: String, CodingKey {
-        case location = "location"
-        case type
-        case address
-        case dns
-        case speed
-
-    }
 }
 
 class ServerLocation: Codable {
-    internal init(name: String?, icon: String?, city: String?) {
-        self.name = name
-        self.icon = icon
-        self.city = city
-    }
-    
     var name: String?
     var icon: String?
     var city: String?
     
-    enum CodingKeys: String, CodingKey {
-         case name = "CharToken"
-         case icon
-         case city
+    init(name: String?, icon: String?, city: String?) {
+         self.name = name
+         self.icon = icon
+         self.city = city
      }
 }

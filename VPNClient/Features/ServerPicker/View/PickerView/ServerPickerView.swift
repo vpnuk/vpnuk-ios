@@ -65,7 +65,7 @@ class ServerPickerView: UIView {
     
     private func setupConstraints() {
         snp.makeConstraints { (make) in
-            make.height.equalTo(120)
+//            make.height.equalTo(105)
             make.width.equalTo(280)
         }
     }
