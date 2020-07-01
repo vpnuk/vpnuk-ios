@@ -23,6 +23,7 @@ extension ServerEntity {
         request.sortDescriptors = []
         let predicates = types.map { NSPredicate(format: "type == %@", $0.rawValue) }
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+        request.sortDescriptors = [NSSortDescriptor(key: "type", ascending: false), NSSortDescriptor(key: "order", ascending: true), NSSortDescriptor(key: "name", ascending: true)]
         let items = (try? context.fetch(request)) ?? []
         return items
     }
