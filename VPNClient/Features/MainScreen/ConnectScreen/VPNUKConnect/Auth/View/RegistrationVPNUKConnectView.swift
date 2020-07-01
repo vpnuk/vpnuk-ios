@@ -54,6 +54,7 @@ class RegistrationVPNUKConnectView: UIView {
     private lazy var usernameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Username", comment: "Username")
+        textField.delegate = self
         return textField
     }()
     
@@ -78,6 +79,7 @@ class RegistrationVPNUKConnectView: UIView {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Password", comment: "Username")
         textField.isSecureTextEntry = true
+        textField.delegate = self
         return textField
     }()
     
@@ -92,73 +94,76 @@ class RegistrationVPNUKConnectView: UIView {
     }()
     
     private lazy var emailLabel: UILabel = {
-          let label = UILabel()
-          label.font = .systemFont(ofSize: 17, weight: .semibold)
-          label.text = NSLocalizedString("Email:", comment: "")
-          return label
-      }()
-      
-      private lazy var emailTextField: UITextField = {
-          let textField = UITextField()
-          textField.placeholder = NSLocalizedString("Email", comment: "")
-          return textField
-      }()
-      
-      private lazy var emailContainerView: UIStackView = {
-          let stackView = UIStackView(arrangedSubviews: [
-              emailLabel,
-              emailTextField
-          ])
-          stackView.axis = .vertical
-          stackView.spacing = 8
-          return stackView
-      }()
-      
-      private lazy var firstNameLabel: UILabel = {
-          let label = UILabel()
-          label.font = .systemFont(ofSize: 17, weight: .semibold)
-          label.text = NSLocalizedString("First name:", comment: "")
-          return label
-      }()
-      
-      private lazy var firstNameTextField: UITextField = {
-          let textField = UITextField()
-          textField.placeholder = NSLocalizedString("First name", comment: "")
-          return textField
-      }()
-      
-      private lazy var firstNameContainerView: UIStackView = {
-          let stackView = UIStackView(arrangedSubviews: [
-              firstNameLabel,
-              firstNameTextField
-          ])
-          stackView.axis = .vertical
-          stackView.spacing = 8
-          return stackView
-      }()
-      
-      private lazy var lastNameLabel: UILabel = {
-          let label = UILabel()
-          label.font = .systemFont(ofSize: 17, weight: .semibold)
-          label.text = NSLocalizedString("Last name:", comment: "")
-          return label
-      }()
-      
-      private lazy var lastNameTextField: UITextField = {
-          let textField = UITextField()
-          textField.placeholder = NSLocalizedString("Last name", comment: "")
-          return textField
-      }()
-      
-      private lazy var lastNameContainerView: UIStackView = {
-          let stackView = UIStackView(arrangedSubviews: [
-              lastNameLabel,
-              lastNameTextField
-          ])
-          stackView.axis = .vertical
-          stackView.spacing = 8
-          return stackView
-      }()
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.text = NSLocalizedString("Email:", comment: "")
+        return label
+    }()
+    
+    private lazy var emailTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = NSLocalizedString("Email", comment: "")
+        textField.delegate = self
+        return textField
+    }()
+    
+    private lazy var emailContainerView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            emailLabel,
+            emailTextField
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private lazy var firstNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.text = NSLocalizedString("First name:", comment: "")
+        return label
+    }()
+    
+    private lazy var firstNameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = NSLocalizedString("First name", comment: "")
+        textField.delegate = self
+        return textField
+    }()
+    
+    private lazy var firstNameContainerView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            firstNameLabel,
+            firstNameTextField
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private lazy var lastNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.text = NSLocalizedString("Last name:", comment: "")
+        return label
+    }()
+    
+    private lazy var lastNameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = NSLocalizedString("Last name", comment: "")
+        textField.delegate = self
+        return textField
+    }()
+    
+    private lazy var lastNameContainerView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            lastNameLabel,
+            lastNameTextField
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
     
     private lazy var containerCredentialsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -263,4 +268,11 @@ extension RegistrationVPNUKConnectView {
 
 extension RegistrationVPNUKConnectView: RegistrationVPNUKConnectViewProtocol {
     
+}
+
+extension RegistrationVPNUKConnectView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        return false
+    }
 }

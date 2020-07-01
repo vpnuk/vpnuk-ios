@@ -32,6 +32,7 @@ class CustomConnectView: UIView {
     private lazy var usernameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("VPN username", comment: "Username")
+        textField.delegate = self
         return textField
     }()
     
@@ -56,6 +57,7 @@ class CustomConnectView: UIView {
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.placeholder = NSLocalizedString("VPN password", comment: "password")
+        textField.delegate = self
         return textField
     }()
     
@@ -197,4 +199,11 @@ extension CustomConnectView: CustomConnectViewProtocol {
         password = credentials?.password
     }
     
+}
+
+extension CustomConnectView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        return false
+    }
 }

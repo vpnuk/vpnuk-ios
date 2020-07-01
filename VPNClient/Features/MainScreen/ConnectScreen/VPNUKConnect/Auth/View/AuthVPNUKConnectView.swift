@@ -55,6 +55,7 @@ class AuthVPNUKConnectView: UIView {
     private lazy var usernameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Username", comment: "Username")
+        textField.delegate = self
         return textField
     }()
     
@@ -79,6 +80,7 @@ class AuthVPNUKConnectView: UIView {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Password", comment: "Username")
         textField.isSecureTextEntry = true
+        textField.delegate = self
         return textField
     }()
     
@@ -188,3 +190,9 @@ extension AuthVPNUKConnectView: AuthVPNUKConnectViewProtocol {
     
 }
 
+extension AuthVPNUKConnectView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        return false
+    }
+}

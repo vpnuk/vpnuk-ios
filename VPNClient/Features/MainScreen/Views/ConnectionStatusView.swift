@@ -27,7 +27,7 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
     private lazy var connectButton: UIButton =  {
         let button = UIButton()
         button.layer.cornerRadius = 8
-        button.backgroundColor = .lightGray
+        button.backgroundColor = .systemGreen
         button.addTarget(self, action: #selector(connectButtonTouched), for: .touchUpInside)
         return button
     }()
