@@ -20,6 +20,15 @@ extension UIStackView {
 }
 
 extension UIView {
+    
+    func makeDefaultShadowAndCorners() {
+        layer.cornerRadius = 16
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        layer.shadowOpacity = 1
+        layer.shadowOffset = .init(width: 0, height: 3)
+        layer.shadowRadius = 5
+    }
+    
     func addSubviews(_ subviews: UIView...) {
         subviews.forEach(addSubview(_:))
     }
