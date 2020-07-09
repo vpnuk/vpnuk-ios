@@ -19,7 +19,22 @@ class VPNUKConnectFactory {
     }
     
     func createAccountVPNUKConnectModule(withRouter router: AccountVPNUKConnectRouterProtocol) -> UIView {
-        let viewModel = AccountVPNUKConnectViewModel(router: router, connectorDelegate: connectorDelegate)
+        let repository = ServersRepositoryImpl(
+            coreDataStack: CoreDataStack.shared,
+            serversRestAPI: RestAPI.shared
+        )
+        let storage = ConnectionStateStorageImpl.shared
+        let authService = VPNUKAuthService(userCredentialsStorage: KeychainCredentialsStorage.buildForVPNUKAccount())
+        let viewModel = AccountVPNUKConnectViewModel(
+            dependencies: .init(
+                router: router,
+                connectorDelegate: connectorDelegate,
+                subscripionsAPI: RestAPI.shared,
+                connectionStateStorage: storage,
+                serversRepository: repository,
+                authService: authService
+            )
+        )
         let view = AccountVPNUKConnectView(viewModel: viewModel)
         viewModel.view = view
         return view

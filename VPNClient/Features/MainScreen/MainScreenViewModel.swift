@@ -10,9 +10,13 @@ import Foundation
 import NetworkExtension
 
 protocol VPNConnectorDelegate: AnyObject {
+    typealias ConnectionStatusUpdatedAction = (_ newStatus: NEVPNStatus) -> ()
     var connectPressedAction: Action? { get set }
+    var connectionStatusUpdatedAction: ConnectionStatusUpdatedAction? { get set }
     var connectedServerData: ConnectionData? { get }
     func connect(withSettings settings: ConnectionSettings)
+    var connectionStatus: NEVPNStatus { get }
+
 }
 
 enum ConnectScreenType: Int {
@@ -32,6 +36,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     private var vpnService: VPNService
     
     var connectPressedAction: Action?
+    var connectionStatusUpdatedAction: ConnectionStatusUpdatedAction?
     
     private var lastConnectScreenType: ConnectScreenType? {
         get {
@@ -74,6 +79,12 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
 }
 
 extension MainScreenViewModel: VPNConnectorDelegate {
+    
+    
+    var connectionStatus: NEVPNStatus {
+        vpnService.status
+    }
+    
     private func connectButtonTouched() {
         switch vpnService.status {
         case .invalid, .disconnected:
@@ -144,5 +155,6 @@ extension MainScreenViewModel: VPNServiceDelegate {
         default:
             break
         }
+        connectionStatusUpdatedAction?(status)
     }
 }

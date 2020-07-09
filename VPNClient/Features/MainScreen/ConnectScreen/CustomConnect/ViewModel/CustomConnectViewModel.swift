@@ -22,7 +22,11 @@ class CustomConnectViewModel {
     }
     
     private var connectedServerData: ConnectionData? {
-        return connectorDelegate?.connectedServerData
+        if connectorDelegate?.connectionStatus == .connected {
+            return connectorDelegate?.connectedServerData
+        } else {
+            return nil
+        }
     }
     
     private let router: MainScreenRouterProtocol
@@ -55,6 +59,9 @@ class CustomConnectViewModel {
         updateServerPicker()
         connectorDelegate?.connectPressedAction = { [weak self] in
             self?.connectTouched()
+        }
+        connectorDelegate?.connectionStatusUpdatedAction = { [weak self] _ in
+            self?.updateServerPicker()
         }
     }
     
@@ -91,8 +98,7 @@ extension CustomConnectViewModel {
         let type = UserDefaults.socketTypeSetting ?? VPNSettings.defaultSettings.socketType
         guard let server = selectedServer else {
             router.presentAlert(message: "Please select server from the list")
-            print("please select server from list")
-            return;
+            return
         }
         
         if let username = view?.username, let password = view?.password {

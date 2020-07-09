@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 class ServerPickerPickedView: UIView {
+    @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
@@ -17,6 +18,7 @@ class ServerPickerPickedView: UIView {
     @IBOutlet weak var dnsLabel: UILabel!
     @IBOutlet weak var serverTypeLabel: UILabel!
     @IBOutlet weak var isConnectedView: UIView!
+    @IBOutlet weak var contentView: UIView!
     
     func update(withServerEntity server: ServerEntity, isConnected: Bool) {
         nameLabel.text = server.name
@@ -38,6 +40,9 @@ class ServerPickerPickedView: UIView {
     
     private func commonInit() {
         fromNib()
+        backgroundColor = .white
+        contentView.makeDefaultShadowAndCorners()
+        headerLabel.text = NSLocalizedString("Selected server:", comment: "")
     }
     
     required init?(coder aDecoder: NSCoder) {   // 2 - storyboard initializer

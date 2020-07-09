@@ -9,8 +9,16 @@
 import Foundation
 import UIKit
 
+typealias SubscriptionPickedAction = (_ data: SubscriptionVPNAccount?) -> Void
+
 protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
     func switchToAuthorizationScreen()
+    func openSubscriptionAndVPNAccountPicker(
+        subscriptions: [SubscriptionDTO],
+        subscriptionPickedAction: @escaping SubscriptionPickedAction,
+        initiallySelectedSubscription: SubscriptionVPNAccount?
+    )
+    func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
 }
 
 protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
@@ -20,7 +28,6 @@ protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
 }
 
 class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRouterProtocol {
-    
     weak var containerView: UIView?
     private let parentRouter: MainScreenRouterProtocol
     private let vpnukFactory: VPNUKConnectFactory
@@ -57,5 +64,23 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
     
     func presentAlert(message: String, completion: @escaping () -> ()) {
         parentRouter.presentAlert(message: message, completion: completion)
+    }
+    
+    func openSubscriptionAndVPNAccountPicker(
+        subscriptions: [SubscriptionDTO],
+        subscriptionPickedAction: @escaping SubscriptionPickedAction,
+        initiallySelectedSubscription: SubscriptionVPNAccount?
+    ) {
+        let controller = SubscriptionsListPickerFactory().create(
+            withSubscriptionsToPick: subscriptions,
+            subscriptionPickedAction: subscriptionPickedAction,
+            initiallySelectedSubscription: initiallySelectedSubscription
+        )
+        
+        parentRouter.present(controller: controller, animated: true)
+    }
+    
+    func presentServersPicker(viewModel: ServerPickerListViewModelProtocol) {
+        parentRouter.presentServersPicker(viewModel: viewModel)
     }
 }

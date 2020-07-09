@@ -23,16 +23,33 @@ protocol ServersAPI {
 protocol SubscripionsAPI {
     func getSubscriptions(callback: @escaping (_ subscriptions: Result<[SubscriptionDTO], Error>) -> ())
     func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
-    func createSubscription(subscription: SubscriptionDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
+    func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
     func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
 }
 
 class RestAPI {
-    static let shared = RestAPI()
+    static let shared = RestAPI(
+        authService: VPNUKAuthService(
+            userCredentialsStorage: KeychainCredentialsStorage.buildForVPNUKAccount()
+        )
+    )
     
     private let serversBaseUrl = "https://www.serverlistvault.com"
     private let baseUrl = "https://www.vpnuk.info"
     private let queue = DispatchQueue.global(qos: .userInitiated)
+    
+    private let authService: AuthService
+    
+    init(authService: AuthService) {
+        self.authService = authService
+    }
+    
+    private func getAuthHeaders() -> HTTPHeaders? {
+        guard authService.isSignedIn, let token = try? authService.getAuthToken() else {
+            return nil
+        }
+        return .init(["Authorization" : "Bearer \(token)"])
+    }
 }
 
 extension RestAPI: ServersAPI {
@@ -144,4 +161,121 @@ extension RestAPI: AuthAPI {
         }
     }
     
+}
+
+
+extension RestAPI: SubscripionsAPI {
+    func getSubscriptions(callback: @escaping (Result<[SubscriptionDTO], Error>) -> ()) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/subscriptions")!,
+            method: .get,
+            headers: getAuthHeaders()
+        )
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
+                    }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode([SubscriptionDTO].self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
+                }
+        }
+    }
+    
+    func getSubscription(withId id: String, callback: @escaping (Result<SubscriptionDTO, Error>) -> ()) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/subscriptions/\(id)")!,
+            method: .get,
+            headers: getAuthHeaders()
+        )
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
+                    }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode(SubscriptionDTO.self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
+                }
+        }
+    }
+    
+    func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (Result<SubscriptionCreateResponseDTO, Error>) -> ()) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/subscriptions")!,
+            method: .post,
+            parameters: subscriptionRequest,
+            headers: getAuthHeaders()
+        )
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
+                    }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
+                }
+        }
+    }
+
+    func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (Result<SubscriptionCreateResponseDTO, Error>) -> ()) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/inapp/purchase")!,
+            method: .post,
+            parameters: base64EncodedReceipt,
+            headers: getAuthHeaders()
+        )
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
+                    }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
+                }
+        }
+    }
 }

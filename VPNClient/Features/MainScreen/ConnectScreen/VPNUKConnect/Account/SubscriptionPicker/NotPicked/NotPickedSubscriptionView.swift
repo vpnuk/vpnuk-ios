@@ -10,6 +10,14 @@ import Foundation
 import UIKit
 
 class NotPickedSubscriptionView: UIView {
+    private var tapAction: Action?
+    
+    private lazy var notPickedLabel: UILabel = {
+          let label = UILabel()
+          label.numberOfLines = 0
+          label.textAlignment = .center
+          return label
+      }()
     
     init() {
         super.init(frame: .zero)
@@ -21,15 +29,27 @@ class NotPickedSubscriptionView: UIView {
     }
     
     func update(model: Model) {
-        
+        tapAction = model.tapAction
+        notPickedLabel.text = model.title
     }
     
     private func setupSubviews() {
-        
+        backgroundColor = .white
+        addSubview(notPickedLabel)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        addGestureRecognizer(tap)
+        makeDefaultShadowAndCorners()
+    }
+    
+    @objc
+    private func viewTapped() {
+        tapAction?()
     }
     
     private func setupConstraints() {
-        
+        notPickedLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        }
     }
     
     private func commonInit() {
@@ -41,5 +61,6 @@ class NotPickedSubscriptionView: UIView {
 extension NotPickedSubscriptionView {
     struct Model {
         let title: String
+        let tapAction: Action
     }
 }

@@ -11,6 +11,12 @@ import UIKit
 
 class PickedSubscriptionInfoView: UIView {
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        return label
+    }()
+    
     init() {
         super.init(frame: .zero)
         commonInit()
@@ -21,15 +27,17 @@ class PickedSubscriptionInfoView: UIView {
     }
     
     func update(model: Model) {
-        
+        titleLabel.text = model.title
     }
     
     private func setupSubviews() {
-        
+        addSubview(titleLabel)
     }
     
     private func setupConstraints() {
-        
+        titleLabel.snp.makeConstraints { make in
+            make.left.top.right.bottom.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        }
     }
     
     private func commonInit() {

@@ -47,7 +47,9 @@ class ServerPickerNotPickedView: UIView {
     
     
     private func setupSubviews() {
+        backgroundColor = .white
         addSubview(containerStackView)
+        makeDefaultShadowAndCorners()
     }
     
     private func setupConstraints() {

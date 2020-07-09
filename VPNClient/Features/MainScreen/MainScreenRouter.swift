@@ -12,6 +12,7 @@ import UIKit
 protocol MainScreenRouterProtocol: AlertPresentable, LoaderPresentable {
     func presentSettings()
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
+    func present(controller: UIViewController, animated: Bool)
     
     func switchToCustomConnectView(connectorDelegate: VPNConnectorDelegate)
     func switchToAccountConnectView(connectorDelegate: VPNConnectorDelegate)
@@ -19,6 +20,7 @@ protocol MainScreenRouterProtocol: AlertPresentable, LoaderPresentable {
 }
 
 class MainScreenRouter: MainScreenRouterProtocol {
+
     weak var viewController: (UIViewController & MainScreenViewProtocol)?
     
     func switchToCustomConnectView(connectorDelegate: VPNConnectorDelegate) {
@@ -58,4 +60,9 @@ class MainScreenRouter: MainScreenRouterProtocol {
         viewModel.view = view
         viewController?.present(view, animated: true, completion: nil)
     }
+    
+    func present(controller: UIViewController, animated: Bool) {
+        viewController?.present(controller, animated: animated, completion: nil)
+    }
+    
 }

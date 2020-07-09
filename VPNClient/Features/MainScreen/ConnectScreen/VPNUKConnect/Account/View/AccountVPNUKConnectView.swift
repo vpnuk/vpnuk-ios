@@ -10,25 +10,53 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol AccountVPNUKConnectViewProtocol: class {
+protocol AccountVPNUKConnectViewProtocol: AnyObject, LoaderPresentable {
     func updateSubscriptionPicker(withState state: SubscriptionPickerView.State)
+    func updateServerPicker(state: ServerPickerView.State, action: @escaping Action)
 }
 
 class AccountVPNUKConnectView: UIView {
     private let viewModel: AccountVPNUKConnectViewModelProtocol
     
+    private lazy var signOutButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitle(NSLocalizedString("Sign Out", comment: ""), for: .normal)
+        button.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var purchaseSubscriptionView = PurchaseSubscriptionView()
     private lazy var subscriptionPickerView = SubscriptionPickerView()
+    // server picker
+    private lazy var serverPickerView: ServerPickerView = {
+        let view = ServerPickerView()
+        return view
+    }()
+   
+    private lazy var subscriptionAndServerPickerStackView: UIStackView = {
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                subscriptionPickerView,
+                serverPickerView
+            ]
+        )
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+    
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                subscriptionPickerView,
-                purchaseSubscriptionView
+                subscriptionAndServerPickerStackView,
+                purchaseSubscriptionView,
+                signOutButton
             ]
         )
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 16
         return stackView
     }()
     
@@ -57,10 +85,21 @@ class AccountVPNUKConnectView: UIView {
         setupSubviews()
         setupConstraints()
     }
+    
+    @objc
+    private func signOut() {
+        viewModel.signOut()
+    }
 }
 
 extension AccountVPNUKConnectView: AccountVPNUKConnectViewProtocol {
     func updateSubscriptionPicker(withState state: SubscriptionPickerView.State) {
         subscriptionPickerView.update(withState: state)
     }
+    
+    func updateServerPicker(state: ServerPickerView.State, action: @escaping Action) {
+        serverPickerView.state = state
+        serverPickerView.viewTappedAction = action
+    }
+    
 }

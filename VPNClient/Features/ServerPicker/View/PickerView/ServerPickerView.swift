@@ -56,7 +56,7 @@ class ServerPickerView: UIView {
     private func setupSubviews() {
         backgroundColor = .white
         
-        makeDefaultShadowAndCorners()
+
     }
     
     private func setupConstraints() {

@@ -15,19 +15,16 @@ class ConnectScreenFactory {
         withRouter router: MainScreenRouterProtocol,
         connectorDelegate: VPNConnectorDelegate
     ) -> UIView {
-        let storage = KeychainCredentialsStorage(
-            usernameKey: KeychainKeys.VPN.usernameKey,
-            passwordKey: KeychainKeys.VPN.passwordKey
+        let storage = KeychainCredentialsStorage.buildForCustomVPN()
+        let repository = ServersRepositoryImpl(
+            coreDataStack: CoreDataStack.shared,
+            serversRestAPI: RestAPI.shared
         )
-        
         let viewModel = CustomConnectViewModel(
             router: router,
             customCredentialsStorage: storage,
             connectionStateStorage: ConnectionStateStorageImpl.shared,
-            serversRepository: ServersRepositoryImpl(
-                coreDataStack: CoreDataStack.shared,
-                serversRestAPI: RestAPI.shared
-            ),
+            serversRepository: repository,
             connectorDelegate: connectorDelegate
         )
         let view = CustomConnectView(viewModel: viewModel)
@@ -36,10 +33,7 @@ class ConnectScreenFactory {
     }
     
     func createAccountConnectModule(withRouter router: MainScreenRouterProtocol, connectorDelegate: VPNConnectorDelegate) -> UIView {
-        let storage = KeychainCredentialsStorage(
-            usernameKey: KeychainKeys.VPNUKAccount.usernameKey,
-            passwordKey: KeychainKeys.VPNUKAccount.passwordKey
-        )
+        let storage = KeychainCredentialsStorage.buildForVPNUKAccount()
         let factory = VPNUKConnectFactory(accountCredentialsStorage: storage, connectorDelegate: connectorDelegate)
         let view = factory.createAccountConnectContainerModule(withRouter: router)
         

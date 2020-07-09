@@ -27,7 +27,7 @@ struct VPNAccountDTO: Codable {
 }
 
 struct SubscriptionDTO: Codable {
-    let id: String
+    let id: Int
     let productName: String
     /// VPN accounts quantity
     let quantity: Int
@@ -38,6 +38,18 @@ struct SubscriptionDTO: Codable {
     let status: SubscriptionStatus
     let trialEnd: String?
     let vpnAccounts: [VPNAccountDTO]
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case productName = "product_name"
+        case sessions = "sessions"
+        case quantity = "quantity"
+        case period = "period"
+        case type = "type"
+        case status = "status"
+        case trialEnd = "trial_end"
+        case vpnAccounts = "vpnaccounts"
+    }
 }
 
 extension SubscriptionDTO {

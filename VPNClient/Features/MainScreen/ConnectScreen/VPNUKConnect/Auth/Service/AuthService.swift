@@ -12,6 +12,7 @@ protocol AuthService {
     var isSignedIn: Bool { get }
     func setAuthToken(_ token: String) throws
     func getAuthToken() throws -> String?
+    func signOut() throws
 }
 
 class VPNUKAuthService {
@@ -35,5 +36,9 @@ extension VPNUKAuthService: AuthService {
     
     func getAuthToken() throws -> String? {
         return try userCredentialsStorage.getCredentials()?.password
+    }
+    
+    func signOut() throws {
+        try userCredentialsStorage.setCredentials(nil)
     }
 }

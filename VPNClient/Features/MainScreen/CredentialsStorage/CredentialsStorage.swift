@@ -75,3 +75,23 @@ class KeychainCredentialsStorage: CredentialsStorage {
     }
     
 }
+
+extension KeychainCredentialsStorage {
+    static func buildForVPNUKAccount() -> CredentialsStorage {
+        let storage = KeychainCredentialsStorage(
+            usernameKey: KeychainKeys.VPNUKAccount.usernameKey,
+            passwordKey: KeychainKeys.VPNUKAccount.passwordKey
+        )
+        return storage
+    }
+    
+    static func buildForCustomVPN() -> CredentialsStorage {
+        let storage = KeychainCredentialsStorage(
+            usernameKey: KeychainKeys.VPN.usernameKey,
+            passwordKey: KeychainKeys.VPN.passwordKey
+        )
+        return storage
+    }
+}
+
+

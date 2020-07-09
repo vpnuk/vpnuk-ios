@@ -8,9 +8,13 @@
 
 import Foundation
 
-struct VPNUKConnectionState: Codable {
-    let subscriptionId: String
+struct VPNUKConnectionSelectedSubscriptionState: Codable {
+    let subscriptionId: Int
     let subscriptionName: String
+    let vpnAccountUsername: String?
+}
+
+struct VPNUKConnectionSelectedServerState: Codable {
     let selectedServerIp: String?
 }
 
@@ -19,7 +23,8 @@ struct CustomConnectionState: Codable {
 }
 
 protocol VPNUKConnectionStateStorage {
-    var vpnukConnectionState: VPNUKConnectionState? { get set }
+    var vpnukConnectionSelectedSubscriptionState: VPNUKConnectionSelectedSubscriptionState? { get set }
+    var vpnukConnectionSelectedServerState: VPNUKConnectionSelectedServerState? { get set }
 }
 
 protocol CustomConnectionStateStorage {
@@ -27,11 +32,15 @@ protocol CustomConnectionStateStorage {
 }
 
 class ConnectionStateStorageImpl: VPNUKConnectionStateStorage, CustomConnectionStateStorage {
+
+    
     static let shared: VPNUKConnectionStateStorage & CustomConnectionStateStorage = ConnectionStateStorageImpl()
     
     private var defaults: UserDefaults = UserDefaults.standard
     private let customConnectionStateKey = "customConnectionState"
-    private let vpnukConnectionStateKey = "vpnukConnectionState"
+    
+    private let vpnukConnectionSubscriptionStateKey = "vpnukConnectionSubscriptionState"
+    private let vpnukConnectionServerStateKey = "vpnukConnectionServerState"
     
     var customConnectionState: CustomConnectionState? {
         get {
@@ -52,11 +61,11 @@ class ConnectionStateStorageImpl: VPNUKConnectionStateStorage, CustomConnectionS
         }
     }
     
-    var vpnukConnectionState: VPNUKConnectionState? {
+    var vpnukConnectionSelectedSubscriptionState: VPNUKConnectionSelectedSubscriptionState? {
         get {
-            if let saved = defaults.object(forKey: vpnukConnectionStateKey) as? Data {
+            if let saved = defaults.object(forKey: vpnukConnectionSubscriptionStateKey) as? Data {
                 let decoder = JSONDecoder()
-                if let loaded = try? decoder.decode(VPNUKConnectionState.self, from: saved) {
+                if let loaded = try? decoder.decode(VPNUKConnectionSelectedSubscriptionState.self, from: saved) {
                     return loaded
                 }
             }
@@ -66,7 +75,26 @@ class ConnectionStateStorageImpl: VPNUKConnectionStateStorage, CustomConnectionS
         set {
             let encoder = JSONEncoder()
             if let encoded = try? encoder.encode(newValue) {
-                defaults.set(encoded, forKey: vpnukConnectionStateKey)
+                defaults.set(encoded, forKey: vpnukConnectionSubscriptionStateKey)
+            }
+        }
+    }
+    
+    var vpnukConnectionSelectedServerState: VPNUKConnectionSelectedServerState? {
+        get {
+            if let saved = defaults.object(forKey: vpnukConnectionServerStateKey) as? Data {
+                let decoder = JSONDecoder()
+                if let loaded = try? decoder.decode(VPNUKConnectionSelectedServerState.self, from: saved) {
+                    return loaded
+                }
+            }
+            return nil
+        }
+        
+        set {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(newValue) {
+                defaults.set(encoded, forKey: vpnukConnectionServerStateKey)
             }
         }
     }
