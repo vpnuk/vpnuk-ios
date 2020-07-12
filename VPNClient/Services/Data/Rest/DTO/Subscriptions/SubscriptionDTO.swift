@@ -11,6 +11,20 @@ import Foundation
 enum SubscriptionType: String, Codable {
     case shared = "Shared"
     case dedicated = "Dedicated"
+    case oneToOne = "Dedicated11"
+}
+
+extension SubscriptionType {
+    var localizedValue: String {
+        switch self {
+        case .shared:
+            return NSLocalizedString("Shared", comment: "")
+        case .dedicated:
+            return NSLocalizedString("Dedicated", comment: "")
+        case .oneToOne:
+            return NSLocalizedString("1:1", comment: "")
+        }
+    }
 }
 
 struct DedicatedServerDTO: Codable {

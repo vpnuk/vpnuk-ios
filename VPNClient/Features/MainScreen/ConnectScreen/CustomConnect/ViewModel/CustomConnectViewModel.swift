@@ -53,9 +53,6 @@ class CustomConnectViewModel {
     }
     
     private func viewLoaded() {
-        serversRepository.updateServers { (result) in
-            print(result)
-        }
         updateServerPicker()
         connectorDelegate?.connectPressedAction = { [weak self] in
             self?.connectTouched()

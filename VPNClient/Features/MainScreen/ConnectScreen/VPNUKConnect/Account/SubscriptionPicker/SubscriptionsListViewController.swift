@@ -72,8 +72,8 @@ class SubscriptionsListViewController: UIViewController {
         view.addSubview(navbar)
         containerStackView.addArrangedSubview(tableView)
         
-        tableView.rowHeight = 105
-        tableView.estimatedRowHeight = 105
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 200
         
         navbar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -104,8 +104,8 @@ class SubscriptionsListViewController: UIViewController {
         let controller = VPNAccountsListViewController(
             subscription: subscription,
             subscriptionPickedAction: { [weak self] data in
-                self?.subscriptionPickedAction(data)
-                self?.dismiss(animated: true, completion: nil)
+                guard let self = self else { return }
+                self.dismiss(animated: true, completion: { self.subscriptionPickedAction(data)})
             }, initiallySelectedVPNAccount: initialAccount
         )
         present(controller, animated: true)
@@ -133,7 +133,19 @@ extension SubscriptionsListViewController: UITableViewDelegate, UITableViewDataS
         
         let subscription = subscriptions[indexPath.row]
         
-        cell.update(model: .init(title: subscription.productName))
+        cell.update(
+            model: .init(
+                subscriptionModel: .init(
+                    title: subscription.productName,
+                    vpnAccountsQuantity: subscription.quantity,
+                    maxSessions: subscription.sessions,
+                    subscriptionStatus: subscription.status,
+                    periodMonths: subscription.period,
+                    trialEnd: subscription.trialEndDate,
+                    subscriptionType: subscription.type
+                )
+            )
+        )
         return cell
     }
     

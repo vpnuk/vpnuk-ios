@@ -7,9 +7,41 @@
 //
 
 import Foundation
+import UIKit
 
 enum SubscriptionStatus: String, Codable {
-    case cancelled
-    case active
-    case onHold
+    case cancelled = "cancelled"
+    case active = "active"
+    case onHold = "on-hold"
+    case pending = "pending"
 }
+
+extension SubscriptionStatus {
+    var localizedValue: String {
+        switch self {
+        case .cancelled:
+            return NSLocalizedString("Cancelled", comment: "")
+        case .active:
+            return NSLocalizedString("Active", comment: "")
+        case .onHold:
+            return NSLocalizedString("On Hold", comment: "")
+        case .pending:
+            return NSLocalizedString("Pending", comment: "")
+        }
+    }
+    
+    var color: UIColor {
+        switch self {
+        case .cancelled:
+            return .systemRed
+        case .active:
+            return .systemGreen
+        case .onHold:
+            return .systemGray
+        case .pending:
+            return .systemYellow
+        }
+    }
+}
+
+

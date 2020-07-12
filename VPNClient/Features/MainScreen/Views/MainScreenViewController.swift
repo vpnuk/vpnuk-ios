@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-protocol MainScreenViewProtocol: AnyObject, AlertPresentable {
+protocol MainScreenViewProtocol: AnyObject, AlertPresentable, LoaderPresentable {
     func replaceConnectView(with view: UIView)
     func setConnectScreenType(_ type: ConnectScreenType)
     var connectionStatusView: ConnectionStatusViewProtocol { get }

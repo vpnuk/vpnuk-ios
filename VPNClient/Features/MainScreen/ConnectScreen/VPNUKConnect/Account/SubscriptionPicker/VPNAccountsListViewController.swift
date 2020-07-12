@@ -69,8 +69,8 @@ class VPNAccountsListViewController: UIViewController {
         view.addSubview(navbar)
         containerStackView.addArrangedSubview(tableView)
         
-        tableView.rowHeight = 105
-        tableView.estimatedRowHeight = 105
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 200
         
         navbar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -112,7 +112,36 @@ extension VPNAccountsListViewController: UITableViewDelegate, UITableViewDataSou
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: VPNAccountTableViewCell.self), for: indexPath) as! VPNAccountTableViewCell
         
         let account = subscription.vpnAccounts[indexPath.row]
-        cell.update(model: .init(title: account.username))
+        
+        let serverModel: PickedSubscriptionDedicatedServerView.Model?
+        if let server = account.server{
+            serverModel = .init(
+                title: nil,
+                ip: server.ip,
+                location: server.location
+            )
+        } else {
+            serverModel = nil
+        }
+        
+        let info: String?
+        switch subscription.type {
+        case .dedicated, .oneToOne:
+            info = NSLocalizedString("With this account you can connect to your dedicated server and all shared servers.", comment: "")
+        case .shared:
+            info = nil
+        }
+        
+        cell.update(
+            model: .init(
+                vpnAccountModel: .init(
+                    username: account.username,
+                    password: account.password,
+                    info: info
+                ),
+                dedicatedServerModel: serverModel
+            )
+        )
         return cell
     }
     
@@ -124,7 +153,7 @@ extension VPNAccountsListViewController: UITableViewDelegate, UITableViewDataSou
             cell.setSelected(false, animated: false)
         }
     }
-    
+  
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let account = subscription.vpnAccounts[indexPath.row]
         accountPicked(account: account)

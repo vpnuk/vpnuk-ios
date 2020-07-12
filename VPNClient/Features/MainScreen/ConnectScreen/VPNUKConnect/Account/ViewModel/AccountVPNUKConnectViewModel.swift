@@ -54,15 +54,15 @@ class AccountVPNUKConnectViewModel  {
 extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
 
     func viewDidLoad() {
-        //        deps.subscripionsAPI.createSubscription(
-        //        subscriptionRequest: .init(productId: "6622", productIdSource: .vpnuk)) { (result) in
-        //            switch result {
-        //            case .success(let t):
-        //                print(t)
-        //            case .failure(let error):
-        //                print(error)
-        //            }
-        //        }
+                deps.subscripionsAPI.createSubscription(
+                subscriptionRequest: .init(productId: "6633", productIdSource: .vpnuk, country: "Italy")) { (result) in
+                    switch result {
+                    case .success(let t):
+                        print(t)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
         reloadSubscriptions()
         updateServerPicker()
         deps.connectorDelegate?.connectPressedAction = { [weak self] in
@@ -169,15 +169,17 @@ extension AccountVPNUKConnectViewModel {
             selectServerAtAction: { [weak self] position in
                 guard let self = self else { return }
                 let server = allServers[position.type]?[position.index]
-                let state = VPNUKConnectionSelectedServerState(
-                    selectedServerIp: server?.address
-                )
-                self.deps.connectionStateStorage.vpnukConnectionSelectedServerState = state
-                self.updateServerPicker()
+                self.selectServer(withIp: server?.address)
             }
         )
         
         return viewModel
+    }
+    
+    private func selectServer(withIp ip: String?) {
+        let state = VPNUKConnectionSelectedServerState(selectedServerIp: ip)
+        deps.connectionStateStorage.vpnukConnectionSelectedServerState = state
+        updateServerPicker()
     }
     
     private func getServerPosition(
@@ -228,12 +230,20 @@ private extension AccountVPNUKConnectViewModel {
                 dedicatedServerModel = nil
             }
             
+            let info: String?
+            switch subscription.type {
+            case .dedicated, .oneToOne:
+                info = NSLocalizedString("With this account you can connect to your dedicated server and all shared servers.", comment: "")
+            case .shared:
+                info = nil
+            }
+            
             let vpnAccountModel: PickedSubscriptionVPNAccountView.Model?
             if let vpn = subscriptionAndAccount.vpnAccount {
                 vpnAccountModel = .init(
                     username: vpn.username,
                     password: vpn.password,
-                    info: NSLocalizedString("With this account you can connect to all shared servers.", comment: "")
+                    info: info
                 )
             } else {
                 vpnAccountModel = nil
@@ -247,7 +257,8 @@ private extension AccountVPNUKConnectViewModel {
                         maxSessions: subscription.sessions,
                         subscriptionStatus: subscription.status,
                         periodMonths: subscription.period,
-                        trialEnd: subscription.trialEndDate
+                        trialEnd: subscription.trialEndDate,
+                        subscriptionType: subscription.type
                     ),
                     dedicatedServerModel: dedicatedServerModel,
                     pickedVPNAccountModel: vpnAccountModel,
@@ -277,19 +288,37 @@ private extension AccountVPNUKConnectViewModel {
             subscriptions: self.userSubscriptions,
             subscriptionPickedAction: { [weak self] data in
                 guard let self = self else { return }
-                self.selectedSubscriptionAndAccount = data
-                if let data = data {
-                    self.deps.connectionStateStorage.vpnukConnectionSelectedSubscriptionState = .init(
-                        subscriptionId: data.subscription.id,
-                        subscriptionName: data.subscription.productName,
-                        vpnAccountUsername: data.vpnAccount?.username
-                    )
-                } else {
-                    self.deps.connectionStateStorage.vpnukConnectionSelectedSubscriptionState = nil
-                }
+                self.subscriptionAndVPNAccountPicked(data)
             },
             initiallySelectedSubscription: selectedSubscriptionAndAccount
         )
+    }
+    
+    private func subscriptionAndVPNAccountPicked(_ data: SubscriptionVPNAccount?) {
+        selectedSubscriptionAndAccount = data
+        if let data = data {
+            deps.connectionStateStorage.vpnukConnectionSelectedSubscriptionState = .init(
+                subscriptionId: data.subscription.id,
+                subscriptionName: data.subscription.productName,
+                vpnAccountUsername: data.vpnAccount?.username
+            )
+            
+            // Select initial dedicated server
+            if let vpnAccountServer = data.vpnAccount?.server {
+                switch data.subscription.type {
+                case .dedicated, .oneToOne:
+                    selectServer(withIp: vpnAccountServer.ip)
+                    let message = "Your Dedicated IP server: \(vpnAccountServer.location) (IP: \(vpnAccountServer.ip)) has been automatically selected. You can also connect to any Shared IP server."
+                    deps.router.presentAlert(message: message)
+                case .shared:
+                    // Don't select server for shared
+                    break
+                }
+            }
+            
+        } else {
+            deps.connectionStateStorage.vpnukConnectionSelectedSubscriptionState = nil
+        }
     }
     
     private func reloadSubscriptions(completion: Action? = nil) {

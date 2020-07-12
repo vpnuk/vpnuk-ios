@@ -11,12 +11,25 @@ import UIKit
 import SnapKit
 
 class VPNAccountTableViewCell: UITableViewCell {
-    private lazy var titleLabel: UILabel = {
-       let label = UILabel()
+    private lazy var pickedSubscriptionDedicatedServerView = PickedSubscriptionDedicatedServerView()
+    private lazy var pickedSubscriptionVPNAccountView = PickedSubscriptionVPNAccountView(appearance: .init(shouldShowBg: false))
+    
+    // MARK: Content
+    
+    private lazy var contentStackView: UIStackView = {
+        let imageView = UIImageView(image: UIImage(named: ""))
+        imageView.contentMode = .center
         
-        return label
+        let stackView = UIStackView(arrangedSubviews: [
+            pickedSubscriptionVPNAccountView,
+            pickedSubscriptionDedicatedServerView
+        ])
+        
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
@@ -34,23 +47,28 @@ class VPNAccountTableViewCell: UITableViewCell {
     }
     
     private func setupSubviews() {
-        contentView.addSubview(titleLabel)
+        contentView.addSubview(contentStackView)
     }
     
     private func setupConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        contentStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         }
     }
     
     func update(model: Model) {
-        titleLabel.text = model.title
+        pickedSubscriptionVPNAccountView.update(model: model.vpnAccountModel)
+        if let serverModel = model.dedicatedServerModel {
+            pickedSubscriptionDedicatedServerView.update(model: serverModel)
+        }
+        pickedSubscriptionDedicatedServerView.isHidden = model.dedicatedServerModel == nil
     }
-
+    
 }
 
 extension VPNAccountTableViewCell {
     struct Model {
-        let title: String
+        let vpnAccountModel: PickedSubscriptionVPNAccountView.Model
+        let dedicatedServerModel: PickedSubscriptionDedicatedServerView.Model?
     }
 }

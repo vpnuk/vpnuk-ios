@@ -60,6 +60,15 @@ class AccountVPNUKConnectView: UIView {
         return stackView
     }()
     
+    private lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.addSubview(contentStackView)
+        contentStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        return scroll
+    }()
+    
     init(viewModel: AccountVPNUKConnectViewModelProtocol) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -70,14 +79,29 @@ class AccountVPNUKConnectView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    private func setupSubviews() {
+//        addSubview(contentStackView)
+//    }
+//
+//    private func setupConstraints() {
+//        contentStackView.snp.makeConstraints { make in
+//            make.center.equalToSuperview()
+//            make.width.lessThanOrEqualToSuperview()
+//        }
+//    }
+//
+    
     private func setupSubviews() {
-        addSubview(contentStackView)
+        addSubview(scrollView)
+        scrollView.contentInset = .init(top: 6, left: 0, bottom: 16, right: 0)
     }
     
     private func setupConstraints() {
+        scrollView.makeEdgesEqualToSuperview()
         contentStackView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.lessThanOrEqualToSuperview()
+            make.edges.equalToSuperview()
+            make.centerX.equalTo(self)
+            make.width.equalTo(self).inset(UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
         }
     }
     

@@ -34,6 +34,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     private let router: MainScreenRouterProtocol
     weak var view: MainScreenViewProtocol?
     private var vpnService: VPNService
+    private let serversRepository: ServersRepository
     
     var connectPressedAction: Action?
     var connectionStatusUpdatedAction: ConnectionStatusUpdatedAction?
@@ -48,9 +49,10 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         }
     }
     
-    init(router: MainScreenRouterProtocol, vpnService: VPNService) {
+    init(router: MainScreenRouterProtocol, vpnService: VPNService, serversRepository: ServersRepository) {
         self.router = router
         self.vpnService = vpnService
+        self.serversRepository = serversRepository
     }
     
     func viewLoaded() {
@@ -59,6 +61,23 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         vpnService.delegate = self
         view?.connectionStatusView.connectButtonAction = { [weak self] in
             self?.connectButtonTouched()
+        }
+        
+        reloadServers()
+    }
+    
+    private func reloadServers() {
+        view?.setLoading(true)
+        serversRepository.updateServers { [weak self] result in
+            guard let self = self else { return }
+            self.view?.setLoading(false)
+            
+            switch result {
+            case .success(_):
+                break
+            case .failure(_):
+                self.view?.presentAlert(message: NSLocalizedString("Servers update error.", comment: ""))
+            }
         }
     }
     
@@ -79,8 +98,6 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
 }
 
 extension MainScreenViewModel: VPNConnectorDelegate {
-    
-    
     var connectionStatus: NEVPNStatus {
         vpnService.status
     }

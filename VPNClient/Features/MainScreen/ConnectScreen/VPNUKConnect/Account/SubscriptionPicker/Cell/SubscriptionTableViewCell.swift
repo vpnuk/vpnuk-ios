@@ -11,12 +11,8 @@ import UIKit
 import SnapKit
 
 class SubscriptionTableViewCell: UITableViewCell {
-    private lazy var titleLabel: UILabel = {
-       let label = UILabel()
-        
-        return label
-    }()
-
+    private lazy var pickedSubscriptionInfoView = PickedSubscriptionInfoView()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
@@ -33,24 +29,25 @@ class SubscriptionTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
+    
     private func setupSubviews() {
-        contentView.addSubview(titleLabel)
+        contentView.addSubview(pickedSubscriptionInfoView)
     }
     
     private func setupConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        pickedSubscriptionInfoView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
     func update(model: Model) {
-        titleLabel.text = model.title
+        pickedSubscriptionInfoView.update(model: model.subscriptionModel)
     }
-
+    
 }
 
 extension SubscriptionTableViewCell {
     struct Model {
-        let title: String
+        let subscriptionModel: PickedSubscriptionInfoView.Model
     }
 }

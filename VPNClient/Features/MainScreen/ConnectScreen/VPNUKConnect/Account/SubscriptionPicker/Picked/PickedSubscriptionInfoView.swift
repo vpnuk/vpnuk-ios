@@ -11,10 +11,206 @@ import UIKit
 
 class PickedSubscriptionInfoView: UIView {
     
+    // MARK: Title and type
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .bold)
         label.numberOfLines = 0
         return label
+    }()
+    
+    private lazy var typeLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 17, weight: .medium)
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var titleTypeStackView: UIStackView = {
+        let typeContainer = typeLabel.contained(with: .init(top: 5, left: 5, bottom: 5, right: 5))
+        typeContainer.backgroundColor = .init(red: 230/255.0, green: 230/255.0, blue: 230/255.0, alpha: 1)
+        typeContainer.layer.cornerRadius = 15
+        
+        let typeStackView = UIStackView(arrangedSubviews: [
+            typeContainer,
+            UIView() // spacer
+        ])
+        typeStackView.axis = .vertical
+        let stackView = UIStackView(arrangedSubviews: [
+            titleLabel,
+            typeStackView
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    // MARK: Vpn accounts quantity
+    
+    private lazy var quantityLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("VPN accounts count:", comment: "")
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    private lazy var quantityValueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    private lazy var quantityStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            quantityLabel,
+            quantityValueLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    // MARK: Vpn max sessions
+    
+    private lazy var maxSessionsLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.text = NSLocalizedString("Max concurrent sessions:", comment: "")
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var maxSessionsValueLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        return label
+    }()
+    
+    private lazy var maxSessionsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            maxSessionsLabel,
+            maxSessionsValueLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    // MARK: Subscription status
+    
+    private lazy var subscriptionStatusLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.text = NSLocalizedString("Subscription status:", comment: "")
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var subscriptionStatusValueLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        return label
+    }()
+    
+    private lazy var subscriptionStatusStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            subscriptionStatusLabel,
+            subscriptionStatusValueLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    // MARK: Subscription period
+    
+    private lazy var subscriptionPeriodLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.text = NSLocalizedString("Subscription period (months):", comment: "")
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var subscriptionPeriodValueLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        return label
+    }()
+    
+    private lazy var subscriptionPeriodStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            subscriptionPeriodLabel,
+            subscriptionPeriodValueLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    // MARK: Trial end
+    
+    private lazy var trialEndLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.text = NSLocalizedString("Trial end:", comment: "")
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var trialEndValueLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        return label
+    }()
+    
+    private lazy var trialEndTimeLeftLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 17, weight: .light)
+        return label
+    }()
+    
+    private lazy var trialEndStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            trialEndLabel,
+            trialEndValueLabel,
+            trialEndTimeLeftLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    
+    // MARK: Content view
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            titleTypeStackView,
+            quantityStackView,
+            maxSessionsStackView,
+            subscriptionStatusStackView,
+            subscriptionPeriodStackView,
+            trialEndStackView
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
     }()
     
     init() {
@@ -28,15 +224,39 @@ class PickedSubscriptionInfoView: UIView {
     
     func update(model: Model) {
         titleLabel.text = model.title
+        typeLabel.text = model.subscriptionType.localizedValue
+        
+        if let quantity = model.vpnAccountsQuantity {
+            quantityValueLabel.text = "\(quantity)"
+        }
+        quantityStackView.isHidden = model.vpnAccountsQuantity == nil
+        
+        if let maxSessions = model.maxSessions {
+            maxSessionsValueLabel.text = "\(maxSessions)"
+        }
+        maxSessionsStackView.isHidden = model.maxSessions == nil
+        
+        subscriptionStatusValueLabel.text = model.subscriptionStatus.localizedValue
+        subscriptionStatusValueLabel.textColor = model.subscriptionStatus.color
+        
+        if let subscriptionPeriod = model.periodMonths {
+            subscriptionPeriodValueLabel.text = "\(subscriptionPeriod)"
+        }
+        subscriptionPeriodStackView.isHidden = model.periodMonths == nil
+        
+        if let trialEnd = model.trialEnd {
+            trialEndValueLabel.text = "\(trialEnd)"
+        }
+        trialEndStackView.isHidden = model.trialEnd == nil
     }
     
     private func setupSubviews() {
-        addSubview(titleLabel)
+        addSubview(contentStackView)
     }
     
     private func setupConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.left.top.right.bottom.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        contentStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         }
     }
     
@@ -55,5 +275,6 @@ extension PickedSubscriptionInfoView {
         let subscriptionStatus: SubscriptionStatus
         let periodMonths: Int?
         let trialEnd: Date?
+        let subscriptionType: SubscriptionType
     }
 }

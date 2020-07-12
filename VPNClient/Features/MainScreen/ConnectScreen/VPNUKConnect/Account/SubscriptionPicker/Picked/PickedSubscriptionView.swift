@@ -18,17 +18,33 @@ class PickedSubscriptionView: UIView {
         label.text = NSLocalizedString("Selected subscription:", comment: "")
         return label
     }()
+    
+    private lazy var vpnAccountHeaderLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("Selected VPN account:", comment: "")
+        return label
+    }()
        
     private lazy var pickedSubscriptionInfoView = PickedSubscriptionInfoView()
     private lazy var pickedSubscriptionDedicatedServerView = PickedSubscriptionDedicatedServerView()
     private lazy var pickedSubscriptionVPNAccountView = PickedSubscriptionVPNAccountView()
     
-    private lazy var contentView: UIView = {
+    private lazy var vpnAccountStackView: UIView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            vpnAccountHeaderLabel,
+            pickedSubscriptionVPNAccountView,
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 5
         
+        return stackView.contained(with: .init(top: 0, left: 10, bottom: 10, right: 10))
+    }()
+    
+    private lazy var contentView: UIView = {
         let innerStackView = UIStackView(arrangedSubviews: [
             pickedSubscriptionInfoView,
             pickedSubscriptionDedicatedServerView,
-            pickedSubscriptionVPNAccountView
+            vpnAccountStackView
         ])
         innerStackView.axis = .vertical
         innerStackView.spacing = 0
@@ -46,7 +62,6 @@ class PickedSubscriptionView: UIView {
         stackView.spacing = 5
         return stackView
     }()
-     
     
     init() {
         super.init(frame: .zero)
@@ -70,12 +85,10 @@ class PickedSubscriptionView: UIView {
         
         if let pickedVPNAccountModel = model.pickedVPNAccountModel {
             pickedSubscriptionVPNAccountView.update(model: pickedVPNAccountModel)
-            pickedSubscriptionVPNAccountView.isHidden = false
+            vpnAccountStackView.isHidden = false
         } else {
-            pickedSubscriptionVPNAccountView.isHidden = true
+            vpnAccountStackView.isHidden = true
         }
-        
-        
     }
     
     private func setupSubviews() {
@@ -100,7 +113,6 @@ class PickedSubscriptionView: UIView {
         setupConstraints()
     }
 }
-
 
 extension PickedSubscriptionView {
     struct Model {

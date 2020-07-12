@@ -199,7 +199,6 @@ class RegistrationVPNUKConnectView: UIView {
         stackView.spacing = 8
         return stackView.contained(with: .init(top: 0, left: 16, bottom: 0, right: 16))
     }()
-    
 
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()

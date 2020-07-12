@@ -15,7 +15,14 @@ struct VPNUKConnectionSelectedSubscriptionState: Codable {
 }
 
 struct VPNUKConnectionSelectedServerState: Codable {
-    let selectedServerIp: String?
+    let selectedServerIp: String
+    init?(selectedServerIp: String?) {
+        if let selectedServerIp = selectedServerIp {
+            self.selectedServerIp = selectedServerIp
+        } else {
+            return nil
+        }
+    }
 }
 
 struct CustomConnectionState: Codable {
