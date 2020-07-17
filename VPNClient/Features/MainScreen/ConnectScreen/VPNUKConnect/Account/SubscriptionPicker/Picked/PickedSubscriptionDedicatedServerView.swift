@@ -15,19 +15,47 @@ class PickedSubscriptionDedicatedServerView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Your dedicated server info:", comment: "")
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    
+    // MARK: User address
+    
+    private lazy var userAddressLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("Your Unique IP Address:", comment: "")
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.numberOfLines = 1
         return label
     }()
     
+    private lazy var userAddressValueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    private lazy var userAddressStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            userAddressLabel,
+            userAddressValueLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
     
     // MARK: Address
     
     private lazy var addressLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Address:", comment: "")
+        label.text = NSLocalizedString("Server address:", comment: "")
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.numberOfLines = 1
@@ -55,7 +83,7 @@ class PickedSubscriptionDedicatedServerView: UIView {
     
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Location:", comment: "")
+        label.text = NSLocalizedString("Country:", comment: "")
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.numberOfLines = 1
@@ -85,6 +113,7 @@ class PickedSubscriptionDedicatedServerView: UIView {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
+            userAddressStackView,
             addressStackView,
             locationStackView
         ])
@@ -106,6 +135,7 @@ class PickedSubscriptionDedicatedServerView: UIView {
     func update(model: Model) {
         titleLabel.text = model.title
         addressValueLabel.text = model.ip
+        userAddressValueLabel.text = model.uniqueUserIp
         locationValueLabel.text = model.location
     }
     
@@ -130,6 +160,7 @@ extension PickedSubscriptionDedicatedServerView {
     struct Model {
         let title: String?
         let ip: String
+        let uniqueUserIp: String
         let location: String?
     }
 }

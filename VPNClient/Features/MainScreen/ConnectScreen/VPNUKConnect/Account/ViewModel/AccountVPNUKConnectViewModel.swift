@@ -220,10 +220,11 @@ private extension AccountVPNUKConnectViewModel {
             let subscription = subscriptionAndAccount.subscription
             
             let dedicatedServerModel: PickedSubscriptionDedicatedServerView.Model?
-            if let server = subscriptionAndAccount.vpnAccount?.server {
+            if let account = subscriptionAndAccount.vpnAccount, let server = account.server {
                 dedicatedServerModel = .init(
-                    title: server.description,
+                    title: NSLocalizedString("Dedicated server info:", comment: ""), // server.description
                     ip: server.ip,
+                    uniqueUserIp: account.uniqueUserIp,
                     location: server.location
                 )
             } else {
@@ -304,11 +305,11 @@ private extension AccountVPNUKConnectViewModel {
             )
             
             // Select initial dedicated server
-            if let vpnAccountServer = data.vpnAccount?.server {
+            if let vpnAccount = data.vpnAccount, let vpnAccountServer = vpnAccount.server {
                 switch data.subscription.type {
                 case .dedicated, .oneToOne:
                     selectServer(withIp: vpnAccountServer.ip)
-                    let message = "Your Dedicated IP server: \(vpnAccountServer.location) (IP: \(vpnAccountServer.ip)) has been automatically selected. You can also connect to any Shared IP server."
+                    let message = "Your Dedicated IP server: \(vpnAccountServer.location) (Your IP: \(vpnAccount.uniqueUserIp)) has been automatically selected. You can also connect to any Shared IP server."
                     deps.router.presentAlert(message: message)
                 case .shared:
                     // Don't select server for shared

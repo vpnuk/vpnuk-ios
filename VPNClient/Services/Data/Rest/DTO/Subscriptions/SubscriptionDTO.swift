@@ -11,7 +11,7 @@ import Foundation
 enum SubscriptionType: String, Codable {
     case shared = "Shared"
     case dedicated = "Dedicated"
-    case oneToOne = "Dedicated11"
+    case oneToOne = "One2One"
 }
 
 extension SubscriptionType {
@@ -37,7 +37,16 @@ struct DedicatedServerDTO: Codable {
 struct VPNAccountDTO: Codable {
     let username: String
     let password: String
+    /// Unique user ip for dedicated server
+    let uniqueUserIp: String
     let server: DedicatedServerDTO?
+    
+    enum CodingKeys: String, CodingKey {
+         case username = "username"
+         case password = "password"
+         case uniqueUserIp = "ip"
+         case server = "server"
+     }
 }
 
 struct SubscriptionDTO: Codable {
@@ -68,6 +77,9 @@ struct SubscriptionDTO: Codable {
 
 extension SubscriptionDTO {
     var trialEndDate: Date? {
-        return nil
+        guard let trialEnd = trialEnd else { return nil }
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return df.date(from: trialEnd)
     }
 }

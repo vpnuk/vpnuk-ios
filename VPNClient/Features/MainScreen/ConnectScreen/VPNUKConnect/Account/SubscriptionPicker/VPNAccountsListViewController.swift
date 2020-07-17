@@ -118,6 +118,7 @@ extension VPNAccountsListViewController: UITableViewDelegate, UITableViewDataSou
             serverModel = .init(
                 title: nil,
                 ip: server.ip,
+                uniqueUserIp: account.uniqueUserIp,
                 location: server.location
             )
         } else {
