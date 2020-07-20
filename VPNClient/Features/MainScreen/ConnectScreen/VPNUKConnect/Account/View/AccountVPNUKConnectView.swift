@@ -79,18 +79,6 @@ class AccountVPNUKConnectView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    private func setupSubviews() {
-//        addSubview(contentStackView)
-//    }
-//
-//    private func setupConstraints() {
-//        contentStackView.snp.makeConstraints { make in
-//            make.center.equalToSuperview()
-//            make.width.lessThanOrEqualToSuperview()
-//        }
-//    }
-//
-    
     private func setupSubviews() {
         addSubview(scrollView)
         scrollView.contentInset = .init(top: 6, left: 0, bottom: 16, right: 0)
