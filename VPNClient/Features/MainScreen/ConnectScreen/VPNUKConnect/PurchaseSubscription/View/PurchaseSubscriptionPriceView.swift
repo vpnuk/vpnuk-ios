@@ -11,21 +11,32 @@ import UIKit
 
 class PurchaseSubscriptionPriceView: UIView {
     
-    // MARK: Header
     
-    private lazy var headerLogoImageView: UIImageView = {
-        let imageView = UIImageView()
+    // MARK: - Content
+    
+    var totalPriceLabel : UILabel = {
+        let label = UILabel()
+        label.text = "Total Price:"
+        label.textColor = .darkGray
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
         
-        return imageView
+        return label
     }()
     
-    // MARK: Content
+    var moneySumLabel : UILabel = {
+        let label = UILabel()
+        label.text = "10$"
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        
+        return label
+    }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            headerLogoImageView,
+            totalPriceLabel,
+            moneySumLabel
         ])
-        stackView.axis = .vertical
+        stackView.axis = .horizontal
         stackView.spacing = 0
         return stackView
     }()
@@ -46,11 +57,22 @@ class PurchaseSubscriptionPriceView: UIView {
     
     private func setupSubviews() {
         addSubview(contentStackView)
+        addSubview(moneySumLabel)
+        addSubview(totalPriceLabel)
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+        }
+        totalPriceLabel.snp.makeConstraints { (make) in
+            make.width.equalTo(119)
+            make.height.equalTo(28)
+        }
+        moneySumLabel.snp.makeConstraints { (make) in
+            make.width.equalTo(41)
+            make.height.equalTo(28)
+            make.left.equalTo(totalPriceLabel.snp.right).offset(-14)
         }
     }
     

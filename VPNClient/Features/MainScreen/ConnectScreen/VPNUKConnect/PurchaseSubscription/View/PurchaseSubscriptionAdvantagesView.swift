@@ -11,7 +11,7 @@ import UIKit
 
 class PurchaseSubscriptionAdvantagesView: UIView {
     
-    // MARK: Header
+    // MARK: - Header
     
     private lazy var headerLogoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -19,7 +19,7 @@ class PurchaseSubscriptionAdvantagesView: UIView {
         return imageView
     }()
     
-    // MARK: Content
+    // MARK: - Content
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
