@@ -1,62 +1,52 @@
 //
-//  PurchaseSubscriptionPeriodView.swift
-//  Purchase
+//  PurchaseSubscriptionOptionsView.swift
+//  VPNClient
 //
-//  Created by Александр Умаров on 23.07.2020.
-//  Copyright © 2020 Александр Умаров. All rights reserved.
+//  Created by Igor Kasyanenko on 20.07.2020.
+//  Copyright © 2020 VPNUK. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class PurchaseSubscriptionPeriodView: UIView {
+class PurchaseSubscriptionMaxUsersView: UIView {
     
     let optionView = PurchaseSubscriptionOptionView()
-    
     // MARK: - Content
     
-    private lazy var periodQuastionButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
-        //        button.addTarget(self, action: #selector(), for: .touchUpInside)
-        
-        return button
-    }()
+    private lazy var maxUsersQuastionButton: UIButton = {
+                  let button = UIButton()
+                  button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
+      //        button.addTarget(self, action: #selector(), for: .touchUpInside)
+                  
+                  return button
+              }()
     
-    private lazy var choosePeriodLabel : UILabel = {
+    var maxUsersLabel : UILabel = {
         let label = UILabel()
-        label.text = "Choose a period"
+        label.text = "Max users"
         label.textColor = .darkGray
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         
         return label
     }()
     
+    private lazy var labelStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            maxUsersLabel,
+            maxUsersQuastionButton
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-           periodLabelStackView,
-           optionStackView
+            labelStackView,
+            optionView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    private lazy var periodLabelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            choosePeriodLabel,
-            periodQuastionButton,
-        ])
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        return stackView
-    }()
-    private lazy var optionStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-           optionView
-        ])
-        stackView.axis = .horizontal
         stackView.spacing = 8
         return stackView
     }()
@@ -72,16 +62,17 @@ class PurchaseSubscriptionPeriodView: UIView {
     }
     
     func update(model: Model) {
-        
+
     }
     
     private func setupSubviews() {
         addSubview(contentStackView)
+
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().offset(16)
+            make.top.left.equalToSuperview()
         }
     }
     
@@ -91,7 +82,7 @@ class PurchaseSubscriptionPeriodView: UIView {
     }
 }
 
-extension PurchaseSubscriptionPeriodView {
+extension PurchaseSubscriptionMaxUsersView {
     struct Model {
         let title: String
         let options: [Option]
@@ -103,4 +94,3 @@ extension PurchaseSubscriptionPeriodView {
         let title: String
     }
 }
-

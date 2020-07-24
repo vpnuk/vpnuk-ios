@@ -37,7 +37,7 @@ class PurchaseSubscriptionPriceView: UIView {
             moneySumLabel
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 0
+        stackView.spacing = 14
         return stackView
     }()
     
@@ -57,13 +57,11 @@ class PurchaseSubscriptionPriceView: UIView {
     
     private func setupSubviews() {
         addSubview(contentStackView)
-        addSubview(moneySumLabel)
-        addSubview(totalPriceLabel)
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            make.height.equalTo(totalPriceLabel.snp.height)
         }
         totalPriceLabel.snp.makeConstraints { (make) in
             make.width.equalTo(119)
