@@ -73,6 +73,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.top.left.equalToSuperview()
+            make.height.equalToSuperview().inset(16)
         }
     }
     

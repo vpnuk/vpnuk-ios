@@ -13,26 +13,21 @@ import SnapKit
 class PurchaseSubscriptionOfferView: UIView {
     
     // MARK: - Header
-  private lazy var headerLogoImageView: UIImageView = {
+    private lazy var headerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            headerLogoImageView,
+            closeButton
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 141
+        stackView.snp.makeConstraints { (make) in
+            make.height.equalTo(45)
+        }
+        return stackView
+    }()
+    private lazy var headerLogoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
         return imageView
-    }()
-    private lazy var headerLogoView: UIView = {
-       let view = UIView()
-        addSubview(headerLogoImageView)
-        headerLogoImageView.snp.makeConstraints { (make) in
-            make.width.equalTo(202)
-            make.height.equalTo(50)
-            make.left.equalTo(16)
-            make.top.equalTo(32)
-        }
-        addSubview(closeButton)
-        closeButton.snp.makeConstraints { (make) in
-              make.top.equalTo(50)
-              make.left.equalTo(329)
-              make.width.height.equalTo(15)
-          }
-         return view
     }()
     private lazy var closeButton: UIButton = {
         let button = UIButton()
@@ -45,7 +40,7 @@ class PurchaseSubscriptionOfferView: UIView {
     
     // MARK: - Periods
     
-     private lazy var periodsView = PurchaseSubscriptionPeriodView()
+    private lazy var periodsView = PurchaseSubscriptionPeriodView()
     
     // MARK: - Max users
     
@@ -55,17 +50,6 @@ class PurchaseSubscriptionOfferView: UIView {
     
     private lazy var priceView = PurchaseSubscriptionPriceView()
     
-    // MARK: - Purchase
-    
-    private lazy var purchaseButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Start your 7-day free trial", for: .normal)
-        button.titleLabel?.textColor = .white
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
-        button.layer.backgroundColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1).cgColor
-        button.layer.cornerRadius = 10
-        return button
-    }()
     // MARK: - Advantages
     
     private lazy var advantagesView = PurchaseSubscriptionAdvantagesView()
@@ -76,9 +60,23 @@ class PurchaseSubscriptionOfferView: UIView {
     
     // MARK: - Content
     
+    private lazy var purchaseButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Start your 7-day free trial", for: .normal)
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
+        button.layer.backgroundColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1).cgColor
+        button.layer.cornerRadius = 10
+        button.snp.makeConstraints { (make) in
+            make.height.equalTo(55)
+            make.width.equalTo(315)
+        }
+        return button
+    }()
+    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            headerLogoView,
+            headerStackView,
             choosePlansView,
             periodsView,
             maxUsersView,
@@ -96,7 +94,7 @@ class PurchaseSubscriptionOfferView: UIView {
         let scroll = UIScrollView()
         scroll.addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(32)
         }
         return scroll
     }()
@@ -112,59 +110,35 @@ class PurchaseSubscriptionOfferView: UIView {
     
     func update(model: Model) {
         headerLogoImageView.image = model.logo
+        purchaseButton.titleLabel?.text = model.buttonTitle
     }
     
     private func setupSubviews() {
         addSubview(scrollView)
         scrollView.contentInset = .init(top: 0, left: 0, bottom: 16, right: 0)
-        addSubview(purchaseButton)
     }
-    
+    // MARK: - Setup Constraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         contentStackView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-        }
-  
-        headerLogoView.snp.makeConstraints { (make) in
             make.left.equalTo(32)
-            make.top.equalTo(27)
+        }
+        headerStackView.snp.makeConstraints { (make) in
             make.height.equalTo(headerLogoImageView.snp.height)
-            
         }
-        choosePlansView.snp.makeConstraints { (make) in
-            make.top.equalTo(headerLogoView.snp.bottom).offset(22)
-            make.left.equalToSuperview()
-            make.height.equalTo(234)
-        }
-        periodsView.snp.makeConstraints { (make) in
-            make.left.equalTo(16)
-            make.top.equalTo(choosePlansView.snp.bottom).offset(16)
-            make.height.equalTo(80)
-        }
-        maxUsersView.snp.makeConstraints { (make) in
-            make.left.equalTo(32)
-            make.top.equalTo(periodsView.snp.bottom).offset(16)
-            make.height.equalTo(80)
-        }
-        priceView.snp.makeConstraints { (make) in
-            make.left.equalTo(32)
-            make.top.equalTo(maxUsersView.snp.bottom).offset(16)
-        }
-        
-        purchaseButton.snp.makeConstraints { (make) in
-            make.width.equalTo(315)
-            make.height.equalTo(54)
-            make.bottom.equalTo(-11)
-            make.left.equalTo(29)
-        }
+       
     }
     
     private func commonInit() {
         setupSubviews()
         setupConstraints()
+        let tap = UIGestureRecognizer(target: self, action: #selector(didTapped))
+        choosePlansView.addGestureRecognizer(tap)
+    }
+    @objc private func didTapped(){
+        print("view tapped")
     }
 }
 
@@ -172,7 +146,7 @@ extension PurchaseSubscriptionOfferView {
     struct Model {
         let logo: UIImage
         let plansModel: PurchaseSubscriptionChoosePlansView.Model
-        
+        let buttonTitle: String
     }
     
 }

@@ -61,16 +61,7 @@ class PurchaseSubscriptionPriceView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.height.equalTo(totalPriceLabel.snp.height)
-        }
-        totalPriceLabel.snp.makeConstraints { (make) in
-            make.width.equalTo(119)
-            make.height.equalTo(28)
-        }
-        moneySumLabel.snp.makeConstraints { (make) in
-            make.width.equalTo(41)
-            make.height.equalTo(28)
-            make.left.equalTo(totalPriceLabel.snp.right).offset(-14)
+            make.height.equalToSuperview()
         }
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 class PurchaseSubscriptionChoosePlanView: UIView {
+    private lazy var isSelected: Bool = false
     // MARK: - Content
     
     private lazy var contentStackView: UIStackView = {
@@ -25,9 +26,15 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         
         return imageView
     }()
+    
+    var flagImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "noFlag"))
+        
+        return imageView
+    }()
     var planLabel : UILabel = {
         let label = UILabel()
-        label.text = "Text"
+        label.text = "text"
         label.font = UIFont.boldSystemFont(ofSize: 20.0)
         
         return label
@@ -63,19 +70,31 @@ class PurchaseSubscriptionChoosePlanView: UIView {
     }
     
     func update(model: Model) {
+        planLabel.text = model.title
+        detailLabel.text = model.subTitle
+        flagImageView.image = model.imageFlag
         
+        switch isSelected {
+        case true:
+        planMarkImageView.image = UIImage(named: "checked.pdf")
+        
+        case false:
+        planMarkImageView.image = UIImage(named: "unchecked.pdf")
+        }
     }
     
     private func setupSubviews() {
         addSubview(contentStackView)
         addSubview(planView)
         addSubview(planMarkImageView)
+        addSubview(flagImageView)
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { (make) in
             make.top.equalTo(16)
             make.left.equalTo(planMarkImageView.snp.right).offset(16)
+            make.height.equalToSuperview().inset(13)
         }
         planView.snp.makeConstraints { (make) in
             make.width.equalTo(311)
@@ -85,6 +104,10 @@ class PurchaseSubscriptionChoosePlanView: UIView {
             make.height.width.equalTo(23)
             make.top.equalTo(26)
                 make.left.equalTo(16)
+        }
+        flagImageView.snp.makeConstraints { (make) in
+            make.left.equalTo(255)
+            make.top.equalTo(24)
         }
     }
     
@@ -98,6 +121,8 @@ extension PurchaseSubscriptionChoosePlanView {
     struct Model {
         let title: String
         let subTitle: String
-        let image: UIImage
+        let imageFlag: UIImage
+        
+    
     }
 }

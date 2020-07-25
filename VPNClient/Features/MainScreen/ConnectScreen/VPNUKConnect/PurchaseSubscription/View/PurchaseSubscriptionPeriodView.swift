@@ -36,7 +36,7 @@ class PurchaseSubscriptionPeriodView: UIView {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
            periodLabelStackView,
-           optionStackView
+           optionView
         ])
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -47,14 +47,6 @@ class PurchaseSubscriptionPeriodView: UIView {
         let stackView = UIStackView(arrangedSubviews: [
             choosePeriodLabel,
             periodQuastionButton,
-        ])
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        return stackView
-    }()
-    private lazy var optionStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-           optionView
         ])
         stackView.axis = .horizontal
         stackView.spacing = 8
@@ -81,7 +73,7 @@ class PurchaseSubscriptionPeriodView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().offset(16)
+            make.height.equalToSuperview().inset(16)
         }
     }
     

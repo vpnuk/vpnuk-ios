@@ -11,12 +11,11 @@ import UIKit
 
 class PurchaseSubscriptionChoosePlansView: UIView {
     
+    private lazy var planView = PurchaseSubscriptionChoosePlanView()
+    private lazy var plansView: [Plan] = []
     
     // MARK: - Content
     
-    private lazy var planView = PurchaseSubscriptionChoosePlanView()
-    private lazy var plan2View = PurchaseSubscriptionChoosePlanView()
-    private lazy var plan3View = PurchaseSubscriptionChoosePlanView()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -31,25 +30,22 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     private lazy var plansStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             planView,
-            plan2View,
-            plan3View
             
         ])
         stackView.axis = .vertical
-        stackView.spacing = 75
+        stackView.spacing = 1
         return stackView
     }()
     private lazy var horizontalContentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             choosePlanLabel,
             choosePlanQuastionButton
-            
         ])
         stackView.axis = .horizontal
         stackView.spacing = 8
         return stackView
     }()
-    
+
     private lazy var choosePlanLabel : UILabel = {
         let label = UILabel()
         label.text = "Choose a Plan"
@@ -75,31 +71,16 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     }
     
     func update(model: Model) {
-        
+     planView.update(model: model.choosePlanViewModel)
     }
     
     private func setupSubviews() {
         addSubview(contentStackView)
-     
-        
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.top.equalTo(horizontalContentStackView.snp.bottom).offset(16)
-            make.left.equalTo(32)
-        }
-        horizontalContentStackView.snp.makeConstraints { (make) in
-            make.top.left.equalToSuperview()
-        }
-        
-        choosePlanLabel.snp.makeConstraints { (make) in
-            make.width.equalTo(155)
-            make.height.equalTo(28)
-        }
-        choosePlanQuastionButton.snp.makeConstraints { (make) in
-            make.width.height.equalTo(14)
-            make.left.equalTo(choosePlanLabel.snp.right).offset(-8)
+            make.height.equalToSuperview()
         }
     }
     
@@ -116,11 +97,11 @@ extension PurchaseSubscriptionChoosePlansView {
         let plans: [Plan]
         let selectedPlanIndex: Int?
         let planSelectedAction: (_ index: Int) -> Void
+        let choosePlanViewModel: PurchaseSubscriptionChoosePlanView.Model
     }
     
     struct Plan {
         let title: String
         let subtitle: String
-        
     }
 }

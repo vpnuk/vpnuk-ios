@@ -12,21 +12,47 @@ import UIKit
 class PurchaseSubscriptionAdvantagesView: UIView {
     
     // MARK: - Header
-    
-    private lazy var headerLogoImageView: UIImageView = {
-        let imageView = UIImageView()
-        
-        return imageView
+    private lazy var whySubscribeLabel : UILabel = {
+        let label = UILabel()
+        label.text = "Why subscribe?"
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        return label
     }()
     
     // MARK: - Content
     
+    private lazy var reasonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "Text"
+        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        return label
+    }()
+    
+    private lazy var checkMarkImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "checkmark"))
+        imageView.snp.makeConstraints { (make) in
+            make.height.width.equalTo(23)
+        }
+        return imageView
+    }()
+   
+    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            headerLogoImageView,
+            whySubscribeLabel,
+            reasonsStackView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 16
+        return stackView
+    }()
+    private lazy var reasonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            checkMarkImageView,
+            reasonLabel
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
         return stackView
     }()
     
@@ -41,7 +67,7 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     }
     
     func update(model: Model) {
-
+        
     }
     
     private func setupSubviews() {
@@ -50,8 +76,9 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            make.height.equalToSuperview()
         }
+        
     }
     
     private func commonInit() {
@@ -62,6 +89,10 @@ class PurchaseSubscriptionAdvantagesView: UIView {
 
 extension PurchaseSubscriptionAdvantagesView {
     struct Model {
+        let title: String
+        let reasons: [Reason]
+    }
+    struct Reason {
         let title: String
     }
 }
