@@ -8,7 +8,7 @@
 
 import UIKit
 class PurchaseSubscriptionChoosePlanView: UIView {
-    private lazy var isSelected: Bool = false
+//    private lazy var isSelected: Bool = false
     // MARK: - Content
     
     private lazy var contentStackView: UIStackView = {
@@ -73,14 +73,10 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         planLabel.text = model.title
         detailLabel.text = model.subTitle
         flagImageView.image = model.imageFlag
+        planMarkImageView.image = model.isSelected
+            ? UIImage(named: "checked.pdf")
+            : UIImage(named: "unchecked.pdf")
         
-        switch isSelected {
-        case true:
-        planMarkImageView.image = UIImage(named: "checked.pdf")
-        
-        case false:
-        planMarkImageView.image = UIImage(named: "unchecked.pdf")
-        }
     }
     
     private func setupSubviews() {
@@ -122,7 +118,7 @@ extension PurchaseSubscriptionChoosePlanView {
         let title: String
         let subTitle: String
         let imageFlag: UIImage
-        
+        var isSelected: Bool
     
     }
 }
