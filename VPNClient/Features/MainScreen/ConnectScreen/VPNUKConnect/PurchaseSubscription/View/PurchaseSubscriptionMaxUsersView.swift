@@ -62,7 +62,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     }
     
     func update(model: Model) {
-
+        maxUsersLabel.text = model.title
     }
     
     private func setupSubviews() {

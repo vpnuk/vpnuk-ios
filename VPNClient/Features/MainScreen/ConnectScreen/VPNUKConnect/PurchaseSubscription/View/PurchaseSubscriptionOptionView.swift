@@ -80,7 +80,14 @@ class PurchaseSubscriptionOptionView: UIView {
 }
 
 extension PurchaseSubscriptionOptionView {
-    struct Model {
-        let title: String
-    }
+     struct Model {
+           let title: String
+           let options: [Option]
+           let selectedOptionIndex: Int?
+           let optionSelectedAction: (_ index: Int) -> Void
+       }
+       
+       struct Option {
+           let title: String
+       }
 }

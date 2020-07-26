@@ -145,7 +145,12 @@ class PurchaseSubscriptionOfferView: UIView {
 extension PurchaseSubscriptionOfferView {
     struct Model {
         let logo: UIImage
-        let plansModel: PurchaseSubscriptionChoosePlansView.Model
+        let plansModel: PurchaseSubscriptionChoosePlansView.Model?
+        let periodModel: PurchaseSubscriptionPeriodView.Model?
+        let maxUsersModel: PurchaseSubscriptionMaxUsersView.Model?
+        let priceModel: PurchaseSubscriptionPriceView.Model?
+        let advantagesModel: PurchaseSubscriptionAdvantagesView.Model?
+        let termsDetailsModel: PurchaseSubscriptionTermsAndDetailsView.Model?
         let buttonTitle: String
     }
     

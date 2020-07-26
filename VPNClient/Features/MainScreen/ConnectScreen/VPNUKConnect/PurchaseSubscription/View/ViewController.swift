@@ -15,7 +15,8 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
     }
     override func loadView() {
-        self.view = PurchaseSubscriptionOfferView()
+        view = PurchaseSubscriptionOfferView()
+        
     }
 
    
