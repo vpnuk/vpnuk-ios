@@ -2,8 +2,8 @@
 //  Appearence.swift
 //  Purchase
 //
-//  Created by Александр Умаров on 26.07.2020.
-//  Copyright © 2020 Александр Умаров. All rights reserved.
+//  Created by Igor Kasyanenko on 20.07.2020.
+//  Copyright © 2020 VPNUK. All rights reserved.
 //
 
 import UIKit
