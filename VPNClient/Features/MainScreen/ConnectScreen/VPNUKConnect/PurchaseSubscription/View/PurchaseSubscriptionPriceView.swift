@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 
 class PurchaseSubscriptionPriceView: UIView {
-    
-    
+    private lazy var appearance = Appearance()
     // MARK: - Content
     
     var totalPriceLabel : UILabel = {
@@ -37,7 +36,7 @@ class PurchaseSubscriptionPriceView: UIView {
             moneySumLabel
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 14
+        stackView.spacing = appearance.bigSpacing
         return stackView
     }()
     
@@ -52,7 +51,7 @@ class PurchaseSubscriptionPriceView: UIView {
     }
     
     func update(model: Model) {
-
+        totalPriceLabel.text = model.title
     }
     
     private func setupSubviews() {

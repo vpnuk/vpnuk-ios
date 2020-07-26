@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  PurchaseScreen
 //
-//  Created by Александр Умаров on 22.07.2020.
-//  Copyright © 2020 Александр Умаров. All rights reserved.
+//  Created by Igor Kasyanenko on 20.07.2020.
+//  Copyright © 2020 VPNUK. All rights reserved.
 //
 
 import UIKit
@@ -18,6 +18,6 @@ class ViewController: UIViewController {
         view = PurchaseSubscriptionOfferView()
         
     }
-
-   
+    
+    
 }

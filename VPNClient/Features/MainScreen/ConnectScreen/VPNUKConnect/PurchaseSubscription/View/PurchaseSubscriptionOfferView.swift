@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 
 class PurchaseSubscriptionOfferView: UIView {
-    
+    private lazy var appearance = Appearance()
     // MARK: - Header
     private lazy var headerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -22,6 +22,7 @@ class PurchaseSubscriptionOfferView: UIView {
         stackView.spacing = 141
         stackView.snp.makeConstraints { (make) in
             make.height.equalTo(45)
+            //            make.width.equalTo(202)
         }
         return stackView
     }()
@@ -32,7 +33,6 @@ class PurchaseSubscriptionOfferView: UIView {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "greyCross"), for: .normal)
-        //        button.addTarget(self, action: #selector(), for: .touchUpInside)
         return button
     }()
     // MARK: - Plans
@@ -62,15 +62,11 @@ class PurchaseSubscriptionOfferView: UIView {
     
     private lazy var purchaseButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Start your 7-day free trial", for: .normal)
+        button.setTitle(NSLocalizedString("Start your 7-day free trial", comment: ""), for: .normal)
         button.titleLabel?.textColor = .white
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
-        button.layer.backgroundColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1).cgColor
-        button.layer.cornerRadius = 10
-        button.snp.makeConstraints { (make) in
-            make.height.equalTo(55)
-            make.width.equalTo(315)
-        }
+        button.titleLabel?.font = appearance.bigBoldFont
+        button.layer.backgroundColor = appearance.blueColor
+        button.layer.cornerRadius = appearance.standartCornerRadius
         return button
     }()
     
@@ -86,7 +82,7 @@ class PurchaseSubscriptionOfferView: UIView {
             termsAndDetailsView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = appearance.bigSpacing
         return stackView
     }()
     
@@ -94,7 +90,7 @@ class PurchaseSubscriptionOfferView: UIView {
         let scroll = UIScrollView()
         scroll.addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalTo(32)
+            make.edges.equalTo(appearance.bigConstreint)
         }
         return scroll
     }()
@@ -115,7 +111,7 @@ class PurchaseSubscriptionOfferView: UIView {
     
     private func setupSubviews() {
         addSubview(scrollView)
-        scrollView.contentInset = .init(top: 0, left: 0, bottom: 16, right: 0)
+        scrollView.contentInset = .init(top: 0, left: 0, bottom: appearance.standartConstreint, right: 0)
     }
     // MARK: - Setup Constraints
     private func setupConstraints() {
@@ -123,12 +119,16 @@ class PurchaseSubscriptionOfferView: UIView {
             make.edges.equalToSuperview()
         }
         contentStackView.snp.makeConstraints { make in
-            make.left.equalTo(32)
+            make.edges.equalTo(appearance.bigConstreint)
         }
         headerStackView.snp.makeConstraints { (make) in
             make.height.equalTo(headerLogoImageView.snp.height)
         }
-       
+        purchaseButton.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(54)
+        }
+        
     }
     
     private func commonInit() {

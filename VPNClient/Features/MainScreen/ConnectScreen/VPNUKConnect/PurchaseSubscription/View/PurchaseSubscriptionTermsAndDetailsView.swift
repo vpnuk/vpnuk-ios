@@ -10,43 +10,22 @@ import Foundation
 import UIKit
 
 class PurchaseSubscriptionTermsAndDetailsView: UIView {
-    
+    private lazy var appearance = Appearance()
     // MARK: - Header
     private lazy var headerLabel : UILabel = {
-           let label = UILabel()
-           label.text = "Subscription details:"
-           label.textColor = .gray
-           label.font = UIFont.boldSystemFont(ofSize: 14.0)
-           return label
-       }()
-
+        let label = UILabel()
+        label.text = NSLocalizedString("Subscription details:", comment: "")
+        label.textColor = .gray
+        label.font = UIFont.boldSystemFont(ofSize: 14.0)
+        return label
+    }()
+    
     
     // MARK: - Content
     
     private lazy var termsDetailsLabel : UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = """
-        Your Apple ID account will be charged on the last
-        day of your free trial.
-
-        Your subscription will automatically renew at the
-        end of each billing period unless it is canceled at
-        east 24 hours before the expiry date.
-
-        You can manage and cancel your subscriptions
-        by going to your App Store account settings after
-        purchase.
-
-        Any unused portion of a free trial period, if
-        offered, will be forfeited when you purchase a
-        subscription.
-
-        By subscribing, you agree to the Terms of
-        Service and Privacy Policy.
-        
-        
-        """
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 13.0)
         return label
@@ -58,7 +37,7 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
             termsDetailsLabel
         ])
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = appearance.bigSpacing
         return stackView
     }()
     
@@ -73,7 +52,8 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     }
     
     func update(model: Model) {
-
+        headerLabel.text = model.title
+        termsDetailsLabel.text = model.termsDetails
     }
     
     private func setupSubviews() {
@@ -95,5 +75,6 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
 extension PurchaseSubscriptionTermsAndDetailsView {
     struct Model {
         let title: String
+        let termsDetails: String
     }
 }

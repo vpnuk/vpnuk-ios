@@ -8,29 +8,25 @@
 
 import UIKit
 class PurchaseSubscriptionChooseCountryView: UIView {
-    
-    let countryView = PurchaseSubscriptionChoosePlanView()
+    private lazy var appearance = Appearance()
+    private lazy var countryView = PurchaseSubscriptionChoosePlanView()
     // MARK: - Header
-  var headerLabel : UILabel = {
-      let label = UILabel()
-    label.numberOfLines = 0
-    label.textColor = .darkGray
-      label.text = """
-    Choose country of your
-    dedicated server
-    """
-      label.font = UIFont.boldSystemFont(ofSize: 20.0)
-      
-      return label
-  }()
+    var headerLabel : UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .darkGray
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        
+        return label
+    }()
     // MARK: - Content
     private lazy var chooseButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Choose", for: .normal)
+        button.setTitle(NSLocalizedString("Choose", comment: ""), for: .normal)
         button.titleLabel?.textColor = .white
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
-        button.layer.backgroundColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1).cgColor
-        button.layer.cornerRadius = 10
+        button.titleLabel?.font = appearance.bigBoldFont
+        button.layer.backgroundColor = appearance.blueColor
+        button.layer.cornerRadius = appearance.standartCornerRadius
         return button
     }()
     
@@ -39,7 +35,7 @@ class PurchaseSubscriptionChooseCountryView: UIView {
             countryView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = appearance.noSpacing
         return stackView
     }()
     
@@ -54,7 +50,8 @@ class PurchaseSubscriptionChooseCountryView: UIView {
     }
     
     func update(model: Model) {
-
+        headerLabel.text = model.title
+        chooseButton.titleLabel?.text = model.buttonTitle
     }
     
     private func setupSubviews() {
@@ -65,18 +62,18 @@ class PurchaseSubscriptionChooseCountryView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.left.equalTo(32)
+            make.left.equalTo(appearance.bigConstreint)
             make.top.equalTo(headerLabel.snp.bottom).offset(77)
         }
         headerLabel.snp.makeConstraints{ make in
-            make.left.equalTo(32)
+            make.left.equalTo(appearance.bigConstreint)
             make.top.equalTo(40)
         }
         chooseButton.snp.makeConstraints { (make) in
-            make.width.equalTo(315)
-            make.height.equalTo(54)
+            make.centerX.equalToSuperview()
+            make.left.right.equalToSuperview().inset(appearance.standartConstreint)
             make.bottom.equalTo(-11)
-            make.left.equalTo(29)
+            make.height.equalTo(54)
         }
     }
     
@@ -89,5 +86,6 @@ class PurchaseSubscriptionChooseCountryView: UIView {
 extension PurchaseSubscriptionChooseCountryView {
     struct Model {
         let title: String
+        let buttonTitle: String
     }
 }

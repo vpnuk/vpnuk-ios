@@ -2,33 +2,34 @@
 //  PurchaseSubscriptionChoosePlanView.swift
 //  Purchase
 //
-//  Created by Александр Умаров on 23.07.2020.
-//  Copyright © 2020 Александр Умаров. All rights reserved.
+//  Created by Igor Kasyanenko on 20.07.2020.
+//  Copyright © 2020 VPNUK. All rights reserved.
 //
 
 import UIKit
 class PurchaseSubscriptionChoosePlanView: UIView {
-//    private lazy var isSelected: Bool = false
+    private lazy var appearance = Appearance()
     // MARK: - Content
-    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             planLabel,
             detailLabel
         ])
         stackView.axis = .vertical
-        stackView.spacing = 4
+        stackView.spacing = appearance.smallSpacing
         return stackView
     }()
-  
+    
     var planMarkImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "unchecked.pdf"))
+        imageView.snp.makeConstraints { (make) in
+            make.height.width.equalTo(23)}
         
         return imageView
     }()
     
     var flagImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "noFlag"))
+        let imageView = UIImageView(image: UIImage(named: "au1"))
         
         return imageView
     }()
@@ -54,9 +55,9 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         let view = UIView()
         
         // MARK: - PlanView setup
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = appearance.standartCornerRadius
         view.layer.borderWidth = 2
-        view.layer.borderColor = UIColor(red: 0.569, green: 0.569, blue: 0.569, alpha: 1).cgColor
+        view.layer.borderColor = appearance.grayColor
         return view
     }()
     
@@ -88,22 +89,22 @@ class PurchaseSubscriptionChoosePlanView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(16)
-            make.left.equalTo(planMarkImageView.snp.right).offset(16)
+            make.top.equalTo(appearance.standartConstreint)
+            make.left.equalTo(planMarkImageView.snp.right).offset(appearance.standartConstreint)
             make.height.equalToSuperview().inset(13)
         }
         planView.snp.makeConstraints { (make) in
             make.width.equalTo(311)
             make.height.equalTo(75)
         }
+        
         planMarkImageView.snp.makeConstraints { (make) in
-            make.height.width.equalTo(23)
-            make.top.equalTo(26)
-                make.left.equalTo(16)
+            make.centerY.equalToSuperview()
+            make.left.equalTo(appearance.standartConstreint)
         }
         flagImageView.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
             make.left.equalTo(255)
-            make.top.equalTo(24)
         }
     }
     
@@ -119,6 +120,6 @@ extension PurchaseSubscriptionChoosePlanView {
         let subTitle: String
         let imageFlag: UIImage
         var isSelected: Bool
-    
+        
     }
 }

@@ -10,21 +10,18 @@ import Foundation
 import UIKit
 
 class PurchaseSubscriptionMaxUsersView: UIView {
-    
+    private lazy var appearance = Appearance()
     let optionView = PurchaseSubscriptionOptionView()
     // MARK: - Content
     
     private lazy var maxUsersQuastionButton: UIButton = {
-                  let button = UIButton()
-                  button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
-      //        button.addTarget(self, action: #selector(), for: .touchUpInside)
-                  
-                  return button
-              }()
+        let button = UIButton()
+        button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
+        return button
+    }()
     
     var maxUsersLabel : UILabel = {
         let label = UILabel()
-        label.text = "Max users"
         label.textColor = .darkGray
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         
@@ -37,7 +34,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
             maxUsersQuastionButton
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = appearance.standartSpacing
         return stackView
     }()
     
@@ -47,7 +44,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
             optionView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = appearance.standartSpacing
         return stackView
     }()
     
@@ -67,13 +64,13 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     
     private func setupSubviews() {
         addSubview(contentStackView)
-
+        
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.top.left.equalToSuperview()
-            make.height.equalToSuperview().inset(16)
+            make.height.equalToSuperview().inset(appearance.standartConstreint)
         }
     }
     

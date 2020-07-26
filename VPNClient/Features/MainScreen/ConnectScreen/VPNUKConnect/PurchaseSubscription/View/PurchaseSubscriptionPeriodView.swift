@@ -2,15 +2,15 @@
 //  PurchaseSubscriptionPeriodView.swift
 //  Purchase
 //
-//  Created by Александр Умаров on 23.07.2020.
-//  Copyright © 2020 Александр Умаров. All rights reserved.
+//  Created by Igor Kasyanenko on 20.07.2020.
+//  Copyright © 2020 VPNUK. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
 class PurchaseSubscriptionPeriodView: UIView {
-    
+    private lazy var appearance = Appearance()
     let optionView = PurchaseSubscriptionOptionView()
     
     // MARK: - Content
@@ -18,14 +18,11 @@ class PurchaseSubscriptionPeriodView: UIView {
     private lazy var periodQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
-        //        button.addTarget(self, action: #selector(), for: .touchUpInside)
-        
         return button
     }()
     
     private lazy var choosePeriodLabel : UILabel = {
         let label = UILabel()
-        label.text = "Choose a period"
         label.textColor = .darkGray
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         
@@ -35,11 +32,11 @@ class PurchaseSubscriptionPeriodView: UIView {
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-           periodLabelStackView,
-           optionView
+            periodLabelStackView,
+            optionView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = appearance.standartSpacing
         return stackView
     }()
     
@@ -49,7 +46,7 @@ class PurchaseSubscriptionPeriodView: UIView {
             periodQuastionButton,
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 8
+        stackView.spacing = appearance.standartSpacing
         return stackView
     }()
     
@@ -64,7 +61,7 @@ class PurchaseSubscriptionPeriodView: UIView {
     }
     
     func update(model: Model) {
-        
+        choosePeriodLabel.text = model.title
     }
     
     private func setupSubviews() {
@@ -73,7 +70,7 @@ class PurchaseSubscriptionPeriodView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.height.equalToSuperview().inset(16)
+            make.height.equalToSuperview().inset(appearance.bigSpacing)
         }
     }
     

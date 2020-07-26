@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class PurchaseSubscriptionAdvantagesView: UIView {
-    
+    private lazy var appearance = Appearance()
     // MARK: - Header
     private lazy var whySubscribeLabel : UILabel = {
         let label = UILabel()
@@ -23,7 +23,6 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     
     private lazy var reasonLabel : UILabel = {
         let label = UILabel()
-        label.text = "Text"
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         return label
     }()
@@ -35,7 +34,7 @@ class PurchaseSubscriptionAdvantagesView: UIView {
         }
         return imageView
     }()
-   
+    
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -43,7 +42,7 @@ class PurchaseSubscriptionAdvantagesView: UIView {
             reasonsStackView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = appearance.standartSpacing
         return stackView
     }()
     private lazy var reasonsStackView: UIStackView = {
@@ -52,7 +51,7 @@ class PurchaseSubscriptionAdvantagesView: UIView {
             reasonLabel
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = appearance.standartSpacing
         return stackView
     }()
     
@@ -67,7 +66,9 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     }
     
     func update(model: Model) {
-        
+        for text in model.reasons {
+            reasonLabel.text = text.title
+        }
     }
     
     private func setupSubviews() {
