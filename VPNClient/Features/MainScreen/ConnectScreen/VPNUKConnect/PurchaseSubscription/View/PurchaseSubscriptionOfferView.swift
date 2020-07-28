@@ -155,7 +155,7 @@ class PurchaseSubscriptionOfferView: UIView {
         }
         
         headerLogoImageView.image = model.logo
-        purchaseButton.setTitle(NSLocalizedString("\(model.buttonTitle)", comment: ""), for: .normal)
+        purchaseButton.setTitle(NSLocalizedString("\(model.purchaseButtonTitle)", comment: ""), for: .normal)
     }
     
     private func setupSubviews() {
@@ -192,7 +192,7 @@ extension PurchaseSubscriptionOfferView {
         let priceModel: PurchaseSubscriptionPriceView.Model?
         let advantagesModel: PurchaseSubscriptionAdvantagesView.Model?
         let termsDetailsModel: PurchaseSubscriptionTermsAndDetailsView.Model?
-        let buttonTitle: String
+        let purchaseButtonTitle: String
     }
     struct Appearance {
         // MARK: - PurchaseButton Appearance

@@ -87,7 +87,7 @@ class ViewController: UIViewController {
 
                 """),
             
-            buttonTitle: "Start your 7-day free trial"))
+            purchaseButtonTitle: "Start your 7-day free trial"))
         
         func viewSelected() {
             isSelected = !isSelected
