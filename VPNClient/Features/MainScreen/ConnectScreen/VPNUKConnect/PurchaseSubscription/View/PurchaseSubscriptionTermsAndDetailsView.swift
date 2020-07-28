@@ -14,20 +14,17 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     // MARK: - Header
     private lazy var headerLabel : UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Subscription details:", comment: "")
-        label.textColor = .gray
-        label.font = UIFont.boldSystemFont(ofSize: 14.0)
+        label.textColor = appearance.labelTextColor
+        label.font = appearance.headerLabelFont
         return label
     }()
-    
-    
     // MARK: - Content
     
     private lazy var termsDetailsLabel : UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
-        label.textColor = .gray
-        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.numberOfLines = appearance.termsDetailsLabelNumberOfLines
+        label.textColor = appearance.labelTextColor
+        label.font = appearance.termsDetailsLabelFont
         return label
     }()
     
@@ -37,11 +34,9 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
             termsDetailsLabel
         ])
         stackView.axis = .vertical
-        stackView.spacing = appearance.bigSpacing
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
-    
-    
     init() {
         super.init(frame: .zero)
         commonInit()
@@ -52,7 +47,9 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     }
     
     func update(model: Model) {
-        headerLabel.text = model.title
+        headerLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        let termsText = NSMutableAttributedString(string: model.termsDetails)
+        termsText.addAttribute(.foregroundColor, value: UIColor.red, range: NSRange(location: 397, length: 13))
         termsDetailsLabel.text = model.termsDetails
     }
     
@@ -76,5 +73,12 @@ extension PurchaseSubscriptionTermsAndDetailsView {
     struct Model {
         let title: String
         let termsDetails: String
+    }
+    struct Appearance {
+        let headerLabelFont = Style.Fonts.smallBoldFont
+        let labelTextColor = Style.Color.grayTextColor
+        let termsDetailsLabelNumberOfLines = 0
+        let termsDetailsLabelFont = Style.Fonts.minFont
+        let contentStackViewSpacing = Style.Spacing.bigSpacing
     }
 }

@@ -14,44 +14,26 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     // MARK: - Header
     private lazy var whySubscribeLabel : UILabel = {
         let label = UILabel()
-        label.text = "Why subscribe?"
-        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.font = appearance.whySubscribeLabelFont
         return label
     }()
     
     // MARK: - Content
-    
-    private lazy var reasonLabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
-        return label
-    }()
-    
-    private lazy var checkMarkImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "checkmark"))
-        imageView.snp.makeConstraints { (make) in
-            make.height.width.equalTo(23)
-        }
-        return imageView
-    }()
-    
-    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             whySubscribeLabel,
             reasonsStackView
         ])
         stackView.axis = .vertical
-        stackView.spacing = appearance.standartSpacing
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     private lazy var reasonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            checkMarkImageView,
-            reasonLabel
+            
         ])
-        stackView.axis = .horizontal
-        stackView.spacing = appearance.standartSpacing
+        stackView.axis = .vertical
+        stackView.spacing = appearance.reasonsStackViewSpacing
         return stackView
     }()
     
@@ -64,10 +46,44 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    private func addReasons(_ reasons:[Reason]) -> [UIStackView] {
+        var reasonsStackViews: [UIStackView] = []
+        for reason in reasons {
+            let reasonLabel : UILabel = {
+                let label = UILabel()
+                label.font = appearance.reasonLabelFont
+                return label
+            }()
+            let checkMarkImageView: UIImageView = {
+                let imageView = UIImageView(image: UIImage(named: "checkmark"))
+                imageView.snp.makeConstraints { (make) in
+                    make.height.width.equalTo(appearance.checkMarkImageViewHeightWidthConstraint)
+                }
+                return imageView
+            }()
+            let reasonStackView: UIStackView = {
+                let stackView = UIStackView(arrangedSubviews: [
+                    checkMarkImageView,
+                    reasonLabel
+                ])
+                stackView.axis = .horizontal
+                stackView.spacing = appearance.reasonsStackViewSpacing
+                return stackView
+            }()
+            
+            reasonLabel.text = reason.title
+            
+            reasonsStackViews.append(reasonStackView)
+        }
+        return reasonsStackViews
+    }
     
     func update(model: Model) {
-        for text in model.reasons {
-            reasonLabel.text = text.title
+        whySubscribeLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        let allReasons = addReasons(model.reasons)
+        reasonsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        for reason in allReasons {
+            reasonsStackView.addArrangedSubview(reason)
         }
     }
     
@@ -95,5 +111,12 @@ extension PurchaseSubscriptionAdvantagesView {
     }
     struct Reason {
         let title: String
+    }
+    struct Appearance {
+        let whySubscribeLabelFont = Style.Fonts.bigBoldFont
+        let reasonLabelFont = Style.Fonts.standartBoldFont
+        let checkMarkImageViewHeightWidthConstraint = 23
+        let contentStackViewSpacing = Style.Spacing.standartSpacing
+        let reasonsStackViewSpacing = Style.Spacing.standartSpacing
     }
 }

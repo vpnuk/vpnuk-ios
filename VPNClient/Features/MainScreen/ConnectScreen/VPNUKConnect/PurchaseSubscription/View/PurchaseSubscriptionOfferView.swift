@@ -16,23 +16,31 @@ class PurchaseSubscriptionOfferView: UIView {
     private lazy var headerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             headerLogoImageView,
+            emptyView,
             closeButton
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 141
-        stackView.snp.makeConstraints { (make) in
-            make.height.equalTo(45)
-            //            make.width.equalTo(202)
-        }
+        stackView.spacing = appearance.headerStackViewSpacing
         return stackView
     }()
+    
     private lazy var headerLogoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
+        imageView.snp.makeConstraints { (make) in
+            make.size.equalTo(appearance.headeLogoSize)
+        }
         return imageView
     }()
+    
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "greyCross"), for: .normal)
+        button.imageView?.contentMode = .center
         return button
     }()
     // MARK: - Plans
@@ -62,11 +70,10 @@ class PurchaseSubscriptionOfferView: UIView {
     
     private lazy var purchaseButton: UIButton = {
         let button = UIButton()
-        button.setTitle(NSLocalizedString("Start your 7-day free trial", comment: ""), for: .normal)
         button.titleLabel?.textColor = .white
-        button.titleLabel?.font = appearance.bigBoldFont
-        button.layer.backgroundColor = appearance.blueColor
-        button.layer.cornerRadius = appearance.standartCornerRadius
+        button.titleLabel?.font = appearance.purchaseButtonTitleLabelFont
+        button.layer.backgroundColor = appearance.purchaseButtonColor
+        button.layer.cornerRadius = appearance.purchaseButtonCornerRadius
         return button
     }()
     
@@ -82,7 +89,7 @@ class PurchaseSubscriptionOfferView: UIView {
             termsAndDetailsView
         ])
         stackView.axis = .vertical
-        stackView.spacing = appearance.bigSpacing
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     
@@ -90,7 +97,7 @@ class PurchaseSubscriptionOfferView: UIView {
         let scroll = UIScrollView()
         scroll.addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalTo(appearance.bigConstreint)
+            make.edges.equalTo(appearance.scrollViewEdgesConstraint)
         }
         return scroll
     }()
@@ -105,40 +112,74 @@ class PurchaseSubscriptionOfferView: UIView {
     }
     
     func update(model: Model) {
+        if let plansModel = model.plansModel {
+            choosePlansView.isHidden = false
+            choosePlansView.update(model: plansModel)
+        } else {
+            choosePlansView.isHidden = true
+        }
+        
+        if let periodsModel = model.periodModel {
+            periodsView.isHidden = false
+            periodsView.update(model: periodsModel)
+        } else {
+            periodsView.isHidden = true
+        }
+        
+        if let maxUsersModel = model.maxUsersModel {
+            maxUsersView.isHidden = false
+            maxUsersView.update(model: maxUsersModel)
+        } else {
+            maxUsersView.isHidden = true
+        }
+        
+        if let pricesView = model.priceModel {
+            priceView.isHidden = false
+            priceView.update(model: pricesView)
+        } else {
+            priceView.isHidden = true
+        }
+        
+        if let advantageView = model.advantagesModel {
+            advantagesView.isHidden = false
+            advantagesView.update(model: advantageView)
+        } else {
+            advantagesView.isHidden = true
+        }
+        
+        if let termsView = model.termsDetailsModel {
+            termsAndDetailsView.isHidden = false
+            termsAndDetailsView.update(model: termsView)
+        } else {
+            termsAndDetailsView.isHidden = true
+        }
+        
         headerLogoImageView.image = model.logo
-        purchaseButton.titleLabel?.text = model.buttonTitle
+        purchaseButton.setTitle(NSLocalizedString("\(model.buttonTitle)", comment: ""), for: .normal)
     }
     
     private func setupSubviews() {
         addSubview(scrollView)
-        scrollView.contentInset = .init(top: 0, left: 0, bottom: appearance.standartConstreint, right: 0)
+        scrollView.contentInset = appearance.scrollViewContentInsets
     }
+    
     // MARK: - Setup Constraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        contentStackView.snp.makeConstraints { make in
-            make.edges.equalTo(appearance.bigConstreint)
-        }
-        headerStackView.snp.makeConstraints { (make) in
-            make.height.equalTo(headerLogoImageView.snp.height)
-        }
         purchaseButton.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.height.equalTo(54)
+            make.height.equalTo(appearance.purchaseButtonHeightConstraint)
         }
-        
+        emptyView.snp.makeConstraints { (make) in
+            make.size.greaterThanOrEqualTo(appearance.emptyViewSize)
+        }
     }
     
     private func commonInit() {
         setupSubviews()
         setupConstraints()
-        let tap = UIGestureRecognizer(target: self, action: #selector(didTapped))
-        choosePlansView.addGestureRecognizer(tap)
-    }
-    @objc private func didTapped(){
-        print("view tapped")
     }
 }
 
@@ -152,6 +193,26 @@ extension PurchaseSubscriptionOfferView {
         let advantagesModel: PurchaseSubscriptionAdvantagesView.Model?
         let termsDetailsModel: PurchaseSubscriptionTermsAndDetailsView.Model?
         let buttonTitle: String
+    }
+    struct Appearance {
+        // MARK: - PurchaseButton Appearance
+        let purchaseButtonTitleLabelFont = Style.Fonts.bigBoldFont
+        let purchaseButtonColor = Style.Color.blueColor
+        let purchaseButtonCornerRadius = Style.CornerRadius.standartCornerRadius
+        let purchaseButtonHeightConstraint = 54
+        
+        // MARK: - ContentStackView Appearance
+        let contentStackViewSpacing: CGFloat = 16
+        let contentStackViewEdgesConstraint = Style.Constraint.bigConstreint
+        
+        // MARK: - ScrollView Appearance
+        let scrollViewEdgesConstraint = Style.Constraint.bigConstreint
+        let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+        
+        let headerStackViewSpacing = Style.Spacing.noSpacing
+        let headeLogoSize = CGSize(width: 202, height: 50)
+        
+        let emptyViewSize = (CGSize(width: 95, height: 50))
     }
     
 }

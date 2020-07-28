@@ -1,6 +1,6 @@
 //
 //  PurchaseSubscriptionPeriodView.swift
-//  Purchase
+//  VPNClient
 //
 //  Created by Igor Kasyanenko on 20.07.2020.
 //  Copyright © 2020 VPNUK. All rights reserved.
@@ -11,7 +11,7 @@ import UIKit
 
 class PurchaseSubscriptionPeriodView: UIView {
     private lazy var appearance = Appearance()
-    let optionView = PurchaseSubscriptionOptionView()
+    private var optionSelectedAction: ((_ index: Int) -> Void)?
     
     // MARK: - Content
     
@@ -23,31 +23,46 @@ class PurchaseSubscriptionPeriodView: UIView {
     
     private lazy var choosePeriodLabel : UILabel = {
         let label = UILabel()
-        label.textColor = .darkGray
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
-        
+        label.textColor = appearance.choosePeriodLabelColor
+        label.font = appearance.choosePeriodLabelFont
         return label
     }()
     
-    
-    private lazy var contentStackView: UIStackView = {
+    private lazy var optionsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            periodLabelStackView,
-            optionView
+            
         ])
-        stackView.axis = .vertical
-        stackView.spacing = appearance.standartSpacing
+        stackView.axis = .horizontal
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     
-    private lazy var periodLabelStackView: UIStackView = {
+    private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             choosePeriodLabel,
             periodQuastionButton,
+            emptyView
         ])
         stackView.axis = .horizontal
-        stackView.spacing = appearance.standartSpacing
+        stackView.spacing = appearance.periodLabelStackViewSpacing
         return stackView
+    }()
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        view.snp.makeConstraints { (make) in
+            make.size.equalTo(appearance.emptyViewSize)
+        }
+        return view
+    }()
+    private lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.addSubview(optionsStackView)
+        optionsStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        return scroll
     }()
     
     
@@ -60,17 +75,38 @@ class PurchaseSubscriptionPeriodView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func buildOptionViews(fromOption options: [Option], selectedIndex: Int?) -> [PurchaseSubscriptionOptionView] {
+        let optionsViews = options.enumerated().map { index,option -> PurchaseSubscriptionOptionView in
+            let optionView = PurchaseSubscriptionOptionView()
+            optionView.update(model: .init(title: option.title, tappedAction: { [weak self] in
+                self?.optionSelectedAction?(index)
+                }, isSelected: selectedIndex == index))
+            return optionView
+        }
+        return optionsViews
+    }
     func update(model: Model) {
-        choosePeriodLabel.text = model.title
+        optionSelectedAction = model.optionSelectedAction
+        choosePeriodLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        let newOptionsView = buildOptionViews(fromOption: model.options, selectedIndex: model.selectedOptionIndex)
+        optionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        for optionView in newOptionsView {
+            optionsStackView.addArrangedSubview(optionView)
+        }
     }
     
     private func setupSubviews() {
         addSubview(contentStackView)
+        addSubview(scrollView)
+        scrollView.contentInset = appearance.scrollViewContentInsets
     }
     
     private func setupConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(contentStackView.snp.bottom)
+        }
         contentStackView.snp.makeConstraints { make in
-            make.height.equalToSuperview().inset(appearance.bigSpacing)
+            make.height.equalToSuperview().offset(appearance.contentStackViewHeightOffsetConstraint)
         }
     }
     
@@ -90,6 +126,19 @@ extension PurchaseSubscriptionPeriodView {
     
     struct Option {
         let title: String
+    }
+    struct Appearance {
+        //MARK: - ChoosePeriod Appearance
+        let choosePeriodLabelFont = Style.Fonts.standartBoldFont
+        let choosePeriodLabelColor = Style.Color.darkGrayColor
+        
+        //MARK: - StackViews Appearance
+        let contentStackViewSpacing = Style.Spacing.standartSpacing
+        let contentStackViewHeightOffsetConstraint = -(Style.Constraint.bigConstreint)
+        let periodLabelStackViewSpacing = Style.Spacing.standartSpacing
+        
+        let emptyViewSize = CGSize(width: 175, height: 30)
+        let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
     }
 }
 

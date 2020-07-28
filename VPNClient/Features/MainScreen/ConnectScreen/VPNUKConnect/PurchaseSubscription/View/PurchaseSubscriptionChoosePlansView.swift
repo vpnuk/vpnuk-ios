@@ -11,47 +11,50 @@ import UIKit
 
 class PurchaseSubscriptionChoosePlansView: UIView {
     private lazy var appearance = Appearance()
-    private lazy var planView = PurchaseSubscriptionChoosePlanView()
-    private lazy var planView2 = PurchaseSubscriptionChoosePlanView()
-    private lazy var plansView: [Plan] = []
-    
+    private var planSelectedAction: ((_ index: Int) -> Void)?
+    private var isSelected: Bool?
     // MARK: - Content
-    
-    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             horizontalContentStackView,
             plansStackView
         ])
         stackView.axis = .vertical
-        stackView.spacing = appearance.bigSpacing
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     
     private lazy var plansStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            planView,
-            planView2
+            
         ])
         stackView.axis = .vertical
-        stackView.spacing = appearance.noSpacing
+        stackView.spacing = appearance.plansStackViewSpacing
         return stackView
     }()
     private lazy var horizontalContentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             choosePlanLabel,
-            choosePlanQuastionButton
+            choosePlanQuastionButton,
+            emptyView
         ])
         stackView.axis = .horizontal
-        stackView.spacing = appearance.standartSpacing
+        stackView.spacing = appearance.horizontalContentStackViewSpacing
         return stackView
+    }()
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        view.snp.makeConstraints { (make) in
+            make.size.equalTo(appearance.emptyViewSize)
+        }
+        return view
     }()
     
     private lazy var choosePlanLabel : UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Choose a Plan", comment: "")
         label.textColor = .darkGray
-        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.font = appearance.choosePlanLabelFont
         return label
     }()
     private lazy var choosePlanQuastionButton: UIButton = {
@@ -59,8 +62,6 @@ class PurchaseSubscriptionChoosePlansView: UIView {
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
         return button
     }()
-    
-    
     init() {
         super.init(frame: .zero)
         commonInit()
@@ -70,8 +71,26 @@ class PurchaseSubscriptionChoosePlansView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func buildPlanViews(fromPlans plans: [Plan], selectedIndex: Int?) -> [PurchaseSubscriptionChoosePlanView] {
+        let plansViews = plans.enumerated().map { index,plan -> PurchaseSubscriptionChoosePlanView in
+            let planView = PurchaseSubscriptionChoosePlanView()
+            planView.update(model: .init(title: plan.title, subTitle: plan.subtitle, imageFlag: nil, isSelected: selectedIndex == index , tappedAction: { [weak self] in
+                self?.planSelectedAction?(index)
+            }))
+            return planView
+        }
+        
+        return plansViews
+    }
+    
     func update(model: Model) {
-        choosePlanLabel.text = model.title
+        planSelectedAction = model.planSelectedAction
+        choosePlanLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        let newPlansView = buildPlanViews(fromPlans: model.plans, selectedIndex: model.selectedPlanIndex)
+        plansStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        for planView in newPlansView {
+            plansStackView.addArrangedSubview(planView)
+        }
     }
     
     private func setupSubviews() {
@@ -83,16 +102,6 @@ class PurchaseSubscriptionChoosePlansView: UIView {
             make.height.equalToSuperview()
         }
     }
-    func buildPlanViews(fromPlans plans: [Plan]) -> [PurchaseSubscriptionChoosePlanView] {
-        for plan in plans {
-            let planView = PurchaseSubscriptionChoosePlanView()
-            
-        }
-        var plansView:[PurchaseSubscriptionChoosePlanView] = []
-        plansView.append(planView)
-        
-        return plansView
-    }
     
     private func commonInit() {
         setupSubviews()
@@ -100,18 +109,25 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     }
 }
 
-
 extension PurchaseSubscriptionChoosePlansView {
     struct Model {
         let title: String
         let plans: [Plan]
         let selectedPlanIndex: Int?
         let planSelectedAction: (_ index: Int) -> Void
-        let choosePlanViewModel: PurchaseSubscriptionChoosePlanView.Model
     }
-    
     struct Plan {
         let title: String
         let subtitle: String
+    }
+    
+    
+    struct Appearance {
+        let contentStackViewSpacing = Style.Spacing.bigSpacing
+        let plansStackViewSpacing = Style.Spacing.noSpacing
+        let horizontalContentStackViewSpacing = Style.Spacing.standartSpacing
+        let choosePlanLabelFont = Style.Fonts.bigBoldFont
+        let emptyViewSize = (CGSize(width: 150, height: 30))
+        
     }
 }

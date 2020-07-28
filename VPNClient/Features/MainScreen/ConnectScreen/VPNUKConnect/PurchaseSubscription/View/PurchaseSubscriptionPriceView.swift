@@ -13,19 +13,17 @@ class PurchaseSubscriptionPriceView: UIView {
     private lazy var appearance = Appearance()
     // MARK: - Content
     
-    var totalPriceLabel : UILabel = {
+    private lazy var totalPriceLabel : UILabel = {
         let label = UILabel()
-        label.text = "Total Price:"
-        label.textColor = .darkGray
-        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.textColor = appearance.totalPriceLabelTextColor
+        label.font = appearance.totalPriceLabelFont
         
         return label
     }()
     
-    var moneySumLabel : UILabel = {
+    private lazy var moneySumLabel : UILabel = {
         let label = UILabel()
-        label.text = "10$"
-        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.font = appearance.moneySumLabelFont
         
         return label
     }()
@@ -36,7 +34,7 @@ class PurchaseSubscriptionPriceView: UIView {
             moneySumLabel
         ])
         stackView.axis = .horizontal
-        stackView.spacing = appearance.bigSpacing
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     
@@ -51,7 +49,8 @@ class PurchaseSubscriptionPriceView: UIView {
     }
     
     func update(model: Model) {
-        totalPriceLabel.text = model.title
+        totalPriceLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        moneySumLabel.text = NSLocalizedString("\(model.moneySum)", comment: "")
     }
     
     private func setupSubviews() {
@@ -73,5 +72,12 @@ class PurchaseSubscriptionPriceView: UIView {
 extension PurchaseSubscriptionPriceView {
     struct Model {
         let title: String
+        let moneySum: String
+    }
+    struct Appearance {
+        let totalPriceLabelFont = Style.Fonts.bigBoldFont
+        let totalPriceLabelTextColor = Style.Color.darkGrayColor
+        let moneySumLabelFont = Style.Fonts.bigBoldFont
+        let contentStackViewSpacing = Style.Spacing.bigSpacing
     }
 }

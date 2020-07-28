@@ -1,6 +1,6 @@
 //
 //  PurchaseSubscriptionOptionView.swift
-//  Purchase
+//  VPNClient
 //
 //  Created by Igor Kasyanenko on 20.07.2020.
 //  Copyright © 2020 VPNUK. All rights reserved.
@@ -10,6 +10,7 @@ import UIKit
 
 class PurchaseSubscriptionOptionView: UIView {
     private lazy var appearance = Appearance()
+    private var tappedAction: (() -> Void)?
     // MARK: - Content
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -17,19 +18,21 @@ class PurchaseSubscriptionOptionView: UIView {
             optionLabel
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 8
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     
-    var optionImageView: UIImageView = {
+    private lazy var optionImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "unchecked.pdf"))
+        imageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(appearance.optionImageViewSize)
+        }
         return imageView
     }()
     
-    var optionLabel : UILabel = {
+    private lazy var optionLabel : UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 12.0)
-        
+        label.font = appearance.optionLabelFont
         return label
     }()
     
@@ -43,38 +46,51 @@ class PurchaseSubscriptionOptionView: UIView {
     }
     
     func update(model: Model) {
-        for option in model.options {
-            optionLabel.text = option.title
-        }
-        
+        optionLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        tappedAction = model.tappedAction
+        optionImageView.image = model.isSelected
+            ? UIImage(named: "checked.pdf")
+            : UIImage(named: "unchecked.pdf")
     }
     
     private func setupSubviews() {
         addSubview(contentStackView)
-        self.layer.cornerRadius = appearance.standartCornerRadius
-        self.layer.borderWidth = 2
-        self.layer.borderColor = appearance.grayColor
+        self.layer.cornerRadius = appearance.selfViewCornerRadius
+        self.layer.borderWidth = appearance.selfViewBorderWidth
+        self.layer.borderColor = appearance.selfViewBorderColor
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(appearance.standartSpacing)
+            make.edges.equalToSuperview().inset(appearance.contentStackViewEdgesInsetConstraint)
         }
     }
     
     private func commonInit() {
         setupSubviews()
         setupConstraints()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapped))
+        self.addGestureRecognizer(tap)
+    }
+    
+    @objc private func didTapped(_ gesture: UIGestureRecognizer){
+        tappedAction?()
     }
 }
 
 extension PurchaseSubscriptionOptionView {
     struct Model {
         let title: String
-        let options: [Option]
+        let tappedAction: () -> Void
+        let isSelected: Bool
     }
-    
-    struct Option {
-        let title: String
+    struct Appearance {
+        let contentStackViewSpacing = Style.Spacing.standartSpacing
+        let optionLabelFont = Style.Fonts.minBoldFont
+        let optionImageViewSize = 23
+        let selfViewCornerRadius = Style.CornerRadius.standartCornerRadius
+        let selfViewBorderColor = Style.Color.grayColor
+        let selfViewBorderWidth: CGFloat = 2
+        let contentStackViewEdgesInsetConstraint = Style.Constraint.smallConstreint
     }
 }
