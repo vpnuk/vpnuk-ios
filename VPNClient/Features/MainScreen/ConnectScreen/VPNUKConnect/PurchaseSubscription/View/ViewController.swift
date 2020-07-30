@@ -70,7 +70,7 @@ class ViewController: UIViewController {
             
             termsDetailsModel: .init(
                 title: NSLocalizedString("Subscribtion details:", comment: ""),
-                termsDetails: NSLocalizedString("-Your Apple ID account will be charged on the last day of your free trial. \n \n-Your subscription will automatically renew at the end of each billing period unless it is canceled at least 24 hours before the expiry date. \n \n-You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n - Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy.", comment: "")),
+                termsDetails: NSLocalizedString("-Your Apple ID account will be charged on the last day of your free trial. \n \n-Your subscription will automatically renew at the end of each billing period unless it is canceled at least 24 hours before the expiry date. \n \n-You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy.", comment: "")),
             
             purchaseButtonTitle: NSLocalizedString("Start your 7-day free trial", comment: "")))
         
