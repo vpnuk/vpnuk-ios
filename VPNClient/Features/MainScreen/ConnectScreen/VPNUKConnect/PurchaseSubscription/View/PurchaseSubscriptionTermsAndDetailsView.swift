@@ -79,7 +79,7 @@ extension PurchaseSubscriptionTermsAndDetailsView {
         let termsDetailsLabelFont = Style.Fonts.minFont
         let contentStackViewSpacing = Style.Spacing.bigSpacing
         let textViewLinkColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1)
-        let attributedLinkTextRange = NSMakeRange(479, 35)
-        let attributedMainTextRange = NSMakeRange(0, 478)
+        let attributedLinkTextRange = NSMakeRange(477, 36)
+        let attributedMainTextRange = NSMakeRange(0, 477)
     }
 }
