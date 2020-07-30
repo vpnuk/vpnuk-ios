@@ -69,11 +69,11 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         switch model.isSelected {
         case true:
             planMarkImageView.image = UIImage(named: "checked.pdf")
-            self.layer.borderColor = Style.Color.blueColor
+            self.layer.borderColor = appearance.selfViewSelectedBorderColor
             self.layer.borderWidth = appearance.selfViewBorderWidth
         case false:
             planMarkImageView.image = UIImage(named: "unchecked.pdf")
-            self.layer.borderColor = Style.Color.grayColor
+            self.layer.borderColor = appearance.selfViewBorderColor
         }
     }
     private func setupSubviews() {
@@ -139,6 +139,7 @@ extension PurchaseSubscriptionChoosePlanView {
         let detailLabelFont = Style.Fonts.standartFont
         let selfViewCornerRadius = Style.CornerRadius.standartCornerRadius
         let selfViewBorderColor = Style.Color.grayColor
+        let selfViewSelectedBorderColor = Style.Color.blueColor
         let selfViewBorderWidth: CGFloat = 2
         let flagImageViewTopInsetConstraint = 27
         let leftRightBottomEmptyViewWidth = 2
