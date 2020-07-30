@@ -14,7 +14,7 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     // MARK: - Header
     private lazy var headerLabel : UILabel = {
         let label = UILabel()
-        label.textColor = appearance.labelTextColor
+        label.textColor = appearance.textColor
         label.font = appearance.headerLabelFont
         return label
     }()
@@ -22,11 +22,10 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     
     private lazy var termsDetailsTextView: UITextView = {
         let textView = UITextView()
-        textView.textColor = appearance.labelTextColor
         textView.font = appearance.termsDetailsLabelFont
         textView.isEditable = false
-        textView.isSelectable = true
-        textView.isUserInteractionEnabled = true
+        textView.isScrollEnabled = false
+        textView.linkTextAttributes = [.foregroundColor: appearance.textViewLinkColor]
         return textView
     }()
     
@@ -50,7 +49,9 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     
     func update(model: Model) {
         let attributedString = NSMutableAttributedString(string: "\(model.termsDetails)")
-        attributedString.addAttribute(.link, value: "https://www.vpnuk.net/terms/", range: NSRange(location: 479, length: 35))
+        let url = URL(string: "https://www.vpnuk.net/terms/")!
+        attributedString.addAttribute(.foregroundColor, value: appearance.textColor, range: appearance.attributedMainTextRange)
+        attributedString.setAttributes([.link: url], range: appearance.attributedLinkTextRange)
         headerLabel.text = model.title
         termsDetailsTextView.attributedText = attributedString
     }
@@ -79,9 +80,12 @@ extension PurchaseSubscriptionTermsAndDetailsView {
     }
     struct Appearance {
         let headerLabelFont = Style.Fonts.smallBoldFont
-        let labelTextColor = Style.Color.grayTextColor
+        let textColor = Style.Color.grayTextColor
         let termsDetailsLabelNumberOfLines = 0
         let termsDetailsLabelFont = Style.Fonts.minFont
         let contentStackViewSpacing = Style.Spacing.bigSpacing
+        let textViewLinkColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1)
+        let attributedLinkTextRange = NSMakeRange(479, 35)
+        let attributedMainTextRange = NSMakeRange(0, 478)
     }
 }

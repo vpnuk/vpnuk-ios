@@ -97,19 +97,19 @@ class PurchaseSubscriptionChoosePlanView: UIView {
             make.right.equalToSuperview().inset(appearance.flagImageViewRightConstraint)
             make.centerY.equalToSuperview()
             make.left.greaterThanOrEqualTo(contentStackView.snp.right).offset(appearance.flagImageViewLeftInsetConstraint)
-            make.top.bottom.equalToSuperview().inset(27)
+            make.top.bottom.equalToSuperview().inset(appearance.flagImageViewTopInsetConstraint)
         }
         planMarkImageView.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.left.equalTo(appearance.planMarkImageViewLeftConstraint)
         }
         leftView.snp.makeConstraints { (make) in
-            make.width.equalTo(2)
+            make.width.equalTo(appearance.leftRightEmptyViewWidth)
             make.height.equalToSuperview()
             make.left.equalToSuperview()
         }
         rightView.snp.makeConstraints { (make) in
-            make.width.equalTo(2)
+            make.width.equalTo(appearance.leftRightEmptyViewWidth)
             make.height.equalToSuperview()
             make.right.equalToSuperview()
         }
@@ -146,6 +146,8 @@ extension PurchaseSubscriptionChoosePlanView {
         let selfViewCornerRadius = Style.CornerRadius.standartCornerRadius
         let selfViewBorderColor = Style.Color.grayColor
         let selfViewBorderWidth: CGFloat = 2
+        let flagImageViewTopInsetConstraint = 27
+        let leftRightEmptyViewWidth = 2
         let isFirst = CACornerMask([.layerMaxXMinYCorner, .layerMinXMinYCorner])
         let isLast = CACornerMask([.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
     }
