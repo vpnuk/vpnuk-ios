@@ -147,7 +147,7 @@ extension PurchaseSubscriptionPeriodView {
         
         //MARK: - StackViews Appearance
         let contentStackViewSpacing = Style.Spacing.standartSpacing
-        let contentStackViewHeightOffsetConstraint = -(Style.Constraint.bigConstreint)
+        let contentStackViewHeightOffsetConstraint = -(Style.Constraint.bigConstraint)
         let periodLabelStackViewSpacing = Style.Spacing.standartSpacing
         let emptyViewSize = CGSize(width: 0, height: 30)
         let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 100)

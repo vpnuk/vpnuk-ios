@@ -20,7 +20,7 @@ class Style {
     enum Constraint {
         static let smallConstreint: CGFloat = 8
         static let standartConstreint: CGFloat = 16
-        static let bigConstreint: CGFloat = 32
+        static let bigConstraint: CGFloat = 32
     }
     
     // MARK: - Color

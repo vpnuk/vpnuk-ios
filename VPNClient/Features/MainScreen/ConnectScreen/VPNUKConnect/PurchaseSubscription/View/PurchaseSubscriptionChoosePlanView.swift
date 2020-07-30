@@ -140,7 +140,7 @@ extension PurchaseSubscriptionChoosePlanView {
         let contentStackViewConstraint = Style.Constraint.standartConstreint
         let planLabelFont = Style.Fonts.bigBoldFont
         let flagImageViewRightConstraint = Style.Constraint.standartConstreint
-        let flagImageViewLeftInsetConstraint = Style.Constraint.bigConstreint
+        let flagImageViewLeftInsetConstraint = Style.Constraint.bigConstraint
         let planMarkImageViewLeftConstraint = Style.Constraint.standartConstreint
         let detailLabelFont = Style.Fonts.standartFont
         let selfViewCornerRadius = Style.CornerRadius.standartCornerRadius

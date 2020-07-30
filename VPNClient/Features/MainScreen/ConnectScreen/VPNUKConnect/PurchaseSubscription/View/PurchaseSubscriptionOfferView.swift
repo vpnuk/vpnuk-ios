@@ -205,10 +205,10 @@ extension PurchaseSubscriptionOfferView {
         
         // MARK: - ContentStackView Appearance
         let contentStackViewSpacing: CGFloat = 16
-        let contentStackViewEdgesConstraint = Style.Constraint.bigConstreint
+        let contentStackViewEdgesConstraint = Style.Constraint.bigConstraint
         
         // MARK: - ScrollView Appearance
-        let scrollViewEdgesConstraint = Style.Constraint.bigConstreint
+        let scrollViewEdgesConstraint = Style.Constraint.bigConstraint
         let scrollViewContentInsets = UIEdgeInsets(top: -16, left: 0, bottom: 64, right: 0)
         
         let headerStackViewSpacing = Style.Spacing.noSpacing

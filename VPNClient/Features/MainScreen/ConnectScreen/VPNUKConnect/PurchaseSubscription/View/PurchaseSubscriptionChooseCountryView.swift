@@ -137,8 +137,8 @@ extension PurchaseSubscriptionChooseCountryView {
         // MARK: - Header Appearance
         let headerLabelNumberOfLines = 0
         let headerLabelFont = Style.Fonts.bigBoldFont
-        let headerLabelLeftConstraint = Style.Constraint.bigConstreint
-        let headerLabelTopConstraint = Style.Constraint.bigConstreint
+        let headerLabelLeftConstraint = Style.Constraint.bigConstraint
+        let headerLabelTopConstraint = Style.Constraint.bigConstraint
         
         // MARK: - ChooseButton Appearance
         let chooseButtonTitleFont = Style.Fonts.bigBoldFont
@@ -150,7 +150,7 @@ extension PurchaseSubscriptionChooseCountryView {
         
         // MARK: - ContentStackView Appearance
         let contentStackViewSpacing = Style.Spacing.noSpacing
-        let contentStackViewLeftConstraint = Style.Constraint.bigConstreint
+        let contentStackViewLeftConstraint = Style.Constraint.bigConstraint
         let contentStackViewTopOffsetConstraint = 77
     }
 }
