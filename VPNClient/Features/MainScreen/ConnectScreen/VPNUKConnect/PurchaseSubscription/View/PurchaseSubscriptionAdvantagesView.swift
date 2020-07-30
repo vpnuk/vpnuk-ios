@@ -79,7 +79,7 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     }
     
     func update(model: Model) {
-        whySubscribeLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        whySubscribeLabel.text = model.title
         let allReasons = addReasons(model.reasons)
         reasonsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for reason in allReasons {

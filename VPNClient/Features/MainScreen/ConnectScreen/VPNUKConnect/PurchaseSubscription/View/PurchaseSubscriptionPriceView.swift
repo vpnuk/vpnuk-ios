@@ -49,8 +49,8 @@ class PurchaseSubscriptionPriceView: UIView {
     }
     
     func update(model: Model) {
-        totalPriceLabel.text = NSLocalizedString("\(model.title)", comment: "")
-        moneySumLabel.text = NSLocalizedString("\(model.moneySum)", comment: "")
+        totalPriceLabel.text = model.title
+        moneySumLabel.text = model.moneySum
     }
     
     private func setupSubviews() {

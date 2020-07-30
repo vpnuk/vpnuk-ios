@@ -46,11 +46,16 @@ class PurchaseSubscriptionOptionView: UIView {
     }
     
     func update(model: Model) {
-        optionLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        optionLabel.text = model.title
         tappedAction = model.tappedAction
-        optionImageView.image = model.isSelected
-            ? UIImage(named: "checked.pdf")
-            : UIImage(named: "unchecked.pdf")
+        switch model.isSelected {
+        case true:
+            optionImageView.image = UIImage(named: "checked.pdf")
+            self.layer.borderColor = Style.Color.blueColor
+        case false:
+            optionImageView.image = UIImage(named: "unchecked.pdf")
+            self.layer.borderColor = Style.Color.grayColor
+        }
     }
     
     private func setupSubviews() {

@@ -97,6 +97,7 @@ class PurchaseSubscriptionOfferView: UIView {
         let scroll = UIScrollView()
         scroll.addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
             make.edges.equalTo(appearance.scrollViewEdgesConstraint)
         }
         return scroll
@@ -155,7 +156,7 @@ class PurchaseSubscriptionOfferView: UIView {
         }
         
         headerLogoImageView.image = model.logo
-        purchaseButton.setTitle(NSLocalizedString("\(model.purchaseButtonTitle)", comment: ""), for: .normal)
+        purchaseButton.setTitle("\(model.purchaseButtonTitle)", for: .normal)
     }
     
     private func setupSubviews() {
@@ -174,6 +175,7 @@ class PurchaseSubscriptionOfferView: UIView {
         }
         emptyView.snp.makeConstraints { (make) in
             make.size.greaterThanOrEqualTo(appearance.emptyViewSize)
+            
         }
     }
     
@@ -207,7 +209,7 @@ extension PurchaseSubscriptionOfferView {
         
         // MARK: - ScrollView Appearance
         let scrollViewEdgesConstraint = Style.Constraint.bigConstreint
-        let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+        let scrollViewContentInsets = UIEdgeInsets(top: -16, left: 0, bottom: 64, right: 0)
         
         let headerStackViewSpacing = Style.Spacing.noSpacing
         let headeLogoSize = CGSize(width: 202, height: 50)

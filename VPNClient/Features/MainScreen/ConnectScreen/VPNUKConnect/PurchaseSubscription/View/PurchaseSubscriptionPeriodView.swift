@@ -12,12 +12,14 @@ import UIKit
 class PurchaseSubscriptionPeriodView: UIView {
     private lazy var appearance = Appearance()
     private var optionSelectedAction: ((_ index: Int) -> Void)?
+    private var infoTapAction: (() -> Void)?
     
     // MARK: - Content
     
     private lazy var periodQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
+        button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -50,18 +52,13 @@ class PurchaseSubscriptionPeriodView: UIView {
     private lazy var emptyView: UIView = {
         let view = UIView()
         view.snp.makeConstraints { (make) in
-            make.size.equalTo(appearance.emptyViewSize)
+            make.size.greaterThanOrEqualTo(appearance.emptyViewSize)
         }
         return view
     }()
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.addSubview(optionsStackView)
-        optionsStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
         return scroll
     }()
     
@@ -87,12 +84,22 @@ class PurchaseSubscriptionPeriodView: UIView {
     }
     func update(model: Model) {
         optionSelectedAction = model.optionSelectedAction
-        choosePeriodLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        choosePeriodLabel.text = model.title
         let newOptionsView = buildOptionViews(fromOption: model.options, selectedIndex: model.selectedOptionIndex)
         optionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for optionView in newOptionsView {
             optionsStackView.addArrangedSubview(optionView)
         }
+        if let infoAction = model.infoTapAction {
+            periodQuastionButton.isHidden = false
+            infoTapAction = infoAction
+        } else {
+            periodQuastionButton.isHidden = true
+        }
+    }
+    
+    @objc private func quastionButtonTapped(){
+        infoTapAction?()
     }
     
     private func setupSubviews() {
@@ -108,6 +115,11 @@ class PurchaseSubscriptionPeriodView: UIView {
         contentStackView.snp.makeConstraints { make in
             make.height.equalToSuperview().offset(appearance.contentStackViewHeightOffsetConstraint)
         }
+        optionsStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
     }
     
     private func commonInit() {
@@ -122,6 +134,7 @@ extension PurchaseSubscriptionPeriodView {
         let options: [Option]
         let selectedOptionIndex: Int?
         let optionSelectedAction: (_ index: Int) -> Void
+        let infoTapAction: (() -> Void)?
     }
     
     struct Option {
@@ -136,9 +149,8 @@ extension PurchaseSubscriptionPeriodView {
         let contentStackViewSpacing = Style.Spacing.standartSpacing
         let contentStackViewHeightOffsetConstraint = -(Style.Constraint.bigConstreint)
         let periodLabelStackViewSpacing = Style.Spacing.standartSpacing
-        
-        let emptyViewSize = CGSize(width: 175, height: 30)
-        let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+        let emptyViewSize = CGSize(width: 0, height: 30)
+        let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 100)
     }
 }
 

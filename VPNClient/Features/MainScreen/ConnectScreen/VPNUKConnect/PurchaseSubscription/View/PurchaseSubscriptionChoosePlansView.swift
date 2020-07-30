@@ -12,6 +12,7 @@ import UIKit
 class PurchaseSubscriptionChoosePlansView: UIView {
     private lazy var appearance = Appearance()
     private var planSelectedAction: ((_ index: Int) -> Void)?
+    private var infoTapAction: (() -> Void)?
     private var isSelected: Bool?
     // MARK: - Content
     private lazy var contentStackView: UIStackView = {
@@ -45,7 +46,7 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     private lazy var emptyView: UIView = {
         let view = UIView()
         view.snp.makeConstraints { (make) in
-            make.size.equalTo(appearance.emptyViewSize)
+            make.size.greaterThanOrEqualTo(appearance.emptyViewSize)
         }
         return view
     }()
@@ -60,6 +61,7 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     private lazy var choosePlanQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
+        button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
     init() {
@@ -74,23 +76,52 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     func buildPlanViews(fromPlans plans: [Plan], selectedIndex: Int?) -> [PurchaseSubscriptionChoosePlanView] {
         let plansViews = plans.enumerated().map { index,plan -> PurchaseSubscriptionChoosePlanView in
             let planView = PurchaseSubscriptionChoosePlanView()
-            planView.update(model: .init(title: plan.title, subTitle: plan.subtitle, imageFlag: nil, isSelected: selectedIndex == index , tappedAction: { [weak self] in
+            let appearance = PurchaseSubscriptionChoosePlanView.Appearance()
+            let isFirstPlan = index == 0
+            let isLastPlan = index == plans.count - 1
+            let haveOnlyOnePlan = plans.count == 1
+            if haveOnlyOnePlan {
+                planView.layer.cornerRadius = appearance.selfViewCornerRadius
+                planView.layer.borderWidth = appearance.selfViewBorderWidth
+                planView.layer.borderColor = appearance.selfViewBorderColor
+            } else { if isFirstPlan {
+                planView.layer.cornerRadius = appearance.selfViewCornerRadius
+                planView.layer.maskedCorners = appearance.isFirst
+                planView.layer.borderWidth = appearance.selfViewBorderWidth
+                planView.layer.borderColor = appearance.selfViewBorderColor
+            } else if isLastPlan {
+                planView.layer.cornerRadius = appearance.selfViewCornerRadius
+                planView.layer.maskedCorners = appearance.isLast
+                planView.layer.borderWidth = appearance.selfViewBorderWidth
+                planView.layer.borderColor = appearance.selfViewBorderColor
+            } else { planView.showBorderViews(value: false) }
+            }
+            planView.update(model: .init(title: plan.title, subTitle: plan.subtitle, imageFlag: nil, isSelected: selectedIndex == index, tappedAction: { [weak self] in
                 self?.planSelectedAction?(index)
             }))
             return planView
         }
-        
         return plansViews
     }
     
     func update(model: Model) {
         planSelectedAction = model.planSelectedAction
-        choosePlanLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        choosePlanLabel.text = model.title
         let newPlansView = buildPlanViews(fromPlans: model.plans, selectedIndex: model.selectedPlanIndex)
         plansStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for planView in newPlansView {
             plansStackView.addArrangedSubview(planView)
         }
+        if let infoAction = model.infoTapAction {
+            choosePlanQuastionButton.isHidden = false
+            infoTapAction = infoAction
+        } else {
+            choosePlanQuastionButton.isHidden = true
+        }
+    }
+    
+    @objc private func quastionButtonTapped(){
+        infoTapAction?()
     }
     
     private func setupSubviews() {
@@ -100,6 +131,9 @@ class PurchaseSubscriptionChoosePlansView: UIView {
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
@@ -115,6 +149,7 @@ extension PurchaseSubscriptionChoosePlansView {
         let plans: [Plan]
         let selectedPlanIndex: Int?
         let planSelectedAction: (_ index: Int) -> Void
+        let infoTapAction: (() -> Void)?
     }
     struct Plan {
         let title: String
@@ -127,7 +162,7 @@ extension PurchaseSubscriptionChoosePlansView {
         let plansStackViewSpacing = Style.Spacing.noSpacing
         let horizontalContentStackViewSpacing = Style.Spacing.standartSpacing
         let choosePlanLabelFont = Style.Fonts.bigBoldFont
-        let emptyViewSize = (CGSize(width: 150, height: 30))
+        let emptyViewSize = (CGSize(width: 0, height: 30))
         
     }
 }

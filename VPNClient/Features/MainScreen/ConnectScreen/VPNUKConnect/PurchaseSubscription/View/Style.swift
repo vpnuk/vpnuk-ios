@@ -52,4 +52,5 @@ class Style {
         static let minBoldFont = UIFont.boldSystemFont(ofSize: 12.0)
         static let minFont = UIFont.systemFont(ofSize: 12.0)
     }
+    
 }

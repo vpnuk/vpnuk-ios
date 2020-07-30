@@ -20,18 +20,20 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     }()
     // MARK: - Content
     
-    private lazy var termsDetailsLabel : UILabel = {
-        let label = UILabel()
-        label.numberOfLines = appearance.termsDetailsLabelNumberOfLines
-        label.textColor = appearance.labelTextColor
-        label.font = appearance.termsDetailsLabelFont
-        return label
+    private lazy var termsDetailsTextView: UITextView = {
+        let textView = UITextView()
+        textView.textColor = appearance.labelTextColor
+        textView.font = appearance.termsDetailsLabelFont
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.isUserInteractionEnabled = true
+        return textView
     }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             headerLabel,
-            termsDetailsLabel
+            termsDetailsTextView
         ])
         stackView.axis = .vertical
         stackView.spacing = appearance.contentStackViewSpacing
@@ -47,10 +49,10 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     }
     
     func update(model: Model) {
-        headerLabel.text = NSLocalizedString("\(model.title)", comment: "")
-        let termsText = NSMutableAttributedString(string: model.termsDetails)
-        termsText.addAttribute(.foregroundColor, value: UIColor.red, range: NSRange(location: 397, length: 13))
-        termsDetailsLabel.text = model.termsDetails
+        let attributedString = NSMutableAttributedString(string: "\(model.termsDetails)")
+        attributedString.addAttribute(.link, value: "https://www.vpnuk.net/terms/", range: NSRange(location: 479, length: 35))
+        headerLabel.text = model.title
+        termsDetailsTextView.attributedText = attributedString
     }
     
     private func setupSubviews() {
@@ -60,6 +62,7 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
     }
     

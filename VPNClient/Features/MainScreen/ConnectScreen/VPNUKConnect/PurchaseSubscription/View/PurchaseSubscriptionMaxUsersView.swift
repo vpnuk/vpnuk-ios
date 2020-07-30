@@ -12,11 +12,13 @@ import UIKit
 class PurchaseSubscriptionMaxUsersView: UIView {
     private lazy var appearance = Appearance()
     private var optionSelectedAction: ((_ index: Int) -> Void)?
+    private var infoTapAction: (() -> Void)?
     // MARK: - Content
     
     private lazy var maxUsersQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
+        button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -27,10 +29,18 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         
         return label
     }()
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        view.snp.makeConstraints { (make) in
+            make.size.greaterThanOrEqualTo(appearance.emptyViewSize)
+        }
+        return view
+    }()
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             maxUsersLabel,
             maxUsersQuastionButton,
+            emptyView
         ])
         stackView.axis = .horizontal
         stackView.spacing = appearance.labelStackViewSpacing
@@ -75,12 +85,21 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     
     func update(model: Model) {
         optionSelectedAction = model.optionSelectedAction
-        maxUsersLabel.text = NSLocalizedString("\(model.title)", comment: "")
+        maxUsersLabel.text = model.title
         let newOptionsView = buildOptionViews(fromOption: model.options, selectedIndex: model.selectedOptionIndex)
         optionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for optionView in newOptionsView {
             optionsStackView.addArrangedSubview(optionView)
         }
+        if let infoAction = model.infoTapAction {
+            maxUsersQuastionButton.isHidden = false
+            infoTapAction = infoAction
+        } else {
+            maxUsersQuastionButton.isHidden = true
+        }
+    }
+    @objc private func quastionButtonTapped(){
+        infoTapAction?()
     }
     
     private func setupSubviews() {
@@ -105,6 +124,7 @@ extension PurchaseSubscriptionMaxUsersView {
         let options: [Option]
         let selectedOptionIndex: Int?
         let optionSelectedAction: (_ index: Int) -> Void
+        let infoTapAction: (() -> Void)?
     }
     
     struct Option {
@@ -119,5 +139,7 @@ extension PurchaseSubscriptionMaxUsersView {
         let labelStackViewSpacing = Style.Spacing.standartSpacing
         let contentStackViewSpacing = Style.Spacing.smallSpacing
         let contentStackViewHieghtInsetConstraint = Style.Constraint.standartConstreint
+        
+        let emptyViewSize = CGSize(width: 0, height: 30)
     }
 }
