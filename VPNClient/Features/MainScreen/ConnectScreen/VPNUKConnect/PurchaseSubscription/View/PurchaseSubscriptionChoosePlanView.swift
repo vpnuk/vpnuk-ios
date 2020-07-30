@@ -20,6 +20,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
+    // MARK: - ImageViews
     private lazy var planMarkImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "unchecked.pdf"))
         return imageView
@@ -29,6 +30,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         
         return imageView
     }()
+    // MARK: - BorderViews
     private lazy var leftView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Color.grayTextColor
@@ -39,6 +41,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         view.backgroundColor = Style.Color.grayTextColor
         return view
     }()
+    // MARK: - Labels
     private lazy var planLabel : UILabel = {
         let label = UILabel()
         label.font = appearance.planLabelFont
@@ -67,6 +70,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         case true:
             planMarkImageView.image = UIImage(named: "checked.pdf")
             self.layer.borderColor = Style.Color.blueColor
+            self.layer.borderWidth = appearance.selfViewBorderWidth
         case false:
             planMarkImageView.image = UIImage(named: "unchecked.pdf")
             self.layer.borderColor = Style.Color.grayColor

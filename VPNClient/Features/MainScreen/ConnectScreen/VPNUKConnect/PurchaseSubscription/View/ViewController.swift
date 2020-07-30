@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         let countryView = PurchaseSubscriptionChooseCountryView()
 
         purchaseView.update(model: .init(
-            logo: #imageLiteral(resourceName: "logoImage"),
+            logo: #imageLiteral(resourceName: "logo"),
             plansModel: .init(
                 title: NSLocalizedString("Choose a Plan", comment: ""),
                 plans: [.init(title: NSLocalizedString("Shared IP", comment: ""),
