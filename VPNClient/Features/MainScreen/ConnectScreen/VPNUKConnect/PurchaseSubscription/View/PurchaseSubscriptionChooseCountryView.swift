@@ -68,7 +68,7 @@ class PurchaseSubscriptionChooseCountryView: UIView {
                    countyView.layer.maskedCorners = appearance.isLast
                    countyView.layer.borderWidth = appearance.selfViewBorderWidth
                    countyView.layer.borderColor = appearance.selfViewBorderColor
-               } else { countyView.showBorderViews(value: false) }
+               } else { countyView.showMiddleBorderViews(value: false) }
                }
             countyView.update(model: .init(title: country.title, subTitle: nil, imageFlag: country.imageFlag, isSelected: selectedIndex == index, tappedAction: { [weak self] in
                    self?.countrySelectedAction?(index)

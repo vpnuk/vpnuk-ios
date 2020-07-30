@@ -46,7 +46,9 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     func update(model: Model) {
         let attributedString = NSMutableAttributedString(string: "\(model.termsDetails)")
         let url = URL(string: "https://www.vpnuk.net/terms/")!
-        attributedString.addAttribute(.foregroundColor, value: appearance.textColor, range: appearance.attributedMainTextRange)
+        attributedString.addAttribute(.foregroundColor,
+                                      value: appearance.textColor,
+                                      range: appearance.attributedMainTextRange)
         attributedString.setAttributes([.link: url], range: appearance.attributedLinkTextRange)
         headerLabel.text = model.title
         termsDetailsTextView.attributedText = attributedString

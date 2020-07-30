@@ -33,8 +33,7 @@ class Style {
     }
     // MARK: - Conrner Radius
     enum CornerRadius {
-        static let smallCornerRadius: CGFloat = 5
-        static let standartCornerRadius: CGFloat = 10
+        static let standartCornerRadius: CGFloat = 5
         static let bigCornerRadius: CGFloat = 20
     }
     

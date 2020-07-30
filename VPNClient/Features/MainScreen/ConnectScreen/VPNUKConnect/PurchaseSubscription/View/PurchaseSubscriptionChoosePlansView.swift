@@ -90,7 +90,7 @@ class PurchaseSubscriptionChoosePlansView: UIView {
                 planView.layer.maskedCorners = appearance.isLast
                 planView.layer.borderWidth = appearance.selfViewBorderWidth
                 planView.layer.borderColor = appearance.selfViewBorderColor
-            } else { planView.showBorderViews(value: false) }
+            } else  { planView.showMiddleBorderViews(value: false) }
             }
             planView.update(model: .init(title: plan.title, subTitle: plan.subtitle, imageFlag: nil, isSelected: selectedIndex == index, tappedAction: { [weak self] in
                 self?.planSelectedAction?(index)

@@ -12,14 +12,14 @@ class PurchaseSubscriptionChoosePlanView: UIView {
     private var tappedAction: (() -> Void)?
     // MARK: - Content
     private lazy var contentStackView: UIStackView = {
-           let stackView = UIStackView(arrangedSubviews: [
-               planLabel,
-               detailLabel
-           ])
-           stackView.axis = .vertical
-           stackView.spacing = appearance.contentStackViewSpacing
-           return stackView
-       }()
+        let stackView = UIStackView(arrangedSubviews: [
+            planLabel,
+            detailLabel
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = appearance.contentStackViewSpacing
+        return stackView
+    }()
     private lazy var planMarkImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "unchecked.pdf"))
         return imageView
@@ -97,12 +97,12 @@ class PurchaseSubscriptionChoosePlanView: UIView {
             make.left.equalTo(appearance.planMarkImageViewLeftConstraint)
         }
         leftView.snp.makeConstraints { (make) in
-            make.width.equalTo(appearance.leftRightEmptyViewWidth)
+            make.width.equalTo(appearance.leftRightBottomEmptyViewWidth)
             make.height.equalToSuperview()
             make.left.equalToSuperview()
         }
         rightView.snp.makeConstraints { (make) in
-            make.width.equalTo(appearance.leftRightEmptyViewWidth)
+            make.width.equalTo(appearance.leftRightBottomEmptyViewWidth)
             make.height.equalToSuperview()
             make.right.equalToSuperview()
         }
@@ -137,11 +137,11 @@ extension PurchaseSubscriptionChoosePlanView {
         let selfViewBorderColor = Style.Color.grayColor
         let selfViewBorderWidth: CGFloat = 2
         let flagImageViewTopInsetConstraint = 27
-        let leftRightEmptyViewWidth = 2
+        let leftRightBottomEmptyViewWidth = 2
         let isFirst = CACornerMask([.layerMaxXMinYCorner, .layerMinXMinYCorner])
         let isLast = CACornerMask([.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
     }
-    func showBorderViews(value: Bool) {
+    func showMiddleBorderViews(value: Bool) {
         leftView.isHidden = value
         rightView.isHidden = value
         contentStackView.snp.makeConstraints { (make) in
