@@ -19,7 +19,6 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
         return label
     }()
     // MARK: - Content
-    
     private lazy var termsDetailsTextView: UITextView = {
         let textView = UITextView()
         textView.font = appearance.termsDetailsLabelFont
@@ -28,7 +27,6 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
         textView.linkTextAttributes = [.foregroundColor: appearance.textViewLinkColor]
         return textView
     }()
-    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             headerLabel,
@@ -42,11 +40,9 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
         super.init(frame: .zero)
         commonInit()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     func update(model: Model) {
         let attributedString = NSMutableAttributedString(string: "\(model.termsDetails)")
         let url = URL(string: "https://www.vpnuk.net/terms/")!
@@ -55,24 +51,20 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
         headerLabel.text = model.title
         termsDetailsTextView.attributedText = attributedString
     }
-    
     private func setupSubviews() {
         addSubview(contentStackView)
     }
-    
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.centerX.equalToSuperview()
         }
     }
-    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
     }
 }
-
 extension PurchaseSubscriptionTermsAndDetailsView {
     struct Model {
         let title: String

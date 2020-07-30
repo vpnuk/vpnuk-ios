@@ -17,7 +17,6 @@ class PurchaseSubscriptionAdvantagesView: UIView {
         label.font = appearance.whySubscribeLabelFont
         return label
     }()
-    
     // MARK: - Content
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -30,19 +29,15 @@ class PurchaseSubscriptionAdvantagesView: UIView {
     }()
     private lazy var reasonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            
         ])
         stackView.axis = .vertical
         stackView.spacing = appearance.reasonsStackViewSpacing
         return stackView
     }()
-    
-    
     init() {
         super.init(frame: .zero)
         commonInit()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -77,7 +72,6 @@ class PurchaseSubscriptionAdvantagesView: UIView {
         }
         return reasonsStackViews
     }
-    
     func update(model: Model) {
         whySubscribeLabel.text = model.title
         let allReasons = addReasons(model.reasons)
@@ -86,24 +80,19 @@ class PurchaseSubscriptionAdvantagesView: UIView {
             reasonsStackView.addArrangedSubview(reason)
         }
     }
-    
     private func setupSubviews() {
         addSubview(contentStackView)
     }
-    
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
         }
-        
     }
-    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
     }
 }
-
 extension PurchaseSubscriptionAdvantagesView {
     struct Model {
         let title: String

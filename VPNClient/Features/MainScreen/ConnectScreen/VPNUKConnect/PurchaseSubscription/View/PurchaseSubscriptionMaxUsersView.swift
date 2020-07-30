@@ -14,14 +14,12 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     private var optionSelectedAction: ((_ index: Int) -> Void)?
     private var infoTapAction: (() -> Void)?
     // MARK: - Content
-    
     private lazy var maxUsersQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
         button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     private lazy var maxUsersLabel : UILabel = {
         let label = UILabel()
         label.textColor = appearance.maxUsersLabelTextLabelColor
@@ -67,11 +65,9 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         super.init(frame: .zero)
         commonInit()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     func buildOptionViews(fromOption options: [Option], selectedIndex: Int?) -> [PurchaseSubscriptionOptionView] {
         let optionsViews = options.enumerated().map { index,option -> PurchaseSubscriptionOptionView in
             let optionView = PurchaseSubscriptionOptionView()
@@ -82,7 +78,6 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         }
         return optionsViews
     }
-    
     func update(model: Model) {
         optionSelectedAction = model.optionSelectedAction
         maxUsersLabel.text = model.title
@@ -105,19 +100,16 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     private func setupSubviews() {
         addSubview(contentStackView)
     }
-    
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
         }
     }
-    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
     }
 }
-
 extension PurchaseSubscriptionMaxUsersView {
     struct Model {
         let title: String
@@ -126,7 +118,6 @@ extension PurchaseSubscriptionMaxUsersView {
         let optionSelectedAction: (_ index: Int) -> Void
         let infoTapAction: (() -> Void)?
     }
-    
     struct Option {
         let title: String
     }

@@ -24,7 +24,6 @@ class PurchaseSubscriptionChoosePlansView: UIView {
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
-    
     private lazy var plansStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             
@@ -50,7 +49,6 @@ class PurchaseSubscriptionChoosePlansView: UIView {
         }
         return view
     }()
-    
     private lazy var choosePlanLabel : UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Choose a Plan", comment: "")
@@ -68,11 +66,9 @@ class PurchaseSubscriptionChoosePlansView: UIView {
         super.init(frame: .zero)
         commonInit()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     func buildPlanViews(fromPlans plans: [Plan], selectedIndex: Int?) -> [PurchaseSubscriptionChoosePlanView] {
         let plansViews = plans.enumerated().map { index,plan -> PurchaseSubscriptionChoosePlanView in
             let planView = PurchaseSubscriptionChoosePlanView()
@@ -103,7 +99,6 @@ class PurchaseSubscriptionChoosePlansView: UIView {
         }
         return plansViews
     }
-    
     func update(model: Model) {
         planSelectedAction = model.planSelectedAction
         choosePlanLabel.text = model.title
@@ -119,15 +114,12 @@ class PurchaseSubscriptionChoosePlansView: UIView {
             choosePlanQuastionButton.isHidden = true
         }
     }
-    
     @objc private func quastionButtonTapped(){
         infoTapAction?()
     }
-    
     private func setupSubviews() {
         addSubview(contentStackView)
     }
-    
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
@@ -136,13 +128,11 @@ class PurchaseSubscriptionChoosePlansView: UIView {
             make.edges.equalToSuperview()
         }
     }
-    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
     }
 }
-
 extension PurchaseSubscriptionChoosePlansView {
     struct Model {
         let title: String
@@ -155,8 +145,6 @@ extension PurchaseSubscriptionChoosePlansView {
         let title: String
         let subtitle: String
     }
-    
-    
     struct Appearance {
         let contentStackViewSpacing = Style.Spacing.bigSpacing
         let plansStackViewSpacing = Style.Spacing.noSpacing

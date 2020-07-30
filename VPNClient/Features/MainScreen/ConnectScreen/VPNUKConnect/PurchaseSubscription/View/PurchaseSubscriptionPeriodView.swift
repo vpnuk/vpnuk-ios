@@ -13,23 +13,19 @@ class PurchaseSubscriptionPeriodView: UIView {
     private lazy var appearance = Appearance()
     private var optionSelectedAction: ((_ index: Int) -> Void)?
     private var infoTapAction: (() -> Void)?
-    
     // MARK: - Content
-    
     private lazy var periodQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
         button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     private lazy var choosePeriodLabel : UILabel = {
         let label = UILabel()
         label.textColor = appearance.choosePeriodLabelColor
         label.font = appearance.choosePeriodLabelFont
         return label
     }()
-    
     private lazy var optionsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             
@@ -38,7 +34,6 @@ class PurchaseSubscriptionPeriodView: UIView {
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
-    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             choosePeriodLabel,
@@ -61,17 +56,13 @@ class PurchaseSubscriptionPeriodView: UIView {
         scroll.addSubview(optionsStackView)
         return scroll
     }()
-    
-    
     init() {
         super.init(frame: .zero)
         commonInit()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     func buildOptionViews(fromOption options: [Option], selectedIndex: Int?) -> [PurchaseSubscriptionOptionView] {
         let optionsViews = options.enumerated().map { index,option -> PurchaseSubscriptionOptionView in
             let optionView = PurchaseSubscriptionOptionView()
@@ -97,17 +88,14 @@ class PurchaseSubscriptionPeriodView: UIView {
             periodQuastionButton.isHidden = true
         }
     }
-    
     @objc private func quastionButtonTapped(){
         infoTapAction?()
     }
-    
     private func setupSubviews() {
         addSubview(contentStackView)
         addSubview(scrollView)
         scrollView.contentInset = appearance.scrollViewContentInsets
     }
-    
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(contentStackView.snp.bottom)
@@ -121,13 +109,11 @@ class PurchaseSubscriptionPeriodView: UIView {
             make.centerY.equalToSuperview()
         }
     }
-    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
     }
 }
-
 extension PurchaseSubscriptionPeriodView {
     struct Model {
         let title: String

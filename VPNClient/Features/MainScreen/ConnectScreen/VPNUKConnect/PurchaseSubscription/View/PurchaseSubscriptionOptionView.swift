@@ -21,7 +21,6 @@ class PurchaseSubscriptionOptionView: UIView {
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
-    
     private lazy var optionImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "unchecked.pdf"))
         imageView.snp.makeConstraints { (make) in
@@ -29,22 +28,18 @@ class PurchaseSubscriptionOptionView: UIView {
         }
         return imageView
     }()
-    
     private lazy var optionLabel : UILabel = {
         let label = UILabel()
         label.font = appearance.optionLabelFont
         return label
     }()
-    
     init() {
         super.init(frame: .zero)
         commonInit()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     func update(model: Model) {
         optionLabel.text = model.title
         tappedAction = model.tappedAction
@@ -57,32 +52,27 @@ class PurchaseSubscriptionOptionView: UIView {
             self.layer.borderColor = Style.Color.grayColor
         }
     }
-    
     private func setupSubviews() {
         addSubview(contentStackView)
         self.layer.cornerRadius = appearance.selfViewCornerRadius
         self.layer.borderWidth = appearance.selfViewBorderWidth
         self.layer.borderColor = appearance.selfViewBorderColor
     }
-    
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(appearance.contentStackViewEdgesInsetConstraint)
         }
     }
-    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapped))
         self.addGestureRecognizer(tap)
     }
-    
     @objc private func didTapped(_ gesture: UIGestureRecognizer){
         tappedAction?()
     }
 }
-
 extension PurchaseSubscriptionOptionView {
     struct Model {
         let title: String
