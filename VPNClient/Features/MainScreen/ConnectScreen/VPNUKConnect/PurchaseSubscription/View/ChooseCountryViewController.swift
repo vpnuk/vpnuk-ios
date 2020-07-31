@@ -17,9 +17,9 @@ class ChooseCountryViewController: UIViewController {
     override func loadView() {
         countryView.update(model: .init(
             title: NSLocalizedString("Choose country of your dedicated server", comment: ""),
-            countries: [.init(title: "Australia", imageFlag: #imageLiteral(resourceName: "au1")),
-                        .init(title: "England", imageFlag: #imageLiteral(resourceName: "uk1")),
-                        .init(title: "Japan", imageFlag: #imageLiteral(resourceName: "jp1"))],
+            countries: [.init(title: NSLocalizedString("France", comment: ""), imageFlag: #imageLiteral(resourceName: "fr1")),
+                        .init(title: NSLocalizedString("England", comment: ""), imageFlag: #imageLiteral(resourceName: "uk1")),
+                        .init(title: NSLocalizedString("Japan", comment: ""), imageFlag: #imageLiteral(resourceName: "jp1"))],
             selectedCountryIndex: nil,
             countrySelectedAction: { (index) in
                 viewSelected()
