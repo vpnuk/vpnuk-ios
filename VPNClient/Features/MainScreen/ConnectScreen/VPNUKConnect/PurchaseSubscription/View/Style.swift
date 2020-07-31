@@ -27,7 +27,7 @@ class Style {
     enum Color {
         static let blueColor = UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1).cgColor
         static let grayColor = UIColor(red: 0.569, green: 0.569, blue: 0.569, alpha: 1).cgColor
-        static let grayTextColor = UIColor(red: 0.569, green: 0.569, blue: 0.569, alpha: 1)
+        static let grayUIColor = UIColor(red: 0.569, green: 0.569, blue: 0.569, alpha: 1)
         static let darkGrayColor = UIColor(red: 0.255, green: 0.325, blue: 0.365, alpha: 1)
         
     }
@@ -51,5 +51,4 @@ class Style {
         static let minBoldFont = UIFont.boldSystemFont(ofSize: 12.0)
         static let minFont = UIFont.systemFont(ofSize: 12.0)
     }
-    
 }

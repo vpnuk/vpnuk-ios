@@ -94,6 +94,8 @@
 		78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0E24675BF80004161B /* ServerPickerNotPickedView.swift */; };
 		78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A1024675DF80004161B /* ServerPickerView.swift */; };
 		FA02C2A124CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */; };
+		FA1DB12724D417470023880E /* ChooseCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DB12624D417470023880E /* ChooseCountryViewController.swift */; };
+		FA1DB12B24D4AB0F0023880E /* ChooseCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */; };
 		FA53E42324C8B61500E552AB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = FA53E42224C8B61500E552AB /* Podfile */; };
 		FA53E42424C8B61500E552AB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = FA53E42224C8B61500E552AB /* Podfile */; };
 		FA5DCFFE24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */; };
@@ -223,6 +225,8 @@
 		87E5941B03938A911B623791 /* Pods-VPNClientNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
 		D9D650901D3CDC7F32EC06FA /* Pods-VPNClientNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryView.swift; sourceTree = "<group>"; };
+		FA1DB12624D417470023880E /* ChooseCountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCountryViewController.swift; sourceTree = "<group>"; };
+		FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseCountryViewController.swift; sourceTree = "<group>"; };
 		FA53E42224C8B61500E552AB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionPeriodView.swift; sourceTree = "<group>"; };
 		FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionMaxUsersView.swift; sourceTree = "<group>"; };
@@ -684,7 +688,9 @@
 			children = (
 				FA859BD924CED44C002F12E7 /* Style.swift */,
 				FA5DD00324CC447F0017D6F3 /* ViewController.swift */,
+				FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */,
 				FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */,
+				FA1DB12624D417470023880E /* ChooseCountryViewController.swift */,
 				78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */,
 				7849602724C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift */,
 				7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift */,
@@ -985,6 +991,7 @@
 				FA5DCFFE24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift in Sources */,
 				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
 				1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */,
+				FA1DB12B24D4AB0F0023880E /* ChooseCountryViewController.swift in Sources */,
 				78914B8A24C6291300BE0835 /* PurchaseSubscriptionOfferView.swift in Sources */,
 				FA5DD00024CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift in Sources */,
 				78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */,
@@ -1015,6 +1022,7 @@
 				78360DC224620B7800988F14 /* CredentialsProviderFactory.swift in Sources */,
 				784CEFD824B2626100D95ED6 /* PickedSubscriptionDedicatedServerView.swift in Sources */,
 				7849603224C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift in Sources */,
+				FA1DB12724D417470023880E /* ChooseCountryViewController.swift in Sources */,
 				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,

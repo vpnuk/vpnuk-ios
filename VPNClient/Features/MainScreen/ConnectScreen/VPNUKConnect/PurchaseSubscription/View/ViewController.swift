@@ -14,10 +14,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
     }
+    
     override func loadView() {
-        
         let purchaseView = PurchaseSubscriptionOfferView()
-        let countryView = PurchaseSubscriptionChooseCountryView()
 
         purchaseView.update(model: .init(
             logo: #imageLiteral(resourceName: "logo"),
@@ -35,7 +34,7 @@ class ViewController: UIViewController {
                 planSelectedAction: { (index) in
                     viewSelected()
             },
-                infoTapAction: nil),
+                infoTapAction: {infoButtonTapped()}),
             
             periodModel: .init(
                 title: NSLocalizedString("Choose period", comment: ""),
@@ -47,7 +46,7 @@ class ViewController: UIViewController {
                 optionSelectedAction: { (index) in
                     viewSelected()
             },
-                infoTapAction: nil),
+                infoTapAction: {infoButtonTapped()}),
             
             maxUsersModel: .init(
                 title: NSLocalizedString("Max users", comment: ""),
@@ -56,7 +55,7 @@ class ViewController: UIViewController {
                 optionSelectedAction: { (index) in
                     viewSelected()
             },
-                infoTapAction: nil),
+                infoTapAction: {infoButtonTapped()}),
             
             priceModel: .init(title: NSLocalizedString("Total Price:", comment: ""),
                               moneySum: NSLocalizedString("10$", comment: "")),
@@ -70,25 +69,17 @@ class ViewController: UIViewController {
             
             termsDetailsModel: .init(
                 title: NSLocalizedString("Subscribtion details:", comment: ""),
-                termsDetails: NSLocalizedString("-Your Apple ID account will be charged on the last day of your free trial. \n \n-Your subscription will automatically renew at the end of each billing period unless it is canceled at least 24 hours before the expiry date. \n \n-You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy.", comment: "")),
+                termsDetails: NSMutableAttributedString(string:"-Your Apple ID account will be charged on the last day of your free trial. \n \n-Your subscription will automatically renew at the end of each billing period unless it is canceled at least 24 hours before the expiry date. \n \n-You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy."),
+                
+                termsDetailsURL: "https://www.vpnuk.net/terms/"),
             
             purchaseButtonTitle: NSLocalizedString("Start your 7-day free trial", comment: "")))
         
-        func viewSelected() {
-            
-        }
-        view = purchaseView
+        func viewSelected() {}
         
-        countryView.update(model: .init(
-            title: NSLocalizedString("Choose country of your dedicated server", comment: ""),
-            countries: [.init(title: "Australia", imageFlag: #imageLiteral(resourceName: "au1")),
-                        .init(title: "England", imageFlag: #imageLiteral(resourceName: "uk1")),
-                        .init(title: "Japan", imageFlag: #imageLiteral(resourceName: "jp1"))],
-            selectedCountryIndex: nil,
-            countrySelectedAction: { (index) in
-                viewSelected()
-        },
-            chooseButtonTitle: NSLocalizedString("Choose", comment: "")))
+        func infoButtonTapped() {}
+        
+        view = purchaseView
     }
 }
 

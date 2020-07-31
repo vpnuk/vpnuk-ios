@@ -20,30 +20,25 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var maxUsersLabel : UILabel = {
         let label = UILabel()
         label.textColor = appearance.maxUsersLabelTextLabelColor
         label.font = appearance.maxUsersLabelFont
-        
         return label
     }()
-    private lazy var emptyView: UIView = {
-        let view = UIView()
-        view.snp.makeConstraints { (make) in
-            make.size.greaterThanOrEqualTo(appearance.emptyViewSize)
-        }
-        return view
-    }()
+
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             maxUsersLabel,
             maxUsersQuastionButton,
-            emptyView
+            UIView()
         ])
         stackView.axis = .horizontal
         stackView.spacing = appearance.labelStackViewSpacing
         return stackView
     }()
+    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             labelStackView,
@@ -53,46 +48,52 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
+    
     private lazy var optionsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            
-        ])
+        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
+    
     init() {
         super.init(frame: .zero)
         commonInit()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     func buildOptionViews(fromOption options: [Option], selectedIndex: Int?) -> [PurchaseSubscriptionOptionView] {
         let optionsViews = options.enumerated().map { index,option -> PurchaseSubscriptionOptionView in
             let optionView = PurchaseSubscriptionOptionView()
-            optionView.update(model: .init(title: option.title, tappedAction: { [weak self] in
-                self?.optionSelectedAction?(index)
-                }, isSelected: selectedIndex == index))
+            
+            optionView.update(model: .init(
+                title: option.title,
+                tappedAction: { [weak self] in self?.optionSelectedAction?(index) },
+                isSelected: selectedIndex == index
+                ))
             return optionView
         }
         return optionsViews
     }
+    
     func update(model: Model) {
         optionSelectedAction = model.optionSelectedAction
         maxUsersLabel.text = model.title
-        let newOptionsView = buildOptionViews(fromOption: model.options, selectedIndex: model.selectedOptionIndex)
+        let newOptionsView = buildOptionViews(
+            fromOption: model.options,
+            selectedIndex: model.selectedOptionIndex
+        )
         optionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for optionView in newOptionsView {
             optionsStackView.addArrangedSubview(optionView)
         }
-        if let infoAction = model.infoTapAction {
-            maxUsersQuastionButton.isHidden = false
-            infoTapAction = infoAction
-        } else {
-            maxUsersQuastionButton.isHidden = true
-        }
+       maxUsersQuastionButton.isHidden = model.infoTapAction == nil
+        infoTapAction = model.infoTapAction
     }
+    
     @objc private func quastionButtonTapped(){
         infoTapAction?()
     }
@@ -100,16 +101,19 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     private func setupSubviews() {
         addSubview(contentStackView)
     }
+    
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
         }
     }
+    
     private func commonInit() {
         setupSubviews()
         setupConstraints()
     }
 }
+
 extension PurchaseSubscriptionMaxUsersView {
     struct Model {
         let title: String
@@ -118,9 +122,11 @@ extension PurchaseSubscriptionMaxUsersView {
         let optionSelectedAction: (_ index: Int) -> Void
         let infoTapAction: (() -> Void)?
     }
+    
     struct Option {
         let title: String
     }
+    
     struct Appearance {
         //MARK: - MaxUsers Appearance
         let maxUsersLabelFont = Style.Fonts.standartBoldFont
@@ -129,8 +135,6 @@ extension PurchaseSubscriptionMaxUsersView {
         //MARK: - StackViews Appearance
         let labelStackViewSpacing = Style.Spacing.standartSpacing
         let contentStackViewSpacing = Style.Spacing.smallSpacing
-        let contentStackViewHieghtInsetConstraint = Style.Constraint.standartConstreint
-        
-        let emptyViewSize = CGSize(width: 0, height: 30)
+        let contentStackViewHieghtInsetSize = Style.Constraint.standartConstreint
     }
 }
