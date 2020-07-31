@@ -2,7 +2,7 @@
 //  ChooseCountryViewController.swift
 //  VPNClient
 //
-//  Created by Александр Умаров on 31.07.2020.
+//  Created by Igor Kasyanenko on 20.07.2020.
 //  Copyright © 2020 VPNUK. All rights reserved.
 //
 
