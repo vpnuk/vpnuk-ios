@@ -10,26 +10,34 @@ import Foundation
 import UIKit
 
 class PurchaseSubscriptionTermsAndDetailsView: UIView {
-    
-    // MARK: Header
-    
-    private lazy var headerLogoImageView: UIImageView = {
-        let imageView = UIImageView()
-        
-        return imageView
+    private lazy var appearance = Appearance()
+    // MARK: - Header
+    private lazy var headerLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = appearance.textColor
+        label.font = appearance.headerLabelFont
+        return label
     }()
     
-    // MARK: Content
+    // MARK: - Content
+    private lazy var termsDetailsTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = appearance.termsDetailsLabelFont
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.linkTextAttributes = appearance.attributedTextLinkColor
+        return textView
+    }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            headerLogoImageView,
+            headerLabel,
+            termsDetailsTextView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
-    
     
     init() {
         super.init(frame: .zero)
@@ -41,7 +49,14 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     }
     
     func update(model: Model) {
-
+        let attributedString = model.termsDetails
+        let url = URL(string: model.termsDetailsURL)!
+        attributedString.addAttribute(.foregroundColor,
+                                      value: appearance.textColor,
+                                      range: appearance.attributedMainTextRange)
+        attributedString.setAttributes([.link: url], range: appearance.attributedLinkTextRange)
+        headerLabel.text = model.title
+        termsDetailsTextView.attributedText = attributedString
     }
     
     private func setupSubviews() {
@@ -50,7 +65,7 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            make.edges.equalToSuperview()
         }
     }
     
@@ -63,5 +78,18 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
 extension PurchaseSubscriptionTermsAndDetailsView {
     struct Model {
         let title: String
+        let termsDetails: NSMutableAttributedString
+        let termsDetailsURL: String
+    }
+    
+    struct Appearance {
+        let headerLabelFont = Style.Fonts.smallBoldFont
+        let textColor = Style.Color.grayUIColor
+        let termsDetailsLabelNumberOfLines = 0
+        let termsDetailsLabelFont = Style.Fonts.minFont
+        let contentStackViewSpacing = Style.Spacing.bigSpacing
+        let attributedLinkTextRange = NSMakeRange(477, 36)
+        let attributedMainTextRange = NSMakeRange(0, 477)
+        let attributedTextLinkColor = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1)]
     }
 }

@@ -64,7 +64,7 @@
 		7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416E249E42E600F7BA40 /* ServersRepository.swift */; };
 		78464173249E4E6500F7BA40 /* ServerPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */; };
 		7849602824C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849602724C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift */; };
-		7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionsView.swift */; };
+		7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift */; };
 		7849602C24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849602B24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift */; };
 		7849602E24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849602D24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift */; };
 		7849603024C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849602F24C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift */; };
@@ -93,6 +93,16 @@
 		78FE0A0C246752750004161B /* ServerPickerPickedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78FE0A0B246752750004161B /* ServerPickerPickedView.xib */; };
 		78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0E24675BF80004161B /* ServerPickerNotPickedView.swift */; };
 		78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A1024675DF80004161B /* ServerPickerView.swift */; };
+		FA02C2A124CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */; };
+		FA1DB12724D417470023880E /* ChooseCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DB12624D417470023880E /* ChooseCountryViewController.swift */; };
+		FA1DB12B24D4AB0F0023880E /* ChooseCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */; };
+		FA53E42324C8B61500E552AB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = FA53E42224C8B61500E552AB /* Podfile */; };
+		FA53E42424C8B61500E552AB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = FA53E42224C8B61500E552AB /* Podfile */; };
+		FA5DCFFE24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */; };
+		FA5DD00024CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */; };
+		FA5DD00224CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */; };
+		FA5DD00424CC447F0017D6F3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DD00324CC447F0017D6F3 /* ViewController.swift */; };
+		FA859BDA24CED44C002F12E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA859BD924CED44C002F12E7 /* Style.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,7 +192,7 @@
 		7846416E249E42E600F7BA40 /* ServersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersRepository.swift; sourceTree = "<group>"; };
 		78464172249E4E6500F7BA40 /* ServerPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerViewModel.swift; sourceTree = "<group>"; };
 		7849602724C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChoosePlanView.swift; sourceTree = "<group>"; };
-		7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOptionsView.swift; sourceTree = "<group>"; };
+		7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOptionView.swift; sourceTree = "<group>"; };
 		7849602B24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionPriceView.swift; sourceTree = "<group>"; };
 		7849602D24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionAdvantagesView.swift; sourceTree = "<group>"; };
 		7849602F24C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionTermsAndDetailsView.swift; sourceTree = "<group>"; };
@@ -214,6 +224,15 @@
 		8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87E5941B03938A911B623791 /* Pods-VPNClientNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
 		D9D650901D3CDC7F32EC06FA /* Pods-VPNClientNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryView.swift; sourceTree = "<group>"; };
+		FA1DB12624D417470023880E /* ChooseCountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCountryViewController.swift; sourceTree = "<group>"; };
+		FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseCountryViewController.swift; sourceTree = "<group>"; };
+		FA53E42224C8B61500E552AB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionPeriodView.swift; sourceTree = "<group>"; };
+		FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionMaxUsersView.swift; sourceTree = "<group>"; };
+		FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChoosePlansView.swift; sourceTree = "<group>"; };
+		FA5DD00324CC447F0017D6F3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FA859BD924CED44C002F12E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -380,6 +399,7 @@
 		5EAF721E9B977F4AA4EB7FF4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				FA53E42224C8B61500E552AB /* Podfile */,
 				6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */,
 				01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */,
 				D9D650901D3CDC7F32EC06FA /* Pods-VPNClientNetworkExtension.debug.xcconfig */,
@@ -666,9 +686,17 @@
 		78914B8B24C629EC00BE0835 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FA859BD924CED44C002F12E7 /* Style.swift */,
+				FA5DD00324CC447F0017D6F3 /* ViewController.swift */,
+				FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */,
+				FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */,
+				FA1DB12624D417470023880E /* ChooseCountryViewController.swift */,
 				78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */,
 				7849602724C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift */,
-				7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionsView.swift */,
+				7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift */,
+				FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */,
+				FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */,
+				FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */,
 				7849602B24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift */,
 				7849602D24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift */,
 				7849602F24C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift */,
@@ -843,6 +871,7 @@
 				171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */,
 				78FE0A0C246752750004161B /* ServerPickerPickedView.xib in Resources */,
 				1782EFEA235CBF8F0082F9CD /* Assets.xcassets in Resources */,
+				FA53E42324C8B61500E552AB /* Podfile in Resources */,
 				1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -851,6 +880,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA53E42424C8B61500E552AB /* Podfile in Resources */,
 				171067612381851B00A72FDE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -945,7 +975,9 @@
 			files = (
 				784CEFD424B2620A00D95ED6 /* PickedSubscriptionView.swift in Sources */,
 				784CEFE024B26AC700D95ED6 /* NotPickedSubscriptionView.swift in Sources */,
+				FA5DD00224CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift in Sources */,
 				78B8DDC924B65086009399C5 /* SubscriptionTableViewCell.swift in Sources */,
+				FA5DD00424CC447F0017D6F3 /* ViewController.swift in Sources */,
 				1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */,
 				784CEFE524B26DA000D95ED6 /* SubscriptionsListViewController.swift in Sources */,
 				78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */,
@@ -956,9 +988,12 @@
 				7849602824C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift in Sources */,
 				1782F02D235D1F310082F9CD /* RestAPI.swift in Sources */,
 				78360DC924620BFA00988F14 /* CredentialsProvider.swift in Sources */,
+				FA5DCFFE24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift in Sources */,
 				1782F024235D02AE0082F9CD /* ServerItemTableViewCell.swift in Sources */,
 				1782F010235CC3BC0082F9CD /* OpenVPNService.swift in Sources */,
+				FA1DB12B24D4AB0F0023880E /* ChooseCountryViewController.swift in Sources */,
 				78914B8A24C6291300BE0835 /* PurchaseSubscriptionOfferView.swift in Sources */,
+				FA5DD00024CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift in Sources */,
 				78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */,
 				78FE0A042467329B0004161B /* MainScreenFactory.swift in Sources */,
 				7849602C24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift in Sources */,
@@ -987,11 +1022,13 @@
 				78360DC224620B7800988F14 /* CredentialsProviderFactory.swift in Sources */,
 				784CEFD824B2626100D95ED6 /* PickedSubscriptionDedicatedServerView.swift in Sources */,
 				7849603224C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift in Sources */,
+				FA1DB12724D417470023880E /* ChooseCountryViewController.swift in Sources */,
 				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
 				78360DF82465DE2800988F14 /* MainScreenViewController.swift in Sources */,
 				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
+				FA859BDA24CED44C002F12E7 /* Style.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,
 				78B8DDCB24B653BB009399C5 /* VPNAccountTableViewCell.swift in Sources */,
@@ -1005,6 +1042,7 @@
 				783B35F6244D018500425A9F /* UserData.swift in Sources */,
 				78360DE52463565E00988F14 /* AuthVPNUKConnectViewModel.swift in Sources */,
 				78360DEB2463699500988F14 /* ConnectScreenFactory.swift in Sources */,
+				FA02C2A124CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift in Sources */,
 				17D61E202364BA6900ECAEBE /* ServerListViewController.swift in Sources */,
 				783B35EF244CF11C00425A9F /* SignInCredentialsDTO.swift in Sources */,
 				7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */,
@@ -1015,7 +1053,7 @@
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
 				78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */,
 				78360DD924634B4900988F14 /* AccountVPNUKConnectViewModel.swift in Sources */,
-				7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionsView.swift in Sources */,
+				7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

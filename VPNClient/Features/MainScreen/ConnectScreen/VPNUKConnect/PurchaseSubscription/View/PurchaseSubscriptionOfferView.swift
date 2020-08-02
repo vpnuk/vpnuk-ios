@@ -8,61 +8,65 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class PurchaseSubscriptionOfferView: UIView {
-    
-    // MARK: Header
+    private lazy var appearance = Appearance()
+    // MARK: - Header
+    private lazy var headerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            headerLogoImageView,
+            UIView(),
+            closeButton
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = appearance.headerStackViewSpacing
+        return stackView
+    }()
     
     private lazy var headerLogoImageView: UIImageView = {
-        let imageView = UIImageView()
-        
+        let imageView = UIImageView(image: UIImage(named: "logo"))
         return imageView
     }()
     
     private lazy var closeButton: UIButton = {
         let button = UIButton()
-        
+        button.setImage(UIImage(named: "greyCross"), for: .normal)
+        button.imageView?.contentMode = .center
         return button
     }()
+    // MARK: - Plans
+    private lazy var choosePlansView = PurchaseSubscriptionChoosePlansView()
     
-    // MARK: Plans
+    // MARK: - Periods
+    private lazy var periodsView = PurchaseSubscriptionPeriodView()
     
-    private lazy var choosePlanView = PurchaseSubscriptionChoosePlanView()
+    // MARK: - Max users
+    private lazy var maxUsersView = PurchaseSubscriptionMaxUsersView()
     
-    // MARK: Periods
-    
-     private lazy var periodsView = PurchaseSubscriptionOptionsView()
-    
-    // MARK: Max users
-    
-    private lazy var maxUsersView = PurchaseSubscriptionOptionsView()
-    
-    // MARK: Price
-    
+    // MARK: - Price
     private lazy var priceView = PurchaseSubscriptionPriceView()
     
-    // MARK: Purchase
-    
-    private lazy var purchaseButton: UIButton = {
-        let button = UIButton()
-        
-        return button
-    }()
-    
-    // MARK: Advantages
-    
+    // MARK: - Advantages
     private lazy var advantagesView = PurchaseSubscriptionAdvantagesView()
     
-    // MARK: Subscription details
-    
+    // MARK: - Subscription details
     private lazy var termsAndDetailsView = PurchaseSubscriptionTermsAndDetailsView()
     
-    // MARK: Content
+    // MARK: - Content
+    private lazy var purchaseButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = appearance.purchaseButtonTitleLabelFont
+        button.layer.backgroundColor = appearance.purchaseButtonColor
+        button.layer.cornerRadius = appearance.purchaseButtonCornerRadius
+        return button
+    }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            headerLogoImageView,
-            choosePlanView,
+            headerStackView,
+            choosePlansView,
             periodsView,
             maxUsersView,
             priceView,
@@ -71,7 +75,7 @@ class PurchaseSubscriptionOfferView: UIView {
             termsAndDetailsView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
     
@@ -79,7 +83,8 @@ class PurchaseSubscriptionOfferView: UIView {
         let scroll = UIScrollView()
         scroll.addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.edges.equalTo(appearance.scrollViewEdgesSize)
         }
         return scroll
     }()
@@ -94,18 +99,67 @@ class PurchaseSubscriptionOfferView: UIView {
     }
     
     func update(model: Model) {
-
+        if let plansModel = model.plansModel {
+            choosePlansView.isHidden = false
+            choosePlansView.update(model: plansModel)
+        } else {
+            choosePlansView.isHidden = true
+        }
+        
+        if let periodsModel = model.periodModel {
+            periodsView.isHidden = false
+            periodsView.update(model: periodsModel)
+        } else {
+            periodsView.isHidden = true
+        }
+        
+        if let maxUsersModel = model.maxUsersModel {
+            maxUsersView.isHidden = false
+            maxUsersView.update(model: maxUsersModel)
+        } else {
+            maxUsersView.isHidden = true
+        }
+        
+        if let pricesView = model.priceModel {
+            priceView.isHidden = false
+            priceView.update(model: pricesView)
+        } else {
+            priceView.isHidden = true
+        }
+        
+        if let advantageView = model.advantagesModel {
+            advantagesView.isHidden = false
+            advantagesView.update(model: advantageView)
+        } else {
+            advantagesView.isHidden = true
+        }
+        
+        if let termsView = model.termsDetailsModel {
+            termsAndDetailsView.isHidden = false
+            termsAndDetailsView.update(model: termsView)
+        } else {
+            termsAndDetailsView.isHidden = true
+        }
+        headerLogoImageView.image = model.logo
+        purchaseButton.setTitle(model.purchaseButtonTitle, for: .normal)
     }
     
     private func setupSubviews() {
         addSubview(scrollView)
-        scrollView.contentInset = .init(top: 0, left: 0, bottom: 16, right: 0)
+        scrollView.contentInset = appearance.scrollViewContentInsets
     }
     
+    // MARK: - Setup Constraints
     private func setupConstraints() {
-        scrollView.makeEdgesEqualToSuperview()
-        contentStackView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        purchaseButton.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(appearance.purchaseButtonHeightSize)
+        }
+        headerLogoImageView.snp.makeConstraints { (make) in
+            make.size.equalTo(appearance.headeLogoSize)
         }
     }
     
@@ -117,6 +171,33 @@ class PurchaseSubscriptionOfferView: UIView {
 
 extension PurchaseSubscriptionOfferView {
     struct Model {
-        let title: String
+        let logo: UIImage
+        let plansModel: PurchaseSubscriptionChoosePlansView.Model?
+        let periodModel: PurchaseSubscriptionPeriodView.Model?
+        let maxUsersModel: PurchaseSubscriptionMaxUsersView.Model?
+        let priceModel: PurchaseSubscriptionPriceView.Model?
+        let advantagesModel: PurchaseSubscriptionAdvantagesView.Model?
+        let termsDetailsModel: PurchaseSubscriptionTermsAndDetailsView.Model?
+        let purchaseButtonTitle: String
+    }
+    
+    struct Appearance {
+        // MARK: - PurchaseButton Appearance
+        let purchaseButtonTitleLabelFont = Style.Fonts.bigBoldFont
+        let purchaseButtonColor = Style.Color.blueColor
+        let purchaseButtonCornerRadius = Style.CornerRadius.standartCornerRadius
+        let purchaseButtonHeightSize = 54
+        
+        // MARK: - ContentStackView Appearance
+        let contentStackViewSpacing: CGFloat = 16
+        let contentStackViewEdgesSize = Style.Constraint.bigConstraint
+        
+        // MARK: - ScrollView Appearance
+        let scrollViewEdgesSize = Style.Constraint.bigConstraint
+        let scrollViewContentInsets = UIEdgeInsets(top: -16, left: 0, bottom: 64, right: 0)
+        
+        let headerStackViewSpacing = Style.Spacing.noSpacing
+        let headeLogoSize = CGSize(width: 202, height: 50)
     }
 }
+

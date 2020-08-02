@@ -10,26 +10,31 @@ import Foundation
 import UIKit
 
 class PurchaseSubscriptionPriceView: UIView {
+    private lazy var appearance = Appearance()
     
-    // MARK: Header
-    
-    private lazy var headerLogoImageView: UIImageView = {
-        let imageView = UIImageView()
-        
-        return imageView
+    // MARK: - Content
+    private lazy var totalPriceLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = appearance.totalPriceLabelTextColor
+        label.font = appearance.totalPriceLabelFont
+        return label
     }()
     
-    // MARK: Content
+    private lazy var moneySumLabel : UILabel = {
+        let label = UILabel()
+        label.font = appearance.moneySumLabelFont
+        return label
+    }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            headerLogoImageView,
+            totalPriceLabel,
+            moneySumLabel
         ])
-        stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.axis = .horizontal
+        stackView.spacing = appearance.contentStackViewSpacing
         return stackView
     }()
-    
     
     init() {
         super.init(frame: .zero)
@@ -41,7 +46,8 @@ class PurchaseSubscriptionPriceView: UIView {
     }
     
     func update(model: Model) {
-
+        totalPriceLabel.text = model.title
+        moneySumLabel.text = model.moneySum
     }
     
     private func setupSubviews() {
@@ -50,7 +56,7 @@ class PurchaseSubscriptionPriceView: UIView {
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            make.height.equalToSuperview()
         }
     }
     
@@ -63,5 +69,13 @@ class PurchaseSubscriptionPriceView: UIView {
 extension PurchaseSubscriptionPriceView {
     struct Model {
         let title: String
+        let moneySum: String
+    }
+    
+    struct Appearance {
+        let totalPriceLabelFont = Style.Fonts.bigBoldFont
+        let totalPriceLabelTextColor = Style.Color.darkGrayColor
+        let moneySumLabelFont = Style.Fonts.bigBoldFont
+        let contentStackViewSpacing = Style.Spacing.bigSpacing
     }
 }
