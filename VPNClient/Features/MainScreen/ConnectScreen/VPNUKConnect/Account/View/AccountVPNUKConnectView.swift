@@ -13,6 +13,7 @@ import SnapKit
 protocol AccountVPNUKConnectViewProtocol: AnyObject, LoaderPresentable {
     func updateSubscriptionPicker(withState state: SubscriptionPickerView.State)
     func updateServerPicker(state: ServerPickerView.State, action: @escaping Action)
+    func updatePurchaseSubscriptionBanner(model: PurchaseSubscriptionBannerView.Model?)
 }
 
 class AccountVPNUKConnectView: UIView {
@@ -26,7 +27,12 @@ class AccountVPNUKConnectView: UIView {
         return button
     }()
     
-    private lazy var purchaseSubscriptionView = PurchaseSubscriptionView()
+    private lazy var purchaseSubscriptionView: PurchaseSubscriptionBannerView = {
+        let view = PurchaseSubscriptionBannerView()
+        view.isHidden = true
+        return view
+    }()
+    
     private lazy var subscriptionPickerView = SubscriptionPickerView()
     // server picker
     private lazy var serverPickerView: ServerPickerView = {
@@ -50,8 +56,8 @@ class AccountVPNUKConnectView: UIView {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                subscriptionAndServerPickerStackView,
                 purchaseSubscriptionView,
+                subscriptionAndServerPickerStackView,
                 signOutButton
             ]
         )
@@ -112,6 +118,15 @@ extension AccountVPNUKConnectView: AccountVPNUKConnectViewProtocol {
     func updateServerPicker(state: ServerPickerView.State, action: @escaping Action) {
         serverPickerView.state = state
         serverPickerView.viewTappedAction = action
+    }
+    
+    func updatePurchaseSubscriptionBanner(model: PurchaseSubscriptionBannerView.Model?) {
+        if let model = model {
+            purchaseSubscriptionView.update(model: model)
+            purchaseSubscriptionView.isHidden = false
+        } else {
+            purchaseSubscriptionView.isHidden = true
+        }
     }
     
 }

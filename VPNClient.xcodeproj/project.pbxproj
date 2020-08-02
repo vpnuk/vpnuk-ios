@@ -59,6 +59,12 @@
 		783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */; };
 		783B35F4244D00FA00425A9F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F3244D00FA00425A9F /* UserService.swift */; };
 		783B35F6244D018500425A9F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B35F5244D018500425A9F /* UserData.swift */; };
+		7844C0E424D6C9BB00EF5588 /* InAppPurchasesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0E324D6C9BB00EF5588 /* InAppPurchasesService.swift */; };
+		7844C0E624D6C9E100EF5588 /* PurchaseProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0E524D6C9E100EF5588 /* PurchaseProduct.swift */; };
+		7844C0E824D6D78700EF5588 /* PurchaseSubscriptionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0E724D6D78700EF5588 /* PurchaseSubscriptionFactory.swift */; };
+		7844C0EA24D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0E924D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift */; };
+		7844C0EE24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */; };
+		7844C0F124D750E000EF5588 /* PurchaseSubscriptionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0F024D750E000EF5588 /* PurchaseSubscriptionBannerView.swift */; };
 		7846416B249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */; };
 		7846416D249E3E4E00F7BA40 /* SubscriptionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */; };
 		7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416E249E42E600F7BA40 /* ServersRepository.swift */; };
@@ -78,7 +84,6 @@
 		784CEFE224B26B8D00D95ED6 /* SubscriptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE124B26B8D00D95ED6 /* SubscriptionPickerView.swift */; };
 		784CEFE524B26DA000D95ED6 /* SubscriptionsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */; };
 		784CEFE724B26DBB00D95ED6 /* VPNAccountsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */; };
-		784CEFE924B2712900D95ED6 /* PurchaseSubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE824B2712900D95ED6 /* PurchaseSubscriptionView.swift */; };
 		78914B8A24C6291300BE0835 /* PurchaseSubscriptionOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */; };
 		78A382BA2470878F003AB50B /* LastConnectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A382B92470878F003AB50B /* LastConnectionStorage.swift */; };
 		78B8DDC624B636E7009399C5 /* SubscriptionsListPickerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDC524B636E7009399C5 /* SubscriptionsListPickerFactory.swift */; };
@@ -94,14 +99,12 @@
 		78FE0A0F24675BF80004161B /* ServerPickerNotPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0E24675BF80004161B /* ServerPickerNotPickedView.swift */; };
 		78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A1024675DF80004161B /* ServerPickerView.swift */; };
 		FA02C2A124CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */; };
-		FA1DB12724D417470023880E /* ChooseCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DB12624D417470023880E /* ChooseCountryViewController.swift */; };
 		FA1DB12B24D4AB0F0023880E /* ChooseCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */; };
 		FA53E42324C8B61500E552AB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = FA53E42224C8B61500E552AB /* Podfile */; };
 		FA53E42424C8B61500E552AB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = FA53E42224C8B61500E552AB /* Podfile */; };
 		FA5DCFFE24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */; };
 		FA5DD00024CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */; };
 		FA5DD00224CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */; };
-		FA5DD00424CC447F0017D6F3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DD00324CC447F0017D6F3 /* ViewController.swift */; };
 		FA859BDA24CED44C002F12E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA859BD924CED44C002F12E7 /* Style.swift */; };
 /* End PBXBuildFile section */
 
@@ -187,6 +190,12 @@
 		783B35F0244CF1D600425A9F /* SignInResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseDTO.swift; sourceTree = "<group>"; };
 		783B35F3244D00FA00425A9F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		783B35F5244D018500425A9F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		7844C0E324D6C9BB00EF5588 /* InAppPurchasesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchasesService.swift; sourceTree = "<group>"; };
+		7844C0E524D6C9E100EF5588 /* PurchaseProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProduct.swift; sourceTree = "<group>"; };
+		7844C0E724D6D78700EF5588 /* PurchaseSubscriptionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionFactory.swift; sourceTree = "<group>"; };
+		7844C0E924D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferViewController.swift; sourceTree = "<group>"; };
+		7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferRouter.swift; sourceTree = "<group>"; };
+		7844C0F024D750E000EF5588 /* PurchaseSubscriptionBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionBannerView.swift; sourceTree = "<group>"; };
 		7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCreateResponseDTO.swift; sourceTree = "<group>"; };
 		7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDTO.swift; sourceTree = "<group>"; };
 		7846416E249E42E600F7BA40 /* ServersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersRepository.swift; sourceTree = "<group>"; };
@@ -206,7 +215,6 @@
 		784CEFE124B26B8D00D95ED6 /* SubscriptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPickerView.swift; sourceTree = "<group>"; };
 		784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsListViewController.swift; sourceTree = "<group>"; };
 		784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNAccountsListViewController.swift; sourceTree = "<group>"; };
-		784CEFE824B2712900D95ED6 /* PurchaseSubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionView.swift; sourceTree = "<group>"; };
 		78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferView.swift; sourceTree = "<group>"; };
 		78A382B92470878F003AB50B /* LastConnectionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastConnectionStorage.swift; sourceTree = "<group>"; };
 		78B8DDC524B636E7009399C5 /* SubscriptionsListPickerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsListPickerFactory.swift; sourceTree = "<group>"; };
@@ -225,13 +233,11 @@
 		87E5941B03938A911B623791 /* Pods-VPNClientNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
 		D9D650901D3CDC7F32EC06FA /* Pods-VPNClientNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClientNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-VPNClientNetworkExtension/Pods-VPNClientNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryView.swift; sourceTree = "<group>"; };
-		FA1DB12624D417470023880E /* ChooseCountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCountryViewController.swift; sourceTree = "<group>"; };
 		FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseCountryViewController.swift; sourceTree = "<group>"; };
 		FA53E42224C8B61500E552AB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionPeriodView.swift; sourceTree = "<group>"; };
 		FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionMaxUsersView.swift; sourceTree = "<group>"; };
 		FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChoosePlansView.swift; sourceTree = "<group>"; };
-		FA5DD00324CC447F0017D6F3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FA859BD924CED44C002F12E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -603,6 +609,50 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		7844C0E224D6C9AD00EF5588 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7844C0E324D6C9BB00EF5588 /* InAppPurchasesService.swift */,
+				7844C0E524D6C9E100EF5588 /* PurchaseProduct.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		7844C0EB24D6D94B00EF5588 /* ChooseCountry */ = {
+			isa = PBXGroup;
+			children = (
+				FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */,
+				FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */,
+			);
+			path = ChooseCountry;
+			sourceTree = "<group>";
+		};
+		7844C0EC24D6D97E00EF5588 /* SubscriptionOffer */ = {
+			isa = PBXGroup;
+			children = (
+				7844C0E924D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift */,
+				FA859BD924CED44C002F12E7 /* Style.swift */,
+				78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */,
+				7849602724C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift */,
+				7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift */,
+				FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */,
+				FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */,
+				FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */,
+				7849602B24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift */,
+				7849602D24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift */,
+				7849602F24C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift */,
+			);
+			path = SubscriptionOffer;
+			sourceTree = "<group>";
+		};
+		7844C0EF24D750C200EF5588 /* PurchaseBanner */ = {
+			isa = PBXGroup;
+			children = (
+				7844C0F024D750E000EF5588 /* PurchaseSubscriptionBannerView.swift */,
+			);
+			path = PurchaseBanner;
+			sourceTree = "<group>";
+		};
 		78464167249E3DCF00F7BA40 /* Subscriptions */ = {
 			isa = PBXGroup;
 			children = (
@@ -666,19 +716,14 @@
 			path = NotPicked;
 			sourceTree = "<group>";
 		};
-		784CEFE324B26D1000D95ED6 /* PurchaseSubscription */ = {
-			isa = PBXGroup;
-			children = (
-				784CEFE824B2712900D95ED6 /* PurchaseSubscriptionView.swift */,
-			);
-			path = PurchaseSubscription;
-			sourceTree = "<group>";
-		};
 		78914B8824C628DE00BE0835 /* PurchaseSubscription */ = {
 			isa = PBXGroup;
 			children = (
+				7844C0E224D6C9AD00EF5588 /* Service */,
 				78914B8B24C629EC00BE0835 /* View */,
 				7849603124C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift */,
+				7844C0E724D6D78700EF5588 /* PurchaseSubscriptionFactory.swift */,
+				7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */,
 			);
 			path = PurchaseSubscription;
 			sourceTree = "<group>";
@@ -686,20 +731,9 @@
 		78914B8B24C629EC00BE0835 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				FA859BD924CED44C002F12E7 /* Style.swift */,
-				FA5DD00324CC447F0017D6F3 /* ViewController.swift */,
-				FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */,
-				FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */,
-				FA1DB12624D417470023880E /* ChooseCountryViewController.swift */,
-				78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */,
-				7849602724C62ADB00157AB4 /* PurchaseSubscriptionChoosePlanView.swift */,
-				7849602924C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift */,
-				FA5DCFFD24CC44500017D6F3 /* PurchaseSubscriptionPeriodView.swift */,
-				FA5DD00124CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift */,
-				FA5DCFFF24CC44570017D6F3 /* PurchaseSubscriptionMaxUsersView.swift */,
-				7849602B24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift */,
-				7849602D24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift */,
-				7849602F24C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift */,
+				7844C0EF24D750C200EF5588 /* PurchaseBanner */,
+				7844C0EC24D6D97E00EF5588 /* SubscriptionOffer */,
+				7844C0EB24D6D94B00EF5588 /* ChooseCountry */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -752,7 +786,6 @@
 		78C0491224A7BE9900932E0A /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				784CEFE324B26D1000D95ED6 /* PurchaseSubscription */,
 				784CEFD224B261DE00D95ED6 /* SubscriptionPicker */,
 				78360DDF2463559600988F14 /* ViewModel */,
 				78360DDE2463555400988F14 /* View */,
@@ -977,7 +1010,6 @@
 				784CEFE024B26AC700D95ED6 /* NotPickedSubscriptionView.swift in Sources */,
 				FA5DD00224CC44660017D6F3 /* PurchaseSubscriptionChoosePlansView.swift in Sources */,
 				78B8DDC924B65086009399C5 /* SubscriptionTableViewCell.swift in Sources */,
-				FA5DD00424CC447F0017D6F3 /* ViewController.swift in Sources */,
 				1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */,
 				784CEFE524B26DA000D95ED6 /* SubscriptionsListViewController.swift in Sources */,
 				78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */,
@@ -1005,24 +1037,26 @@
 				783B35F4244D00FA00425A9F /* UserService.swift in Sources */,
 				783B35F1244CF1D600425A9F /* SignInResponseDTO.swift in Sources */,
 				78360DBC2461E47D00988F14 /* ServerPickerListViewController.swift in Sources */,
-				784CEFE924B2712900D95ED6 /* PurchaseSubscriptionView.swift in Sources */,
 				784CEFDA24B2627900D95ED6 /* PickedSubscriptionVPNAccountView.swift in Sources */,
 				78FE0A1124675DF80004161B /* ServerPickerView.swift in Sources */,
 				1782F027235D07BA0082F9CD /* UserDefaults+Settings.swift in Sources */,
+				7844C0E824D6D78700EF5588 /* PurchaseSubscriptionFactory.swift in Sources */,
 				78B8DDCD24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift in Sources */,
 				78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */,
 				7846416B249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift in Sources */,
 				78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */,
 				78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */,
+				7844C0EE24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift in Sources */,
 				78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */,
 				7849602E24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift in Sources */,
 				1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */,
 				7849603024C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift in Sources */,
 				78360DE9246356AD00988F14 /* CustomConnectView.swift in Sources */,
+				7844C0E624D6C9E100EF5588 /* PurchaseProduct.swift in Sources */,
 				78360DC224620B7800988F14 /* CredentialsProviderFactory.swift in Sources */,
 				784CEFD824B2626100D95ED6 /* PickedSubscriptionDedicatedServerView.swift in Sources */,
 				7849603224C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift in Sources */,
-				FA1DB12724D417470023880E /* ChooseCountryViewController.swift in Sources */,
+				7844C0E424D6C9BB00EF5588 /* InAppPurchasesService.swift in Sources */,
 				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
@@ -1031,6 +1065,7 @@
 				FA859BDA24CED44C002F12E7 /* Style.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,
+				7844C0F124D750E000EF5588 /* PurchaseSubscriptionBannerView.swift in Sources */,
 				78B8DDCB24B653BB009399C5 /* VPNAccountTableViewCell.swift in Sources */,
 				78360DF024636EFC00988F14 /* AuthService.swift in Sources */,
 				784CEFD624B2624500D95ED6 /* PickedSubscriptionInfoView.swift in Sources */,
@@ -1052,6 +1087,7 @@
 				1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */,
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
 				78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */,
+				7844C0EA24D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift in Sources */,
 				78360DD924634B4900988F14 /* AccountVPNUKConnectViewModel.swift in Sources */,
 				7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift in Sources */,
 			);

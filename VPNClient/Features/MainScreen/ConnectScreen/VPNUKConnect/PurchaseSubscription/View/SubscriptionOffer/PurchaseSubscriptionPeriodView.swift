@@ -1,5 +1,5 @@
 //
-//  PurchaseSubscriptionOptionsView.swift
+//  PurchaseSubscriptionPeriodView.swift
 //  VPNClient
 //
 //  Created by Igor Kasyanenko on 20.07.2020.
@@ -9,44 +9,23 @@
 import Foundation
 import UIKit
 
-class PurchaseSubscriptionMaxUsersView: UIView {
+class PurchaseSubscriptionPeriodView: UIView {
     private lazy var appearance = Appearance()
     private var optionSelectedAction: ((_ index: Int) -> Void)?
     private var infoTapAction: (() -> Void)?
     // MARK: - Content
-    private lazy var maxUsersQuastionButton: UIButton = {
+    private lazy var periodQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
         button.addTarget(self, action: #selector(quastionButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    private lazy var maxUsersLabel : UILabel = {
+    private lazy var choosePeriodLabel : UILabel = {
         let label = UILabel()
-        label.textColor = appearance.maxUsersLabelTextLabelColor
-        label.font = appearance.maxUsersLabelFont
+        label.textColor = appearance.choosePeriodLabelColor
+        label.font = appearance.choosePeriodLabelFont
         return label
-    }()
-
-    private lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            maxUsersLabel,
-            maxUsersQuastionButton,
-            UIView()
-        ])
-        stackView.axis = .horizontal
-        stackView.spacing = appearance.labelStackViewSpacing
-        return stackView
-    }()
-    
-    private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            labelStackView,
-            optionsStackView
-        ])
-        stackView.axis = .vertical
-        stackView.spacing = appearance.contentStackViewSpacing
-        return stackView
     }()
     
     private lazy var optionsStackView: UIStackView = {
@@ -54,6 +33,23 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         stackView.axis = .horizontal
         stackView.spacing = appearance.contentStackViewSpacing
         return stackView
+    }()
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            choosePeriodLabel,
+            periodQuastionButton,
+            UIView()
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = appearance.periodLabelStackViewSpacing
+        return stackView
+    }()
+    
+    private lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.addSubview(optionsStackView)
+        return scroll
     }()
     
     init() {
@@ -67,7 +63,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     
     func buildOptionViews(fromOption options: [Option], selectedIndex: Int?) -> [PurchaseSubscriptionOptionView] {
         let optionsViews = options.enumerated().map { index,option -> PurchaseSubscriptionOptionView in
-            let optionView = PurchaseSubscriptionOptionView()
+        let optionView = PurchaseSubscriptionOptionView()
             
             optionView.update(model: .init(
                 title: option.title,
@@ -81,7 +77,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     
     func update(model: Model) {
         optionSelectedAction = model.optionSelectedAction
-        maxUsersLabel.text = model.title
+        choosePeriodLabel.text = model.title
         let newOptionsView = buildOptionViews(
             fromOption: model.options,
             selectedIndex: model.selectedOptionIndex
@@ -90,7 +86,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
         for optionView in newOptionsView {
             optionsStackView.addArrangedSubview(optionView)
         }
-       maxUsersQuastionButton.isHidden = model.infoTapAction == nil
+      periodQuastionButton.isHidden = model.infoTapAction == nil
         infoTapAction = model.infoTapAction
     }
     
@@ -100,11 +96,24 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     
     private func setupSubviews() {
         addSubview(contentStackView)
+        addSubview(scrollView)
+        scrollView.contentInset = appearance.scrollViewContentInsets
+        scrollView.clipsToBounds = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
     }
     
     private func setupConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(contentStackView.snp.bottom).inset(-appearance.headerAndScrollViewSpacing)
+            make.left.bottom.right.equalToSuperview()
+            make.height.equalTo(optionsStackView.snp.height)
+        }
         contentStackView.snp.makeConstraints { make in
-            make.height.equalToSuperview()
+            make.left.top.right.equalToSuperview()
+        }
+        optionsStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
@@ -114,7 +123,7 @@ class PurchaseSubscriptionMaxUsersView: UIView {
     }
 }
 
-extension PurchaseSubscriptionMaxUsersView {
+extension PurchaseSubscriptionPeriodView {
     struct Model {
         let title: String
         let options: [Option]
@@ -128,13 +137,15 @@ extension PurchaseSubscriptionMaxUsersView {
     }
     
     struct Appearance {
-        //MARK: - MaxUsers Appearance
-        let maxUsersLabelFont = Style.Fonts.standartBoldFont
-        let maxUsersLabelTextLabelColor = Style.Color.darkGrayColor
+        //MARK: - ChoosePeriod Appearance
+        let choosePeriodLabelFont = Style.Fonts.standartBoldFont
+        let choosePeriodLabelColor = Style.Color.darkGrayColor
         
         //MARK: - StackViews Appearance
-        let labelStackViewSpacing = Style.Spacing.standartSpacing
-        let contentStackViewSpacing = Style.Spacing.smallSpacing
-        let contentStackViewHieghtInsetSize = Style.Constraint.standartConstreint
+        let contentStackViewSpacing = Style.Spacing.standartSpacing
+        let headerAndScrollViewSpacing = Style.Constraint.smallConstreint
+        let periodLabelStackViewSpacing = Style.Spacing.standartSpacing
+        let scrollViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
+

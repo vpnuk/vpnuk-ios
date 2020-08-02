@@ -12,6 +12,7 @@ import SnapKit
 
 class PurchaseSubscriptionOfferView: UIView {
     private lazy var appearance = Appearance()
+    private var closeScreenAction: Action?
     // MARK: - Header
     private lazy var headerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -33,6 +34,7 @@ class PurchaseSubscriptionOfferView: UIView {
         let button = UIButton()
         button.setImage(UIImage(named: "greyCross"), for: .normal)
         button.imageView?.contentMode = .center
+        button.addTarget(self, action: #selector(closeTouched), for: .touchUpInside)
         return button
     }()
     // MARK: - Plans
@@ -99,6 +101,7 @@ class PurchaseSubscriptionOfferView: UIView {
     }
     
     func update(model: Model) {
+        closeScreenAction = model.closeScreenAction
         if let plansModel = model.plansModel {
             choosePlansView.isHidden = false
             choosePlansView.update(model: plansModel)
@@ -167,11 +170,17 @@ class PurchaseSubscriptionOfferView: UIView {
         setupSubviews()
         setupConstraints()
     }
+    
+    @objc
+    private func closeTouched() {
+        closeScreenAction?()
+    }
 }
 
 extension PurchaseSubscriptionOfferView {
     struct Model {
         let logo: UIImage
+        let closeScreenAction: Action
         let plansModel: PurchaseSubscriptionChoosePlansView.Model?
         let periodModel: PurchaseSubscriptionPeriodView.Model?
         let maxUsersModel: PurchaseSubscriptionMaxUsersView.Model?

@@ -19,6 +19,7 @@ protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable 
         initiallySelectedSubscription: SubscriptionVPNAccount?
     )
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
+    func openPurchaseSubscriptionScreen(reloadSubscriptionsAction: @escaping Action)
 }
 
 protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
@@ -82,5 +83,11 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
     
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol) {
         parentRouter.presentServersPicker(viewModel: viewModel)
+    }
+    
+    func openPurchaseSubscriptionScreen(reloadSubscriptionsAction: @escaping Action) {
+        let controller = PurchaseSubscriptionFactory().create(reloadSubscriptionsAction: reloadSubscriptionsAction)
+        controller.modalPresentationStyle = .fullScreen
+        parentRouter.present(controller: controller, animated: true)
     }
 }

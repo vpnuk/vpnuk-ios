@@ -118,8 +118,6 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         layer.shadowOpacity = 1
         layer.shadowOffset = .init(width: 0, height: -3)
         layer.shadowRadius = 1
-        
-        
     }
     
     private func buildStatusView(forDetails details: ConnectionDetails) -> UIView {

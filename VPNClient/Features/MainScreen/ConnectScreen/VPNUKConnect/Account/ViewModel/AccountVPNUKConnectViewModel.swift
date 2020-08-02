@@ -14,7 +14,7 @@ protocol AccountVPNUKConnectViewModelProtocol {
     func signOut()
 }
 
-struct SubscriptionVPNAccount: Codable {
+struct SubscriptionVPNAccount: Codable, Equatable {
     let subscription: SubscriptionDTO
     let vpnAccount: VPNAccountDTO?
 }
@@ -29,6 +29,10 @@ class AccountVPNUKConnectViewModel  {
     }
     private var selectedSubscriptionAndAccount: SubscriptionVPNAccount? {
         didSet {
+            // reset server after changing subscription
+            if selectedSubscriptionAndAccount != oldValue {
+                selectServer(withIp: nil)
+            }
             updateSubscriptionPickerView()
         }
     }
@@ -54,15 +58,30 @@ class AccountVPNUKConnectViewModel  {
 extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
 
     func viewDidLoad() {
-                deps.subscripionsAPI.createSubscription(
-                subscriptionRequest: .init(productId: "6633", productIdSource: .vpnuk, country: "Italy")) { (result) in
-                    switch result {
-                    case .success(let t):
-                        print(t)
-                    case .failure(let error):
-                        print(error)
+        
+//        deps.subscripionsAPI.createSubscription(
+//            subscriptionRequest: .init(productId: "6633", productIdSource: .vpnuk, country: "Italy")
+//        ) { (result) in
+//            switch result {
+//            case .success(let t):
+//                print(t)
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+        
+        view?.updatePurchaseSubscriptionBanner(
+            model: .init(
+                image: UIImage(named: ""),
+                title: NSLocalizedString("Purchase subscription", comment: ""),
+                tapAction: { [weak self] in
+                    self?.deps.router.openPurchaseSubscriptionScreen {
+                        self?.reloadSubscriptions()
                     }
                 }
+            )
+        )
+        
         reloadSubscriptions()
         updateServerPicker()
         deps.connectorDelegate?.connectPressedAction = { [weak self] in
@@ -150,8 +169,46 @@ extension AccountVPNUKConnectViewModel {
         )
     }
     
+    /// filters servers according to selected subscription
+    private func filter(
+        servers: [ServerType : [ServerEntity]],
+        accordingToSelectedSubscription selectedSubscription: SubscriptionVPNAccount?
+    ) -> [ServerType : [ServerEntity]] {
+        if let selectedSubscription = selectedSubscription {
+            var filteredServers = servers
+            switch selectedSubscription.subscription.type {
+            case .dedicated:
+                filteredServers[.oneToOne] = nil
+                if
+                    let vpnServer = selectedSubscription.vpnAccount?.server,
+                    let userServer = filteredServers[.dedicated]?.first(where: { $0.address == vpnServer.ip })
+                {
+                    filteredServers[.dedicated] = [userServer]
+                }
+            case .oneToOne:
+                filteredServers[.dedicated] = nil
+                if
+                    let vpnServer = selectedSubscription.vpnAccount?.server,
+                    let userServer = filteredServers[.oneToOne]?.first(where: { $0.address == vpnServer.ip })
+                {
+                    filteredServers[.oneToOne] = [userServer]
+                }
+            case .shared:
+                filteredServers[.oneToOne] = nil
+                filteredServers[.dedicated] = nil
+            }
+            return filteredServers
+        } else {
+            return servers
+        }
+    }
+    
     private func buildServerPickerViewModel() -> ServerPickerListViewModelProtocol {
-        let allServers = getAllServers()
+        let allServers = filter(
+            servers: getAllServers(),
+            accordingToSelectedSubscription: selectedSubscriptionAndAccount
+        )
+        
         var connectedServerPosition: ServerTablePosition? = nil
         if let connectedIp = connectedServerData?.serverIP {
             connectedServerPosition = getServerPosition(forServerIp: connectedIp, inServers: allServers)
@@ -164,7 +221,7 @@ extension AccountVPNUKConnectViewModel {
         
         let viewModel = ServerPickerListViewModel(
             initiallySelectedPosition: selectedServerPosition ?? ServerTablePosition(type: .shared, index: 0),
-            servers: getAllServers(),
+            servers: allServers,
             connectedServerPosition: connectedServerPosition,
             selectServerAtAction: { [weak self] position in
                 guard let self = self else { return }
@@ -264,7 +321,7 @@ private extension AccountVPNUKConnectViewModel {
                     dedicatedServerModel: dedicatedServerModel,
                     pickedVPNAccountModel: vpnAccountModel,
                     tapAction: { [weak self] in
-                        self?.openSubscriptionPicker()
+                        self?.handleSubscriptionPickerTapAction()
                     }
                 )
             )
@@ -275,12 +332,24 @@ private extension AccountVPNUKConnectViewModel {
                 notPickedModel: .init(
                     title: NSLocalizedString("Pick a VPN account to connect...", comment: ""),
                     tapAction: { [weak self] in
-                        self?.openSubscriptionPicker()
+                        self?.handleSubscriptionPickerTapAction()
                     }
                 )
             )
             
             view?.updateSubscriptionPicker(withState: state)
+        }
+    }
+    
+    
+    private func handleSubscriptionPickerTapAction() {
+        // if no subscriptions => open purchase screen
+        if userSubscriptions.isEmpty {
+            deps.router.openPurchaseSubscriptionScreen(reloadSubscriptionsAction: { [weak self] in
+                self?.reloadSubscriptions()
+            })
+        } else {
+            openSubscriptionPicker()
         }
     }
     

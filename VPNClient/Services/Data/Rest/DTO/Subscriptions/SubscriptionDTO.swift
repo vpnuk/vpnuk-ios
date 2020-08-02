@@ -27,14 +27,14 @@ extension SubscriptionType {
     }
 }
 
-struct DedicatedServerDTO: Codable {
+struct DedicatedServerDTO: Codable, Equatable {
     let id: String
     let location: String
     let ip: String
     let description: String?
 }
 
-struct VPNAccountDTO: Codable {
+struct VPNAccountDTO: Codable, Equatable {
     let username: String
     let password: String
     /// Unique user ip for dedicated server
@@ -49,7 +49,7 @@ struct VPNAccountDTO: Codable {
      }
 }
 
-struct SubscriptionDTO: Codable {
+struct SubscriptionDTO: Codable, Equatable {
     let id: Int
     let productName: String
     /// VPN accounts quantity
