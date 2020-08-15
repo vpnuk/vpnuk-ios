@@ -8,6 +8,12 @@
 
 import Foundation
 
+struct PlanDetails {
+    let planSubscriptionType: SubscriptionType
+    let periods: [Int]
+    let maxUsers: [Int]
+}
+
 protocol PurchaseSubscriptionOfferViewModelProtocol {
     func viewLoaded()
 }
@@ -40,11 +46,51 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     }
     
     private func loadSubscriptionData() {
-        plans = PurchaseProduct.availableProducts.map { .init(title: $0.localizedTitle, subtitle: $0.localizeDescription) }
+        let availableProducts = PurchaseProduct.availableProducts
+        
+        let productsGroupedByType = Dictionary(grouping: availableProducts, by: { $0.data.type })//.map { (type: $0, products: $1) }
+        let types = Array(productsGroupedByType.keys)
+        
+       
+        
+        let plans: [PurchaseSubscriptionChoosePlansView.Plan] = types.map { .init(title: $0.localizedTitle, subtitle: $0.localizeDescription) }
+        
+        if let selectedPlanIndex = selectedPlanIndex {
+            let availableProductsForSelectedPlan = productsGroupedByType[types[selectedPlanIndex]] ?? []
+            let availablePeriodsForSelectedPlan = availableProductsForSelectedPlan.map { $0.data.periodMonths }
+            let periods: [PurchaseSubscriptionPeriodView.Option] = availablePeriodsForSelectedPlan.map { .init(title: "\($0) months") }
+            
+            let availableMaxUsersForSelectedPlan = availableProductsForSelectedPlan.map { $0.data.maxUsers }
+            maxUsers = availableMaxUsersForSelectedPlan.map { MaxUser(title: "\($0) users") }
+        } else {
+            maxUsers = []
+            selectedMaxUserIndex = nil
+            self.plans = []
+            selectedPlanIndex = nil
+            periods = []
+            selectedPeriodIndex = nil
+        }
+    }
+    
+    private func buildViewData(
+        from products: [PurchaseProduct]
+    ) -> [PlanDetails] {
+        let productsGroupedByType = Dictionary(grouping: products, by: { $0.data.type })//.map { (type: $0, products: $1) }
+        
+        return productsGroupedByType.map { type, products in
+            PlanDetails(
+                planSubscriptionType: type,
+                periods: products.map { $0.data.periodMonths },
+                maxUsers: products.map { $0.data.maxUsers }
+            )
+        }
     }
      
     private func updateView() {
         let planModels: [PurchaseSubscriptionChoosePlansView.Plan] = plans.map { .init(title: $0.title, subtitle: $0.subtitle) }
+        let periodModels: [PurchaseSubscriptionPeriodView.Option] = periods.map { .init(title: $0.title) }
+        let maxUsersModels: [PurchaseSubscriptionMaxUsersView.Option] = maxUsers.map { .init(title: $0.title) }
+        
         
         view?.update(model: .init(
             logo: #imageLiteral(resourceName: "logo"),
@@ -69,10 +115,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             
             periodModel: .init(
                 title: NSLocalizedString("Choose period", comment: ""),
-                options: [.init(title: NSLocalizedString("12 Months", comment: "")),
-                          .init(title: NSLocalizedString("6 Months", comment: "")),
-                          .init(title: NSLocalizedString("3 Months", comment: "")),
-                          .init(title: NSLocalizedString("1 Months", comment: ""))],
+                options: periodModels,
                 selectedOptionIndex: selectedPeriodIndex,
                 optionSelectedAction: { [weak self] index in
                     self?.selectPeriod(atIndex: index)
@@ -85,7 +128,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             
             maxUsersModel: .init(
                 title: NSLocalizedString("Max users", comment: ""),
-                options: [.init(title: NSLocalizedString("6 users", comment: ""))],
+                options: maxUsersModels,
                 selectedOptionIndex: selectedMaxUserIndex,
                 optionSelectedAction: { [weak self] index in
                     self?.selectMaxUser(atIndex: index)
