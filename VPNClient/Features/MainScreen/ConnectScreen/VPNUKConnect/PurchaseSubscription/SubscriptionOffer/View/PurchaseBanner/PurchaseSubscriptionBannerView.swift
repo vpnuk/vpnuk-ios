@@ -90,6 +90,6 @@ extension PurchaseSubscriptionBannerView {
         let titleLabelTextColor = Style.Color.darkGrayColor
         let contentStackViewSpacing = Style.Spacing.bigSpacing
         let borderWidth: CGFloat = 2
-        let borderColor: CGColor = Style.Color.grayColor
+        let borderColor: CGColor = Style.Color.grayColor.cgColor
     }
 }

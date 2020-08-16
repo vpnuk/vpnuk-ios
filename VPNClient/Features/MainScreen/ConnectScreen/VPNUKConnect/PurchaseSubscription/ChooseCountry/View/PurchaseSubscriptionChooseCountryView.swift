@@ -23,7 +23,7 @@ class PurchaseSubscriptionChooseCountryView: UIView {
         let button = UIButton()
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = appearance.chooseButtonTitleFont
-        button.layer.backgroundColor = appearance.chooseButtonColor
+        button.layer.backgroundColor = appearance.chooseButtonColor.cgColor
         button.layer.cornerRadius = appearance.chooseButtonCornerRadius
         return button
     }()

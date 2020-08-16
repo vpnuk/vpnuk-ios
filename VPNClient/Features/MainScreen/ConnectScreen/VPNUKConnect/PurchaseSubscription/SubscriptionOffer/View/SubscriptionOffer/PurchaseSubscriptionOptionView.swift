@@ -47,10 +47,10 @@ class PurchaseSubscriptionOptionView: UIView {
         tappedAction = model.tappedAction
         if model.isSelected {
             optionImageView.image = UIImage(named: "checked.pdf")
-            layer.borderColor = Style.Color.blueColor
+            layer.borderColor = Style.Color.blueColor.cgColor
         } else {
             optionImageView.image = UIImage(named: "unchecked.pdf")
-            layer.borderColor = Style.Color.grayColor
+            layer.borderColor = Style.Color.grayColor.cgColor
         }
     }
     
@@ -58,7 +58,7 @@ class PurchaseSubscriptionOptionView: UIView {
         addSubview(contentStackView)
         layer.cornerRadius = appearance.selfViewCornerRadius
         layer.borderWidth = appearance.selfViewBorderWidth
-        layer.borderColor = appearance.selfViewBorderColor
+        layer.borderColor = appearance.selfViewBorderColor.cgColor
     }
     
     private func setupConstraints() {

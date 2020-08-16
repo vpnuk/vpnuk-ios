@@ -84,6 +84,7 @@
 		784CEFE224B26B8D00D95ED6 /* SubscriptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE124B26B8D00D95ED6 /* SubscriptionPickerView.swift */; };
 		784CEFE524B26DA000D95ED6 /* SubscriptionsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */; };
 		784CEFE724B26DBB00D95ED6 /* VPNAccountsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */; };
+		786B8D3124E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */; };
 		78914B8A24C6291300BE0835 /* PurchaseSubscriptionOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */; };
 		78A382BA2470878F003AB50B /* LastConnectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A382B92470878F003AB50B /* LastConnectionStorage.swift */; };
 		78B8DDC624B636E7009399C5 /* SubscriptionsListPickerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDC524B636E7009399C5 /* SubscriptionsListPickerFactory.swift */; };
@@ -215,6 +216,7 @@
 		784CEFE124B26B8D00D95ED6 /* SubscriptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPickerView.swift; sourceTree = "<group>"; };
 		784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsListViewController.swift; sourceTree = "<group>"; };
 		784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNAccountsListViewController.swift; sourceTree = "<group>"; };
+		786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryViewModel.swift; sourceTree = "<group>"; };
 		78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferView.swift; sourceTree = "<group>"; };
 		78A382B92470878F003AB50B /* LastConnectionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastConnectionStorage.swift; sourceTree = "<group>"; };
 		78B8DDC524B636E7009399C5 /* SubscriptionsListPickerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsListPickerFactory.swift; sourceTree = "<group>"; };
@@ -618,13 +620,13 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
-		7844C0EB24D6D94B00EF5588 /* ChooseCountry */ = {
+		7844C0EB24D6D94B00EF5588 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				FA1DB12A24D4AB0F0023880E /* ChooseCountryViewController.swift */,
 				FA02C2A024CD6F4D00D907F2 /* PurchaseSubscriptionChooseCountryView.swift */,
 			);
-			path = ChooseCountry;
+			path = View;
 			sourceTree = "<group>";
 		};
 		7844C0EC24D6D97E00EF5588 /* SubscriptionOffer */ = {
@@ -716,14 +718,32 @@
 			path = NotPicked;
 			sourceTree = "<group>";
 		};
+		786B8D3224E95A14003AE398 /* SubscriptionOffer */ = {
+			isa = PBXGroup;
+			children = (
+				78914B8B24C629EC00BE0835 /* View */,
+				7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */,
+				7844C0E724D6D78700EF5588 /* PurchaseSubscriptionFactory.swift */,
+				7849603124C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift */,
+			);
+			path = SubscriptionOffer;
+			sourceTree = "<group>";
+		};
+		786B8D3324E95A20003AE398 /* ChooseCountry */ = {
+			isa = PBXGroup;
+			children = (
+				7844C0EB24D6D94B00EF5588 /* View */,
+				786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */,
+			);
+			path = ChooseCountry;
+			sourceTree = "<group>";
+		};
 		78914B8824C628DE00BE0835 /* PurchaseSubscription */ = {
 			isa = PBXGroup;
 			children = (
+				786B8D3324E95A20003AE398 /* ChooseCountry */,
+				786B8D3224E95A14003AE398 /* SubscriptionOffer */,
 				7844C0E224D6C9AD00EF5588 /* Service */,
-				78914B8B24C629EC00BE0835 /* View */,
-				7849603124C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift */,
-				7844C0E724D6D78700EF5588 /* PurchaseSubscriptionFactory.swift */,
-				7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */,
 			);
 			path = PurchaseSubscription;
 			sourceTree = "<group>";
@@ -733,7 +753,6 @@
 			children = (
 				7844C0EF24D750C200EF5588 /* PurchaseBanner */,
 				7844C0EC24D6D97E00EF5588 /* SubscriptionOffer */,
-				7844C0EB24D6D94B00EF5588 /* ChooseCountry */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1057,6 +1076,7 @@
 				784CEFD824B2626100D95ED6 /* PickedSubscriptionDedicatedServerView.swift in Sources */,
 				7849603224C6368400157AB4 /* PurchaseSubscriptionOfferViewModel.swift in Sources */,
 				7844C0E424D6C9BB00EF5588 /* InAppPurchasesService.swift in Sources */,
+				786B8D3124E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift in Sources */,
 				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,

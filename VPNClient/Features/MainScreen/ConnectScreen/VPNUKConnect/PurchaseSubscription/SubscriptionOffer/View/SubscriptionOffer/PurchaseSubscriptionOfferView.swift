@@ -13,6 +13,7 @@ import SnapKit
 class PurchaseSubscriptionOfferView: UIView {
     private lazy var appearance = Appearance()
     private var closeScreenAction: Action?
+    private var purchaseAction: Action?
     // MARK: - Header
     private lazy var headerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -60,8 +61,9 @@ class PurchaseSubscriptionOfferView: UIView {
         let button = UIButton()
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = appearance.purchaseButtonTitleLabelFont
-        button.layer.backgroundColor = appearance.purchaseButtonColor
+        button.backgroundColor = appearance.purchaseButtonColor
         button.layer.cornerRadius = appearance.purchaseButtonCornerRadius
+        button.addTarget(self, action: #selector(purchaseTouched), for: .touchUpInside)
         return button
     }()
     
@@ -144,7 +146,17 @@ class PurchaseSubscriptionOfferView: UIView {
             termsAndDetailsView.isHidden = true
         }
         headerLogoImageView.image = model.logo
-        purchaseButton.setTitle(model.purchaseButtonTitle, for: .normal)
+        
+        purchaseAction = model.purchaseButtonModel?.action
+        if let purchaseButtonModel = model.purchaseButtonModel {
+            purchaseButton.isHidden = false
+            purchaseButton.setTitle(purchaseButtonModel.title, for: .normal)
+            purchaseButton.isEnabled = purchaseButtonModel.isEnabled
+            purchaseButton.backgroundColor = purchaseButtonModel.isEnabled ? appearance.purchaseButtonColor : appearance.purchaseButtonDisabledColor
+            
+        } else {
+            purchaseButton.isHidden = true
+        }
     }
     
     private func setupSubviews() {
@@ -175,6 +187,11 @@ class PurchaseSubscriptionOfferView: UIView {
     private func closeTouched() {
         closeScreenAction?()
     }
+    
+    @objc
+     private func purchaseTouched() {
+         purchaseAction?()
+     }
 }
 
 extension PurchaseSubscriptionOfferView {
@@ -187,13 +204,21 @@ extension PurchaseSubscriptionOfferView {
         let priceModel: PurchaseSubscriptionPriceView.Model?
         let advantagesModel: PurchaseSubscriptionAdvantagesView.Model?
         let termsDetailsModel: PurchaseSubscriptionTermsAndDetailsView.Model?
-        let purchaseButtonTitle: String
+        /// Hide if nil
+        let purchaseButtonModel: PurchaseButtonModel?
+    }
+    
+    struct PurchaseButtonModel {
+        let title: String
+        let isEnabled: Bool
+        let action: Action
     }
     
     struct Appearance {
         // MARK: - PurchaseButton Appearance
         let purchaseButtonTitleLabelFont = Style.Fonts.bigBoldFont
         let purchaseButtonColor = Style.Color.blueColor
+        let purchaseButtonDisabledColor = Style.Color.grayColor
         let purchaseButtonCornerRadius = Style.CornerRadius.standartCornerRadius
         let purchaseButtonHeightSize = 54
         

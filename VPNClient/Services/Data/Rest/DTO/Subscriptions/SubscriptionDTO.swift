@@ -14,6 +14,25 @@ enum SubscriptionType: String, Codable {
     case oneToOne = "One2One"
 }
 
+extension SubscriptionType: Comparable {
+    static func < (lhs: SubscriptionType, rhs: SubscriptionType) -> Bool {
+        switch (lhs, rhs) {
+        case (.shared, .dedicated):
+            return true
+        case (.dedicated, .oneToOne):
+            return true
+        case (.oneToOne, _):
+            return false
+        case (.dedicated, .dedicated):
+            return true
+        case (.shared, .oneToOne):
+            return true
+        case (_, .shared):
+            return false
+        }
+    }
+}
+
 extension SubscriptionType {
     var localizedValue: String {
         switch self {

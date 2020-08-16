@@ -77,11 +77,11 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         flagImageView.isHidden = model.imageFlag == nil
         if model.isSelected {
             planMarkImageView.image = UIImage(named: "checked.pdf")
-            self.layer.borderColor = appearance.selectedBorderColor
+            self.layer.borderColor = appearance.selectedBorderColor.cgColor
             self.layer.borderWidth = appearance.borderWidth
         } else {
             planMarkImageView.image = UIImage(named: "unchecked.pdf")
-            self.layer.borderColor = appearance.borderColor
+            self.layer.borderColor = appearance.borderColor.cgColor
         }
     }
     
@@ -93,7 +93,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         addSubview(rightView)
         leftView.isHidden = appearance.viewsHiddenValue
         rightView.isHidden = appearance.viewsHiddenValue
-        layer.borderColor = appearance.borderColor
+        layer.borderColor = appearance.borderColor.cgColor
         layer.cornerRadius = appearance.cornerRadius
         layer.borderWidth = appearance.borderWidth
         layer.maskedCorners = appearance.cornersMask
