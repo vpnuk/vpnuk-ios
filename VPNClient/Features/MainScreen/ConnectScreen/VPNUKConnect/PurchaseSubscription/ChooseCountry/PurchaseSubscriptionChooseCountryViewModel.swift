@@ -19,16 +19,19 @@ class PurchaseSubscriptionChooseCountryViewModel {
     private let initialSelectedCountryIndex: Int?
     private let selectCountryAtIndexAction: (_ index: Int) -> Void
     private var selectedCountryIndex: Int?
+    private let router: PurchaseSubscriptionChooseCountryRouterProtocol
     
     init(
         availableCountries: [Country],
         initialSelectedCountryIndex: Int?,
-        selectCountryAtIndexAction: @escaping (_ index: Int) -> Void
+        selectCountryAtIndexAction: @escaping (_ index: Int) -> Void,
+        router: PurchaseSubscriptionChooseCountryRouterProtocol
     ) {
         self.availableCountries = availableCountries
         self.initialSelectedCountryIndex = initialSelectedCountryIndex
         self.selectCountryAtIndexAction = selectCountryAtIndexAction
         self.selectedCountryIndex = initialSelectedCountryIndex
+        self.router = router
     }
 }
 
@@ -45,9 +48,22 @@ extension PurchaseSubscriptionChooseCountryViewModel: PurchaseSubscriptionChoose
                 countries: countriesModels,
                 selectedCountryIndex: selectedCountryIndex,
                 countrySelectedAction: { [weak self] (index) in
-                    self?.selectCountryAtIndexAction(index)
+                    self?.selectedCountryIndex = index
+                    self?.updateView()
                 },
-                chooseButtonTitle: NSLocalizedString("Choose", comment: "")
+                chooseButtonModel: .init(
+                    title: NSLocalizedString("Choose", comment: ""),
+                    isEnabled: selectedCountryIndex != nil,
+                    action: { [weak self] in
+                        guard let self = self, let selectedCountryIndex = self.selectedCountryIndex else { return }
+                        self.router.close(completion: {
+                            self.selectCountryAtIndexAction(selectedCountryIndex)
+                        })
+                    }
+                ),
+                closeAction: { [weak self] in
+                    self?.router.close(completion: nil)
+                }
             )
         )
     }

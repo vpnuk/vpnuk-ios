@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct PlanDetails {
     let planSubscriptionType: SubscriptionType
@@ -27,6 +28,13 @@ class PurchaseSubscriptionOfferViewModel {
     var selectedPeriodIndex: Int?
     var selectedMaxUserIndex: Int?
     
+    private var selectedDedicatedCountryIndex: Int?
+    
+    private let countries: [Country] = [
+        .init(title: NSLocalizedString("UK", comment: ""), descr: "", image: UIImage(named: "uk1")! )
+    ]
+    private let availableProducts: [PurchaseProduct] = PurchaseProduct.availableProducts
+    
     init(reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
         self.reloadSubscriptionsAction = reloadSubscriptionsAction
         self.deps = deps
@@ -39,7 +47,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     }
     
     private func updateView() {
-        let availableProducts = PurchaseProduct.availableProducts
+        
         let model = buildModelForView(
             availableProducts: availableProducts,
             selectedPlanIndex: selectedPlanIndex,
@@ -77,12 +85,18 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         
         let periodModels: [PurchaseSubscriptionPeriodView.Option]
         let maxUsersModels: [PurchaseSubscriptionMaxUsersView.Option]
+        let periods: [Int]
+        let maxUsers: [Int]
         
         if let selectedPlanIndex = selectedPlanIndex {
             let selectedPlan = plansData[selectedPlanIndex]
+            periods = selectedPlan.periods
+            maxUsers = selectedPlan.maxUsers
             periodModels = selectedPlan.periods.map { .init(title: "\($0) months") }
             maxUsersModels = selectedPlan.maxUsers.map { .init(title: "\($0) users") }
         } else {
+            periods = []
+            maxUsers = []
             periodModels = []
             maxUsersModels = []
         }
@@ -96,7 +110,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 plans: planModels,
                 selectedPlanIndex: selectedPlanIndex,
                 planSelectedAction: { [weak self] index in
-                    self?.selectPlan(atIndex: index)
+                    self?.selectPlan(atIndex: index, plan: plansData[index])
                 },
                 infoTapAction: { [weak self] in
                     self?.deps.router.presentAlert(
@@ -120,11 +134,17 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 options: periodModels,
                 selectedOptionIndex: selectedPeriodIndex,
                 optionSelectedAction: { [weak self] index in
-                    self?.selectPeriod(atIndex: index)
+                    self?.selectPeriod(atIndex: index, period: periods[index])
                 },
-                infoTapAction: {
-                    
-                    
+                infoTapAction: { [weak self] in
+                    self?.deps.router.presentAlert(
+                        message: NSLocalizedString(
+                            """
+                               Subscription period in months
+                            """,
+                            comment: ""
+                        )
+                    )
                 }
             )
         }
@@ -138,10 +158,17 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 options: maxUsersModels,
                 selectedOptionIndex: selectedMaxUserIndex,
                 optionSelectedAction: { [weak self] index in
-                    self?.selectMaxUser(atIndex: index)
+                    self?.selectMaxUser(atIndex: index, maxUsers: maxUsers[index])
                 },
-                infoTapAction: {
-                    
+                infoTapAction: { [weak self] in
+                    self?.deps.router.presentAlert(
+                        message: NSLocalizedString(
+                            """
+                               Maximum simultaneous VPN connections
+                            """,
+                            comment: ""
+                        )
+                    )
                 }
             )
         }
@@ -149,10 +176,6 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         let purchaseButtonModel: PurchaseSubscriptionOfferView.PurchaseButtonModel?
         
         var priceModel: PurchaseSubscriptionPriceView.Model? = nil
-//            .init(
-//            title: NSLocalizedString("Total Price:", comment: ""),
-//            moneySum: NSLocalizedString("10$", comment: "")
-//        )
         
         if selectedPlanIndex != nil
             && selectedPeriodIndex != nil
@@ -161,13 +184,17 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             purchaseButtonModel = .init(
                 title: NSLocalizedString("Start your 7-day free trial", comment: ""),
                 isEnabled: true,
-                action: {}
+                action: { [weak self] in
+                    self?.purchaseTouched()
+                }
             )
         } else {
             purchaseButtonModel = .init(
                 title: NSLocalizedString("Start your 7-day free trial", comment: ""),
                 isEnabled: false,
-                action: {}
+                action: { [weak self] in
+                    self?.purchaseTouched()
+                }
             )
         }
         
@@ -180,14 +207,13 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             periodModel: periodsModel,
             maxUsersModel: maxUsersModel,
             priceModel: priceModel,
-            
             advantagesModel: .init(
                 title: NSLocalizedString("Why Subscribe?", comment: ""),
                 reasons: [
-                    .init(title: NSLocalizedString("Apps for every device", comment: "")),
-                    .init(title: NSLocalizedString("160 locations worldwide", comment: "")),
-                    .init(title: NSLocalizedString("24/7 customer support", comment: "")),
-                    .init(title: NSLocalizedString("Unlimited bandwidth", comment: ""))
+                    .init(title: NSLocalizedString("Additional Security", comment: "")),
+                    .init(title: NSLocalizedString("Complete Privacy", comment: "")),
+                    .init(title: NSLocalizedString("Fully Encrypted", comment: "")),
+                    .init(title: NSLocalizedString("Personal IP Address", comment: ""))
                 ]
             ),
             termsDetailsModel: .init(
@@ -201,41 +227,65 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         
     }
 
-    private func selectPlan(atIndex index: Int) {
+    private func selectPlan(atIndex index: Int, plan: PlanDetails) {
+        if plan.planSubscriptionType == .dedicated {
+            openSelectCountryForDedicatedIp()
+        }
+        
         guard selectedPlanIndex != index else { return }
         selectedPlanIndex = index
         selectedPeriodIndex = nil
         selectedMaxUserIndex = nil
+        
         updateView()
     }
     
-    private func selectPeriod(atIndex index: Int) {
+    private func selectPeriod(atIndex index: Int, period: Int) {
         guard selectedPeriodIndex != index else { return }
         selectedPeriodIndex = index
         updateView()
     }
     
-    private func selectMaxUser(atIndex index: Int) {
+    private func selectMaxUser(atIndex index: Int, maxUsers: Int) {
         guard selectedMaxUserIndex != index else { return }
         selectedMaxUserIndex = index
         updateView()
     }
+    
+    private func openSelectCountryForDedicatedIp() {
+        deps.router.presentChooseCountryScreen(
+            countries: countries,
+            initialSelectedCountryIndex: selectedDedicatedCountryIndex,
+            selectCountryAtIndexAction: { [weak self] index in
+                self?.selectedDedicatedCountryIndex = index
+            }
+        )
+    }
+    
+    private func purchaseTouched() {
+        let plansData = buildViewData(from: availableProducts)
+        guard
+            let selectedPlanIndex = selectedPlanIndex,
+            let selectedPeriodIndex = selectedPeriodIndex,
+            let selectedMaxUserIndex = selectedMaxUserIndex
+        else {
+            return
+        }
+        
+        let selectedPlan = plansData[selectedPlanIndex]
+        let selectedProductToPurchase = availableProducts.first(where: { product in
+            return product.data.maxUsers == selectedPlan.maxUsers[selectedMaxUserIndex]
+                && product.data.periodMonths == selectedPlan.periods[selectedPeriodIndex]
+                && product.data.type == selectedPlan.planSubscriptionType
+        })
+        
+        if let selectedProductToPurchase = selectedProductToPurchase {
+            // TODO: purchase product
+        }
+    }
 }
 
 extension PurchaseSubscriptionOfferViewModel {
-    struct Plan {
-        let title: String
-        let subtitle: String
-    }
-    
-    struct Period {
-        let title: String
-    }
-    
-    struct MaxUser {
-        let title: String
-    }
-    
     struct Dependencies {
         let router: PurchaseSubscriptionOfferRouterProtocol
         let purchasesService: InAppPurchasesService

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol ChooseCountryViewProtocol: AnyObject {
     func update(model: PurchaseSubscriptionChooseCountryView.Model)
@@ -34,7 +35,9 @@ class ChooseCountryViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(countryView)
-        countryView.makeEdgesEqualToSuperview()
+        countryView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 }
 

@@ -9,6 +9,9 @@ import UIKit
 class PurchaseSubscriptionChooseCountryView: UIView {
     private lazy var appearance = Appearance()
     private var countrySelectedAction: ((_ index: Int) -> Void)?
+    private var chooseAction: Action?
+    private var closeAction: Action?
+    
     // MARK: - Header
     private lazy var headerLabel : UILabel = {
         let label = UILabel()
@@ -25,6 +28,15 @@ class PurchaseSubscriptionChooseCountryView: UIView {
         button.titleLabel?.font = appearance.chooseButtonTitleFont
         button.layer.backgroundColor = appearance.chooseButtonColor.cgColor
         button.layer.cornerRadius = appearance.chooseButtonCornerRadius
+        button.addTarget(self, action: #selector(chooseTouched), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "greyCross"), for: .normal)
+        button.imageView?.contentMode = .center
+        button.addTarget(self, action: #selector(closeTouched), for: .touchUpInside)
         return button
     }()
     
@@ -63,13 +75,15 @@ class PurchaseSubscriptionChooseCountryView: UIView {
             }
             let countryView = PurchaseSubscriptionChoosePlanView(appearance: countryAppearance)
             
-            countryView.update(model: .init(
-                title: country.title,
-                subTitle: nil,
-                imageFlag: country.imageFlag,
-                isSelected: selectedIndex == index,
-                tappedAction: { [weak self] in self?.countrySelectedAction?(index) }
-                ))
+            countryView.update(
+                model: .init(
+                    title: country.title,
+                    subTitle: nil,
+                    imageFlag: country.imageFlag,
+                    isSelected: selectedIndex == index,
+                    tappedAction: { [weak self] in self?.countrySelectedAction?(index) }
+                )
+            )
             return countryView
         }
         return countriesViews
@@ -85,10 +99,22 @@ class PurchaseSubscriptionChooseCountryView: UIView {
             contentStackView.addArrangedSubview(countyView)
         }
         headerLabel.text = model.title
-        chooseButton.setTitle(model.chooseButtonTitle, for: .normal)
+        
+        closeAction = model.closeAction
+        countrySelectedAction = model.countrySelectedAction
+        chooseAction = model.chooseButtonModel?.action
+        if let chooseButtonModel = model.chooseButtonModel {
+            chooseButton.isHidden = false
+            chooseButton.setTitle(chooseButtonModel.title, for: .normal)
+            chooseButton.isEnabled = chooseButtonModel.isEnabled
+            chooseButton.backgroundColor = chooseButtonModel.isEnabled ? appearance.chooseButtonColor : appearance.chooseButtonDisabledColor
+        } else {
+            chooseButton.isHidden = true
+        }
     }
     
     private func setupSubviews() {
+        addSubview(closeButton)
         addSubview(headerLabel)
         addSubview(contentStackView)
         addSubview(chooseButton)
@@ -111,11 +137,24 @@ class PurchaseSubscriptionChooseCountryView: UIView {
             make.bottom.equalTo(appearance.chooseButtonBottomSize)
             make.height.equalTo(appearance.chooseButtonHeightSize)
         }
+        closeButton.snp.makeConstraints { make in
+            make.top.right.equalToSuperview().inset(appearance.closeButtonOffset)
+        }
     }
     
     private func commonInit() {
         setupSubviews()
         setupConstraints()
+    }
+    
+    @objc
+    private func chooseTouched() {
+        chooseAction?()
+    }
+    
+    @objc
+    private func closeTouched() {
+        closeAction?()
     }
 }
 
@@ -125,7 +164,14 @@ extension PurchaseSubscriptionChooseCountryView {
         let countries: [Country]
         let selectedCountryIndex: Int?
         let countrySelectedAction: (_ index: Int) -> Void
-        let chooseButtonTitle: String
+        let chooseButtonModel: ChooseButtonModel?
+        let closeAction: Action?
+    }
+    
+    struct ChooseButtonModel {
+        let title: String
+        let isEnabled: Bool
+        let action: Action
     }
     
     struct Country {
@@ -143,6 +189,7 @@ extension PurchaseSubscriptionChooseCountryView {
         // MARK: - ChooseButton Appearance
         let chooseButtonTitleFont = Style.Fonts.bigBoldFont
         let chooseButtonColor = Style.Color.blueColor
+        let chooseButtonDisabledColor = Style.Color.grayColor
         let chooseButtonCornerRadius = Style.CornerRadius.standartCornerRadius
         let chooseButtonLeftRightInsetSize = Style.Constraint.standartConstreint
         let chooseButtonBottomSize = -11
@@ -152,5 +199,8 @@ extension PurchaseSubscriptionChooseCountryView {
         let contentStackViewSpacing = Style.Spacing.noSpacing
         let contentStackViewLeftSize = Style.Constraint.bigConstraint
         let contentStackViewTopOffsetSize = 77
+        
+        // MARK: - Close button
+        let closeButtonOffset = 32
     }
 }

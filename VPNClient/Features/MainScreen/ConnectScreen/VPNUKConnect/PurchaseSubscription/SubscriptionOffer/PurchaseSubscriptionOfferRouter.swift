@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+
+struct Country {
+    let title: String
+    let descr: String
+    let image: UIImage
+}
+
 protocol PurchaseSubscriptionOfferRouterProtocol {
     func presentAlert(message: String)
     func presentChooseCountryScreen(
@@ -20,12 +27,6 @@ protocol PurchaseSubscriptionOfferRouterProtocol {
     func close(completion: (() -> Void)?)
 }
 
-struct Country {
-    let title: String
-    let descr: String
-    let image: UIImage
-}
-
 class PurchaseSubscriptionOfferRouter: PurchaseSubscriptionOfferRouterProtocol {
     weak var viewController: UIViewController?
     
@@ -34,7 +35,14 @@ class PurchaseSubscriptionOfferRouter: PurchaseSubscriptionOfferRouterProtocol {
         initialSelectedCountryIndex: Int?,
         selectCountryAtIndexAction: @escaping (_ index: Int) -> Void
     ) {
-        
+        let factory = PurchaseSubscriptionChooseCountryFactory()
+        let controller = factory.create(
+            availableCountries: countries,
+            initialSelectedCountryIndex: initialSelectedCountryIndex,
+            selectCountryAtIndexAction: selectCountryAtIndexAction
+        )
+        controller.modalPresentationStyle = .fullScreen
+        viewController?.present(controller, animated: true)
     }
     
     func presentAlert(message: String) {

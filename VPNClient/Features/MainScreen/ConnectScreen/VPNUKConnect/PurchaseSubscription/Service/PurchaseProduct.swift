@@ -78,11 +78,11 @@ extension SubscriptionType {
       var localizeDescription: String {
           switch self {
           case .oneToOne:
-              return NSLocalizedString("Your own unique 1:1 IP (UK only)", comment: "")
+              return NSLocalizedString("Your unique server IP (UK only)", comment: "")
           case .dedicated:
-              return NSLocalizedString("Your own unique IP", comment: "")
+              return NSLocalizedString("Your unique personal IP", comment: "")
           case .shared:
-              return NSLocalizedString("Large choice of server. Dynamic IP", comment: "")
+              return NSLocalizedString("Randomly assigned dynamic IP", comment: "")
           }
       }
 }

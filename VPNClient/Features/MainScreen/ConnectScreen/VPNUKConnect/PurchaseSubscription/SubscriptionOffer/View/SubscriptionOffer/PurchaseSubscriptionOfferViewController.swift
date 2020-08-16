@@ -40,7 +40,9 @@ class PurchaseSubscriptionOfferViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        customView.makeEdgesEqualToSuperview()
+        customView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     private func setupSubviews() {
