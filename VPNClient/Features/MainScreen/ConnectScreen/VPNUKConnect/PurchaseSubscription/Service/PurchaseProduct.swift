@@ -23,14 +23,16 @@ extension PurchaseProduct {
         ]
     }
     
+    var productId: String { rawValue }
+    
     var localizedTitle: String {
         switch self {
         case .oneToOneDedicatedIp1Month1User:
-            return NSLocalizedString("1:1 Dedicated IP", comment: "")
+            return NSLocalizedString("1:1 Dedicated IP. 1 Month. 1 User", comment: "")
         case .dedicatedIp1Month2User:
-            return NSLocalizedString("Dedicated IP", comment: "")
+            return NSLocalizedString("Dedicated IP. 1 Month. 2 Users", comment: "")
         case .sharedIp1Month1User:
-            return NSLocalizedString("Shared IP", comment: "")
+            return NSLocalizedString("Shared IP. 1 Month. 1 User", comment: "")
         }
     }
     

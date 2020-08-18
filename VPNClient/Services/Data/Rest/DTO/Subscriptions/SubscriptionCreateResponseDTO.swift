@@ -9,9 +9,9 @@
 import Foundation
 
 struct SubscriptionCreateResponseDTO: Codable {
-    let id: String
+    let id: Int
     
-    init(id: String) {
+    init(id: Int) {
         self.id = id
     }
 }

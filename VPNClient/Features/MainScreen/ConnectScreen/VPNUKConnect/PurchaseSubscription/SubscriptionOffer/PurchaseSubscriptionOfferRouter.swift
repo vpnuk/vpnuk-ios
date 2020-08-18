@@ -14,10 +14,11 @@ struct Country {
     let title: String
     let descr: String
     let image: UIImage
+    /// name for country api field
+    let name: String
 }
 
-protocol PurchaseSubscriptionOfferRouterProtocol {
-    func presentAlert(message: String)
+protocol PurchaseSubscriptionOfferRouterProtocol: AlertPresentable {
     func presentChooseCountryScreen(
         countries: [Country],
         initialSelectedCountryIndex: Int?,
@@ -47,6 +48,9 @@ class PurchaseSubscriptionOfferRouter: PurchaseSubscriptionOfferRouterProtocol {
     
     func presentAlert(message: String) {
         viewController?.presentAlert(message: message)
+    }
+    func presentAlert(message: String, completion: @escaping () -> ()) {
+        viewController?.presentAlert(message: message, completion: completion)
     }
     
     func close(completion: (() -> Void)?) {

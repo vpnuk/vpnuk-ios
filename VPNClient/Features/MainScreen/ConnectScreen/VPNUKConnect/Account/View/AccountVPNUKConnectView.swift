@@ -27,9 +27,20 @@ class AccountVPNUKConnectView: UIView {
         return button
     }()
     
+    
+    private lazy var purchaseSubscriptionContainer: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        view.addSubview(purchaseSubscriptionView)
+        purchaseSubscriptionView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        return view
+    }()
+    
     private lazy var purchaseSubscriptionView: PurchaseSubscriptionBannerView = {
         let view = PurchaseSubscriptionBannerView()
-        view.isHidden = true
         return view
     }()
     
@@ -56,7 +67,7 @@ class AccountVPNUKConnectView: UIView {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                purchaseSubscriptionView,
+                purchaseSubscriptionContainer,
                 subscriptionAndServerPickerStackView,
                 signOutButton
             ]
@@ -123,9 +134,9 @@ extension AccountVPNUKConnectView: AccountVPNUKConnectViewProtocol {
     func updatePurchaseSubscriptionBanner(model: PurchaseSubscriptionBannerView.Model?) {
         if let model = model {
             purchaseSubscriptionView.update(model: model)
-            purchaseSubscriptionView.isHidden = false
+            purchaseSubscriptionContainer.isHidden = false
         } else {
-            purchaseSubscriptionView.isHidden = true
+            purchaseSubscriptionContainer.isHidden = true
         }
     }
     

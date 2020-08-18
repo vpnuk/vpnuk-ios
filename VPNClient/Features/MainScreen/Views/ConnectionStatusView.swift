@@ -210,11 +210,11 @@ extension ConnectionStatusView {
         let bgColor: UIColor = .white
         
         let disconnectButtonColor: UIColor = .systemOrange
-        let connectButtonColor: UIColor = .systemGreen
+        let connectButtonColor: UIColor = Style.Color.blueColor
         
         let disconnectingStatusColor: UIColor = .systemOrange
         let connectingStatusColor: UIColor = .systemOrange
-        let connectedStatusColor: UIColor = .systemGreen
+        let connectedStatusColor: UIColor = Style.Color.blueColor
         let disconnectedStatusColor: UIColor = .systemRed
         
         let containerViewInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)

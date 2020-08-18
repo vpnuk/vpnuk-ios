@@ -8,16 +8,24 @@
 
 import Foundation
 import UIKit
+import StoreKit
 
 class PurchaseSubscriptionFactory {
     func create(reloadSubscriptionsAction: @escaping Action) -> UIViewController {
         
         let router = PurchaseSubscriptionOfferRouter()
+        let purchasesService: InAppPurchasesService = InAppPurchasesServiceImpl(
+            availableProducts: PurchaseProduct.availableProducts,
+            allProducts: PurchaseProduct.allCases,
+            paymentQueue: SKPaymentQueue.default(),
+            defaults: UserDefaults.standard,
+            fileManager: FileManager.default
+        )
         let viewModel = PurchaseSubscriptionOfferViewModel(
             reloadSubscriptionsAction: reloadSubscriptionsAction,
             deps: .init(
                 router: router,
-                purchasesService: InAppPurchasesServiceMock(),
+                purchasesService: purchasesService,
                 subscripionsAPI: RestAPI.shared
             )
         )

@@ -57,7 +57,7 @@ struct VPNAccountDTO: Codable, Equatable {
     let username: String
     let password: String
     /// Unique user ip for dedicated server
-    let uniqueUserIp: String
+    let uniqueUserIp: String?
     let server: DedicatedServerDTO?
     
     enum CodingKeys: String, CodingKey {
@@ -71,6 +71,8 @@ struct VPNAccountDTO: Codable, Equatable {
 struct SubscriptionDTO: Codable, Equatable {
     let id: Int
     let productName: String
+    let productId: Int?
+    let nextPaymentDateString: String?
     /// VPN accounts quantity
     let quantity: Int
     /// max sessions count
@@ -84,6 +86,8 @@ struct SubscriptionDTO: Codable, Equatable {
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case productName = "product_name"
+        case productId = "product_id"
+        case nextPaymentDateString = "next_payment_date"
         case sessions = "sessions"
         case quantity = "quantity"
         case period = "period"
@@ -100,5 +104,12 @@ extension SubscriptionDTO {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return df.date(from: trialEnd)
+    }
+    
+    var nextPaymentDate: Date? {
+        guard let str = nextPaymentDateString else { return nil }
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return df.date(from: str)
     }
 }

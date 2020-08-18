@@ -31,7 +31,9 @@ class PurchaseSubscriptionOfferViewModel {
     private var selectedDedicatedCountryIndex: Int?
     
     private let countries: [Country] = [
-        .init(title: NSLocalizedString("UK", comment: ""), descr: "", image: UIImage(named: "uk1")! )
+        .init(title: NSLocalizedString("United Kingdom", comment: ""), descr: "", image: UIImage(named: "uk1")!, name: "United Kingdom" ),
+        .init(title: NSLocalizedString("United States", comment: ""), descr: "", image: UIImage(named: "us1")!, name: "United States" ),
+        .init(title: NSLocalizedString("Italy", comment: ""), descr: "", image: UIImage(named: "it1")!, name: "Italy" ),
     ]
     private let availableProducts: [PurchaseProduct] = PurchaseProduct.availableProducts
     
@@ -279,10 +281,77 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 && product.data.type == selectedPlan.planSubscriptionType
         })
         
-        if let selectedProductToPurchase = selectedProductToPurchase {
-            // TODO: purchase product
+        let selectedCountry: Country?
+        if selectedPlan.planSubscriptionType == .dedicated, let selectedDedicatedCountryIndex = selectedDedicatedCountryIndex {
+            selectedCountry = countries[selectedDedicatedCountryIndex]
+        } else {
+            selectedCountry = nil
+        }
+        
+        makePurchase(productToPurchase: selectedProductToPurchase, country: selectedCountry, quantity: 1)
+    }
+    
+    private func makePurchase(productToPurchase: PurchaseProduct?, country: Country?, quantity: Int?) {
+        guard let productToPurchase = productToPurchase else {
+            deps.router.presentAlert(message: NSLocalizedString("Subscription not selected. Please select subscription", comment: ""))
+            return
+        }
+        if productToPurchase.data.type == .dedicated && (country == nil || quantity == nil) {
+            deps.router.presentAlert(message: NSLocalizedString("Country not selected. Please select country", comment: ""))
+            return
+        }
+        
+        // TODO: add real purchase
+        let requestTrialOnly = true
+        
+        if requestTrialOnly {
+            view?.setLoading(true)
+            deps.subscripionsAPI.createSubscription(
+                subscriptionRequest: .init(
+                    productId: productToPurchase.productId,
+                    productIdSource: .vpnuk,
+                    quantity: 1,
+                    country: country?.name
+            )) { [weak self] result in
+                guard let self = self else { return }
+                self.view?.setLoading(false)
+                self.reloadSubscriptionsAction()
+                switch result {
+                case .success(_):
+                    let message = NSLocalizedString("Trial subscription successfully requested:", comment: "") + "\n" + productToPurchase.localizedTitle
+                    self.deps.router.presentAlert(message: message, completion: {
+                        self.deps.router.close(completion: nil)
+                    })
+                case .failure(let error):
+                    let message = NSLocalizedString("Trial subscription request failed with error:", comment: "") + "\n" + error.localizedDescription
+                    self.deps.router.presentAlert(message: message)
+                }
+            }
+        } else {
+            if let base64ReceiptData = deps.purchasesService.getBase64ReceiptData() {
+                view?.setLoading(true)
+                deps.subscripionsAPI.sendPurchaseReceipt(base64EncodedReceipt: base64ReceiptData, country: country?.name) { [weak self] result in
+                    guard let self = self else { return }
+                    self.view?.setLoading(false)
+                    self.reloadSubscriptionsAction()
+                    switch result {
+                    case .success(_):
+                        let message = NSLocalizedString("Subscription purchased:", comment: "") + "\n" + productToPurchase.localizedTitle
+                        self.deps.router.presentAlert(message: message, completion: {
+                            self.deps.router.close(completion: nil)
+                        })
+                    case .failure(let error):
+                        let message = NSLocalizedString("Purchase failed with error:", comment: "") + "\n" + error.localizedDescription
+                        self.deps.router.presentAlert(message: message)
+                    }
+                }
+            } else {
+                let message = NSLocalizedString("Purchase failed", comment: "")
+                deps.router.presentAlert(message: message)
+            }
         }
     }
+
 }
 
 extension PurchaseSubscriptionOfferViewModel {

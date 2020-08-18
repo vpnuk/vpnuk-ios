@@ -53,14 +53,14 @@ class PurchaseSubscriptionBannerView: UIView {
     
     private func setupSubviews() {
         addSubview(contentStackView)
-        makeDefaultShadowAndCorners()
         layer.borderWidth = appearance.borderWidth
         layer.borderColor = appearance.borderColor
+        layer.cornerRadius = appearance.cornerRadius
     }
     
     private func setupConstraints() {
         contentStackView.snp.makeConstraints { make in
-            make.height.equalToSuperview()
+            make.edges.equalToSuperview().inset(appearance.contentInsets)
         }
     }
     
@@ -90,6 +90,8 @@ extension PurchaseSubscriptionBannerView {
         let titleLabelTextColor = Style.Color.darkGrayColor
         let contentStackViewSpacing = Style.Spacing.bigSpacing
         let borderWidth: CGFloat = 2
+        let cornerRadius: CGFloat = 5
         let borderColor: CGColor = Style.Color.grayColor.cgColor
+        let contentInsets: UIEdgeInsets = .init(top: 5, left: 10, bottom: 5, right: 10)
     }
 }

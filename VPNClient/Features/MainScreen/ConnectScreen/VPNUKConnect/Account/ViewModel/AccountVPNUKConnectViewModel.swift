@@ -58,21 +58,9 @@ class AccountVPNUKConnectViewModel  {
 extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
 
     func viewDidLoad() {
-        
-//        deps.subscripionsAPI.createSubscription(
-//            subscriptionRequest: .init(productId: "6633", productIdSource: .vpnuk, country: "Italy")
-//        ) { (result) in
-//            switch result {
-//            case .success(let t):
-//                print(t)
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
-        
         view?.updatePurchaseSubscriptionBanner(
             model: .init(
-                image: UIImage(named: ""),
+                image: UIImage(named: "shopping-cart"),
                 title: NSLocalizedString("Purchase subscription", comment: ""),
                 tapAction: { [weak self] in
                     self?.deps.router.openPurchaseSubscriptionScreen {
@@ -281,7 +269,7 @@ private extension AccountVPNUKConnectViewModel {
                 dedicatedServerModel = .init(
                     title: NSLocalizedString("Dedicated server info:", comment: ""), // server.description
                     ip: server.ip,
-                    uniqueUserIp: account.uniqueUserIp,
+                    uniqueUserIp: account.uniqueUserIp ?? "",
                     location: server.location
                 )
             } else {
@@ -378,7 +366,7 @@ private extension AccountVPNUKConnectViewModel {
                 switch data.subscription.type {
                 case .dedicated, .oneToOne:
                     selectServer(withIp: vpnAccountServer.ip)
-                    let message = "Your Dedicated IP server: \(vpnAccountServer.location) (Your IP: \(vpnAccount.uniqueUserIp)) has been automatically selected. You can also connect to any Shared IP server."
+                    let message = "Your Dedicated IP server: \(vpnAccountServer.location) (Your IP: \(vpnAccount.uniqueUserIp ?? "")) has been automatically selected. You can also connect to any Shared IP server."
                     deps.router.presentAlert(message: message)
                 case .shared:
                     // Don't select server for shared

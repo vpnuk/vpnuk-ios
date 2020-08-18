@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol PurchaseSubscriptionOfferViewProtocol: AnyObject {
+protocol PurchaseSubscriptionOfferViewProtocol: AnyObject, LoaderPresentable {
     func update(model: PurchaseSubscriptionOfferView.Model)
 }
 
