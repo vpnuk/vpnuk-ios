@@ -89,7 +89,7 @@ extension InAppPurchasesServiceImpl: InAppPurchasesService {
     
     
     func restorePurchases() {
-        SKPaymentQueue.default().restoreCompletedTransactions()
+        paymentQueue.restoreCompletedTransactions()
     }
     
     @discardableResult

@@ -21,6 +21,7 @@ protocol ServersAPI {
 }
 
 protocol SubscripionsAPI {
+    func getPurchasableProductIds(callback: @escaping (Result<[String], Error>) -> ()) 
     func getSubscriptions(callback: @escaping (_ subscriptions: Result<[SubscriptionDTO], Error>) -> ())
     func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
     func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
@@ -171,25 +172,25 @@ extension RestAPI: SubscripionsAPI {
             method: .get,
             headers: getAuthHeaders()
         )
-            .validate()
-            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-                if let error = response.error {
+        .validate()
+        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+            if let error = response.error {
+                DispatchQueue.main.async {
+                    callback(.failure(error))
+                }
+            } else {
+                let data = response.data ?? Data()
+                do {
+                    let servers = try JSONDecoder().decode([SubscriptionDTO].self, from: data)
+                    DispatchQueue.main.async {
+                        callback(.success(servers))
+                    }
+                } catch {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
-                } else {
-                    let data = response.data ?? Data()
-                    do {
-                        let servers = try JSONDecoder().decode([SubscriptionDTO].self, from: data)
-                        DispatchQueue.main.async {
-                            callback(.success(servers))
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            callback(.failure(error))
-                        }
-                    }
                 }
+            }
         }
     }
     
@@ -199,25 +200,25 @@ extension RestAPI: SubscripionsAPI {
             method: .get,
             headers: getAuthHeaders()
         )
-            .validate()
-            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-                if let error = response.error {
+        .validate()
+        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+            if let error = response.error {
+                DispatchQueue.main.async {
+                    callback(.failure(error))
+                }
+            } else {
+                let data = response.data ?? Data()
+                do {
+                    let servers = try JSONDecoder().decode(SubscriptionDTO.self, from: data)
+                    DispatchQueue.main.async {
+                        callback(.success(servers))
+                    }
+                } catch {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
-                } else {
-                    let data = response.data ?? Data()
-                    do {
-                        let servers = try JSONDecoder().decode(SubscriptionDTO.self, from: data)
-                        DispatchQueue.main.async {
-                            callback(.success(servers))
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            callback(.failure(error))
-                        }
-                    }
                 }
+            }
         }
     }
     
@@ -228,28 +229,28 @@ extension RestAPI: SubscripionsAPI {
             parameters: subscriptionRequest,
             headers: getAuthHeaders()
         )
-            .validate()
-            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-                if let error = response.error {
+        .validate()
+        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+            if let error = response.error {
+                DispatchQueue.main.async {
+                    callback(.failure(error))
+                }
+            } else {
+                let data = response.data ?? Data()
+                do {
+                    let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
+                    DispatchQueue.main.async {
+                        callback(.success(servers))
+                    }
+                } catch {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
-                } else {
-                    let data = response.data ?? Data()
-                    do {
-                        let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
-                        DispatchQueue.main.async {
-                            callback(.success(servers))
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            callback(.failure(error))
-                        }
-                    }
                 }
+            }
         }
     }
-
+    
     func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (Result<SubscriptionCreateResponseDTO, Error>) -> ()) {
         AF.request(
             URL(string: baseUrl + "/wp-json/vpnuk/v1/inapp/purchase")!,
@@ -257,25 +258,53 @@ extension RestAPI: SubscripionsAPI {
             parameters: base64EncodedReceipt,
             headers: getAuthHeaders()
         )
-            .validate()
-            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-                if let error = response.error {
+        .validate()
+        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+            if let error = response.error {
+                DispatchQueue.main.async {
+                    callback(.failure(error))
+                }
+            } else {
+                let data = response.data ?? Data()
+                do {
+                    let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
+                    DispatchQueue.main.async {
+                        callback(.success(servers))
+                    }
+                } catch {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
-                } else {
-                    let data = response.data ?? Data()
-                    do {
-                        let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
-                        DispatchQueue.main.async {
-                            callback(.success(servers))
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            callback(.failure(error))
-                        }
+                }
+            }
+        }
+    }
+    
+    func getPurchasableProductIds(callback: @escaping (Result<[String], Error>) -> ()) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/purchasable_products")!,
+            method: .get,
+            headers: getAuthHeaders()
+        )
+        .validate()
+        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+            if let error = response.error {
+                DispatchQueue.main.async {
+                    callback(.failure(error))
+                }
+            } else {
+                let data = response.data ?? Data()
+                do {
+                    let json = try JSONDecoder().decode([String].self, from: data)
+                    DispatchQueue.main.async {
+                        callback(.success(json))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
                     }
                 }
+            }
         }
     }
 }

@@ -29,29 +29,110 @@ class PurchaseSubscriptionOfferViewModel {
     var selectedMaxUserIndex: Int?
     
     private var selectedDedicatedCountryIndex: Int?
+    private var purchasableProductsData: PurchasableProductsData?
+    /// Index of last selected country while purchasing
+    private var lastPurchaseSelectedDedicatedCountryIndex: Int?
     
     private let countries: [Country] = [
         .init(title: NSLocalizedString("United Kingdom", comment: ""), descr: "", image: UIImage(named: "uk1")!, name: "United Kingdom" ),
         .init(title: NSLocalizedString("United States", comment: ""), descr: "", image: UIImage(named: "us1")!, name: "United States" ),
         .init(title: NSLocalizedString("Italy", comment: ""), descr: "", image: UIImage(named: "it1")!, name: "Italy" ),
     ]
-    private let availableProducts: [PurchaseProduct] = PurchaseProduct.availableProducts
+    
     
     init(reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
         self.reloadSubscriptionsAction = reloadSubscriptionsAction
         self.deps = deps
+        deps.purchasesService.transactionUpdatedListener = { [weak self] transactions in
+            self?.handlePurchaseTransactionsResults(results: transactions)
+        }
+    }
+    
+    private func handlePurchaseTransactionsResults(results: [TransactionResult]) {
+        // TODO: Analyze what subscriptions were purchased
+        sendPurchaseReceiptToServer()
+    }
+    
+    private func sendPurchaseReceiptToServer() {
+        let lastSelectedCountry: Country?
+        if let selectedDedicatedCountryIndex = lastPurchaseSelectedDedicatedCountryIndex, countries.count > selectedDedicatedCountryIndex {
+            lastSelectedCountry = countries[selectedDedicatedCountryIndex]
+        } else {
+            lastSelectedCountry = nil
+        }
+        if let base64ReceiptData = deps.purchasesService.getBase64ReceiptData() {
+            view?.setLoading(true)
+            deps.subscripionsAPI.sendPurchaseReceipt(base64EncodedReceipt: base64ReceiptData, country: lastSelectedCountry?.name) { [weak self] result in
+                guard let self = self else { return }
+                self.view?.setLoading(false)
+                self.reloadSubscriptionsAction()
+                switch result {
+                case .success(_):
+                    let message = NSLocalizedString("Subscription purchased.", comment: "")
+                    self.deps.router.presentAlert(message: message, completion: {
+                        self.deps.router.close(completion: nil)
+                    })
+                case .failure(let error):
+                    let message = NSLocalizedString("Purchase failed with error:", comment: "") + "\n" + error.localizedDescription
+                    self.deps.router.presentAlert(message: message)
+                }
+            }
+        } else {
+            let message = NSLocalizedString("Purchase failed", comment: "")
+            deps.router.presentAlert(message: message)
+        }
+    }
+    
+    private func getAndCachePurchasableProductsData(
+        completion: @escaping (_ result: Result<PurchasableProductsData, Error>) -> Void
+    ) {
+        let allProducts: [PurchaseProduct] = PurchaseProduct.availableProducts
+        deps.subscripionsAPI.getSubscriptions { [weak self] result in
+            switch result {
+            case .success(let subscriptions):
+                let shouldOfferTrial = subscriptions.count == 0
+                self?.deps.subscripionsAPI.getPurchasableProductIds { result in
+                    switch result {
+                    case .success(let ids):
+                        let purchasableIds = Set(ids)
+                        let purchasableProducts = allProducts.filter { purchasableIds.contains($0.rawValue) }
+                        let data: PurchasableProductsData = .init(isTrialProducts: shouldOfferTrial, products: purchasableProducts)
+                        self?.purchasableProductsData = data
+                        completion(.success(data))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 
 extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModelProtocol {
     func viewLoaded() {
         updateView()
+        reloadProducts()
+    }
+    
+    private func reloadProducts() {
+        view?.setLoading(true)
+        getAndCachePurchasableProductsData { [weak self] result in
+            self?.view?.setLoading(false)
+            switch result {
+            case .success(_):
+                self?.updateView()
+            case .failure(_):
+                self?.updateView()
+                self?.deps.router.presentAlert(message: NSLocalizedString("Network error", comment: ""))
+            }
+        }
     }
     
     private func updateView() {
-        
         let model = buildModelForView(
-            availableProducts: availableProducts,
+            purchasableProductsData: purchasableProductsData,
             selectedPlanIndex: selectedPlanIndex,
             selectedPeriodIndex: selectedPeriodIndex,
             selectedMaxUsersPlan: selectedMaxUserIndex
@@ -75,16 +156,17 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     }
     
     private func buildModelForView(
-        availableProducts: [PurchaseProduct],
+        purchasableProductsData: PurchasableProductsData?,
         selectedPlanIndex: Int?,
         selectedPeriodIndex: Int?,
         selectedMaxUsersPlan: Int?
     ) -> PurchaseSubscriptionOfferView.Model {
+        let availableProducts = purchasableProductsData?.products ?? []
         let plansData = buildViewData(from: availableProducts)
         let planModels: [PurchaseSubscriptionChoosePlansView.Plan] = plansData.map {
             .init(title: $0.planSubscriptionType.localizedTitle, subtitle: $0.planSubscriptionType.localizeDescription)
         }
-        
+        let isTrialSubscriptions = purchasableProductsData?.isTrialProducts == true
         let periodModels: [PurchaseSubscriptionPeriodView.Option]
         let maxUsersModels: [PurchaseSubscriptionMaxUsersView.Option]
         let periods: [Int]
@@ -175,25 +257,30 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             )
         }
         
+        let priceModel: PurchaseSubscriptionPriceView.Model?
+        
+        if isTrialSubscriptions {
+            // No price for trial
+            priceModel = nil
+        } else {
+            priceModel = nil
+        }
+        
+        let isPurchaseButtonEnabled = selectedPlanIndex != nil && selectedPeriodIndex != nil && selectedMaxUserIndex != nil
         let purchaseButtonModel: PurchaseSubscriptionOfferView.PurchaseButtonModel?
         
-        var priceModel: PurchaseSubscriptionPriceView.Model? = nil
-        
-        if selectedPlanIndex != nil
-            && selectedPeriodIndex != nil
-            && selectedMaxUserIndex != nil
-        {
+        if isTrialSubscriptions {
             purchaseButtonModel = .init(
                 title: NSLocalizedString("Start your 7-day free trial", comment: ""),
-                isEnabled: true,
+                isEnabled: isPurchaseButtonEnabled,
                 action: { [weak self] in
                     self?.purchaseTouched()
                 }
             )
         } else {
             purchaseButtonModel = .init(
-                title: NSLocalizedString("Start your 7-day free trial", comment: ""),
-                isEnabled: false,
+                title: NSLocalizedString("Purchase subscription", comment: ""),
+                isEnabled: isPurchaseButtonEnabled,
                 action: { [weak self] in
                     self?.purchaseTouched()
                 }
@@ -265,14 +352,16 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     }
     
     private func purchaseTouched() {
-        let plansData = buildViewData(from: availableProducts)
         guard
             let selectedPlanIndex = selectedPlanIndex,
             let selectedPeriodIndex = selectedPeriodIndex,
-            let selectedMaxUserIndex = selectedMaxUserIndex
+            let selectedMaxUserIndex = selectedMaxUserIndex,
+            let purchasableProductsData = purchasableProductsData
         else {
             return
         }
+        let availableProducts = purchasableProductsData.products
+        let plansData = buildViewData(from: availableProducts)
         
         let selectedPlan = plansData[selectedPlanIndex]
         let selectedProductToPurchase = availableProducts.first(where: { product in
@@ -288,10 +377,15 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             selectedCountry = nil
         }
         
-        makePurchase(productToPurchase: selectedProductToPurchase, country: selectedCountry, quantity: 1)
+        makePurchase(
+            productToPurchase: selectedProductToPurchase,
+            requestTrialOnly: purchasableProductsData.isTrialProducts,
+            country: selectedCountry,
+            quantity: 1
+        )
     }
     
-    private func makePurchase(productToPurchase: PurchaseProduct?, country: Country?, quantity: Int?) {
+    private func makePurchase(productToPurchase: PurchaseProduct?, requestTrialOnly: Bool, country: Country?, quantity: Int?) {
         guard let productToPurchase = productToPurchase else {
             deps.router.presentAlert(message: NSLocalizedString("Subscription not selected. Please select subscription", comment: ""))
             return
@@ -301,16 +395,13 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             return
         }
         
-        // TODO: add real purchase
-        let requestTrialOnly = true
-        
         if requestTrialOnly {
             view?.setLoading(true)
             deps.subscripionsAPI.createSubscription(
                 subscriptionRequest: .init(
                     productId: productToPurchase.productId,
                     productIdSource: .vpnuk,
-                    quantity: 1,
+                    quantity: quantity,
                     country: country?.name
             )) { [weak self] result in
                 guard let self = self else { return }
@@ -328,27 +419,8 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 }
             }
         } else {
-            if let base64ReceiptData = deps.purchasesService.getBase64ReceiptData() {
-                view?.setLoading(true)
-                deps.subscripionsAPI.sendPurchaseReceipt(base64EncodedReceipt: base64ReceiptData, country: country?.name) { [weak self] result in
-                    guard let self = self else { return }
-                    self.view?.setLoading(false)
-                    self.reloadSubscriptionsAction()
-                    switch result {
-                    case .success(_):
-                        let message = NSLocalizedString("Subscription purchased:", comment: "") + "\n" + productToPurchase.localizedTitle
-                        self.deps.router.presentAlert(message: message, completion: {
-                            self.deps.router.close(completion: nil)
-                        })
-                    case .failure(let error):
-                        let message = NSLocalizedString("Purchase failed with error:", comment: "") + "\n" + error.localizedDescription
-                        self.deps.router.presentAlert(message: message)
-                    }
-                }
-            } else {
-                let message = NSLocalizedString("Purchase failed", comment: "")
-                deps.router.presentAlert(message: message)
-            }
+            lastPurchaseSelectedDedicatedCountryIndex = selectedDedicatedCountryIndex
+            deps.purchasesService.buy(product: productToPurchase)
         }
     }
 
@@ -359,5 +431,10 @@ extension PurchaseSubscriptionOfferViewModel {
         let router: PurchaseSubscriptionOfferRouterProtocol
         let purchasesService: InAppPurchasesService
         let subscripionsAPI: SubscripionsAPI
+    }
+    
+    struct PurchasableProductsData {
+        let isTrialProducts: Bool
+        let products: [PurchaseProduct]
     }
 }
