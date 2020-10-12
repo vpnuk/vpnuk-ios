@@ -295,9 +295,9 @@ extension RestAPI: SubscripionsAPI {
             } else {
                 let data = response.data ?? Data()
                 do {
-                    let json = try JSONDecoder().decode([String].self, from: data)
+                    let json = try JSONDecoder().decode([Int].self, from: data)
                     DispatchQueue.main.async {
-                        callback(.success(json))
+                        callback(.success(json.map { String($0) }))
                     }
                 } catch {
                     DispatchQueue.main.async {

@@ -118,14 +118,14 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     
     private func reloadProducts() {
         view?.setLoading(true)
-        getAndCachePurchasableProductsData { [weak self] result in
-            self?.view?.setLoading(false)
+        getAndCachePurchasableProductsData { result in
+            self.view?.setLoading(false)
             switch result {
             case .success(_):
-                self?.updateView()
+                self.updateView()
             case .failure(_):
-                self?.updateView()
-                self?.deps.router.presentAlert(message: NSLocalizedString("Network error", comment: ""))
+                self.updateView()
+                self.deps.router.presentAlert(message: NSLocalizedString("Network error", comment: ""))
             }
         }
     }
