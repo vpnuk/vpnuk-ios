@@ -65,6 +65,7 @@
 		7844C0EA24D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0E924D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift */; };
 		7844C0EE24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */; };
 		7844C0F124D750E000EF5588 /* PurchaseSubscriptionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7844C0F024D750E000EF5588 /* PurchaseSubscriptionBannerView.swift */; };
+		78461EEC25363C1000D01978 /* IAPReceiptDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78461EEB25363C1000D01978 /* IAPReceiptDTO.swift */; };
 		7846416B249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */; };
 		7846416D249E3E4E00F7BA40 /* SubscriptionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */; };
 		7846416F249E42E600F7BA40 /* ServersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846416E249E42E600F7BA40 /* ServersRepository.swift */; };
@@ -200,6 +201,8 @@
 		7844C0E924D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferViewController.swift; sourceTree = "<group>"; };
 		7844C0ED24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferRouter.swift; sourceTree = "<group>"; };
 		7844C0F024D750E000EF5588 /* PurchaseSubscriptionBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionBannerView.swift; sourceTree = "<group>"; };
+		78461EE82536387A00D01978 /* ConsumableProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = ConsumableProducts.storekit; path = VPNClient/Resources/ConsumableProducts.storekit; sourceTree = SOURCE_ROOT; };
+		78461EEB25363C1000D01978 /* IAPReceiptDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPReceiptDTO.swift; sourceTree = "<group>"; };
 		7846416A249E3E1A00F7BA40 /* SubscriptionCreateResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCreateResponseDTO.swift; sourceTree = "<group>"; };
 		7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDTO.swift; sourceTree = "<group>"; };
 		7846416E249E42E600F7BA40 /* ServersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersRepository.swift; sourceTree = "<group>"; };
@@ -582,6 +585,7 @@
 		783B35E1244CE31900425A9F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				78461EE82536387A00D01978 /* ConsumableProducts.storekit */,
 				1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */,
 				1782EFE9235CBF8F0082F9CD /* Assets.xcassets */,
 				783B35E2244CE32000425A9F /* Storyboards */,
@@ -669,6 +673,7 @@
 				7846416C249E3E4E00F7BA40 /* SubscriptionDTO.swift */,
 				784CEFDB24B263BE00D95ED6 /* SubsriptionStatus.swift */,
 				78B8DDCC24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift */,
+				78461EEB25363C1000D01978 /* IAPReceiptDTO.swift */,
 			);
 			path = Subscriptions;
 			sourceTree = "<group>";
@@ -1091,6 +1096,7 @@
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
 				78360DF82465DE2800988F14 /* MainScreenViewController.swift in Sources */,
+				78461EEC25363C1000D01978 /* IAPReceiptDTO.swift in Sources */,
 				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
 				FA859BDA24CED44C002F12E7 /* Style.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
@@ -1285,7 +1291,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VPNClient/VPNClient.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				INFOPLIST_FILE = VPNClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1293,7 +1299,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN;
 				PRODUCT_NAME = VPNUK;
 				SWIFT_VERSION = 5.0;
@@ -1309,7 +1315,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VPNClient/VPNClient.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				INFOPLIST_FILE = VPNClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1317,7 +1323,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN;
 				PRODUCT_NAME = VPNUK;
 				SWIFT_VERSION = 5.0;
@@ -1331,7 +1337,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = VPNClientNetworkExtension/VPNClientNetworkExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				INFOPLIST_FILE = VPNClientNetworkExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1339,7 +1345,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN.VPNClientNetworkExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1354,7 +1360,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = VPNClientNetworkExtension/VPNClientNetworkExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 7LN5H63WGN;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = VPNClientNetworkExtension/Info.plist;
@@ -1363,7 +1369,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = info.vpnuk.VPN.VPNClientNetworkExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

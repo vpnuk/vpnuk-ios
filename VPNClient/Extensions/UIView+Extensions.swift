@@ -81,7 +81,7 @@ protocol LoaderPresentable {
 extension LoaderPresentable {
     func setLoading(_ present: Bool) {
         if present {
-            SVProgressHUD.setDefaultMaskType(.clear)
+//            SVProgressHUD.setDefaultMaskType(.clear)
             SVProgressHUD.show(withStatus: NSLocalizedString("Please wait...", comment: "Please wait..."))
         } else {
             SVProgressHUD.dismiss()

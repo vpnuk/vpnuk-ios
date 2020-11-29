@@ -21,7 +21,7 @@ protocol ServersAPI {
 }
 
 protocol SubscripionsAPI {
-    func getPurchasableProductIds(callback: @escaping (Result<[String], Error>) -> ()) 
+    func getPurchasableProductIds(callback: @escaping (Result<[Int:Bool], Error>) -> ()) 
     func getSubscriptions(callback: @escaping (_ subscriptions: Result<[SubscriptionDTO], Error>) -> ())
     func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
     func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
@@ -255,7 +255,7 @@ extension RestAPI: SubscripionsAPI {
         AF.request(
             URL(string: baseUrl + "/wp-json/vpnuk/v1/inapp/purchase")!,
             method: .post,
-            parameters: base64EncodedReceipt,
+            parameters: IAPReceiptDTO(receipt: base64EncodedReceipt, country: country),
             headers: getAuthHeaders()
         )
         .validate()
@@ -280,7 +280,7 @@ extension RestAPI: SubscripionsAPI {
         }
     }
     
-    func getPurchasableProductIds(callback: @escaping (Result<[String], Error>) -> ()) {
+    func getPurchasableProductIds(callback: @escaping (Result<[Int:Bool], Error>) -> ()) {
         AF.request(
             URL(string: baseUrl + "/wp-json/vpnuk/v1/purchasable_products")!,
             method: .get,
@@ -295,9 +295,9 @@ extension RestAPI: SubscripionsAPI {
             } else {
                 let data = response.data ?? Data()
                 do {
-                    let json = try JSONDecoder().decode([Int].self, from: data)
+                    let json = try JSONDecoder().decode([Int:Bool].self, from: data)
                     DispatchQueue.main.async {
-                        callback(.success(json.map { String($0) }))
+                        callback(.success(json))
                     }
                 } catch {
                     DispatchQueue.main.async {

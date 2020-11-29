@@ -33,6 +33,8 @@ class PurchaseSubscriptionOfferViewModel {
     /// Index of last selected country while purchasing
     private var lastPurchaseSelectedDedicatedCountryIndex: Int?
     
+    private let allProducts: [PurchaseProduct]
+    
     private let countries: [Country] = [
         .init(title: NSLocalizedString("United Kingdom", comment: ""), descr: "", image: UIImage(named: "uk1")!, name: "United Kingdom" ),
         .init(title: NSLocalizedString("United States", comment: ""), descr: "", image: UIImage(named: "us1")!, name: "United States" ),
@@ -40,7 +42,8 @@ class PurchaseSubscriptionOfferViewModel {
     ]
     
     
-    init(reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
+    init(allPurchasableProducts: [PurchaseProduct], reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
+        self.allProducts = allPurchasableProducts
         self.reloadSubscriptionsAction = reloadSubscriptionsAction
         self.deps = deps
         deps.purchasesService.transactionUpdatedListener = { [weak self] transactions in
@@ -50,7 +53,9 @@ class PurchaseSubscriptionOfferViewModel {
     
     private func handlePurchaseTransactionsResults(results: [TransactionResult]) {
         // TODO: Analyze what subscriptions were purchased
-        sendPurchaseReceiptToServer()
+        if results.contains(where: { $0.transactionState == .purchased}) {
+            sendPurchaseReceiptToServer()
+        }
     }
     
     private func sendPurchaseReceiptToServer() {
@@ -61,6 +66,15 @@ class PurchaseSubscriptionOfferViewModel {
             lastSelectedCountry = nil
         }
         if let base64ReceiptData = deps.purchasesService.getBase64ReceiptData() {
+            deps.purchasesService.getReceiptResponse { result in
+                switch result {
+                case .success(let entity):
+                    print(entity)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            
             view?.setLoading(true)
             deps.subscripionsAPI.sendPurchaseReceipt(base64EncodedReceipt: base64ReceiptData, country: lastSelectedCountry?.name) { [weak self] result in
                 guard let self = self else { return }
@@ -86,17 +100,20 @@ class PurchaseSubscriptionOfferViewModel {
     private func getAndCachePurchasableProductsData(
         completion: @escaping (_ result: Result<PurchasableProductsData, Error>) -> Void
     ) {
-        let allProducts: [PurchaseProduct] = PurchaseProduct.availableProducts
+        let allProducts: [PurchaseProduct] = self.allProducts
         deps.subscripionsAPI.getSubscriptions { [weak self] result in
             switch result {
             case .success(let subscriptions):
-                let shouldOfferTrial = subscriptions.count == 0
                 self?.deps.subscripionsAPI.getPurchasableProductIds { result in
                     switch result {
-                    case .success(let ids):
-                        let purchasableIds = Set(ids)
+                    case .success(let idTrialPairs):
+                        let purchasableIds = Set(idTrialPairs.keys.map { String($0) })
                         let purchasableProducts = allProducts.filter { purchasableIds.contains($0.rawValue) }
-                        let data: PurchasableProductsData = .init(isTrialProducts: shouldOfferTrial, products: purchasableProducts)
+                        let purchasableProductsWithTrial: [TrialableProduct] = purchasableProducts.compactMap { product in
+                            guard let id = Int(product.rawValue), let isTrial = idTrialPairs[id] else { return nil }
+                            return TrialableProduct(isTrialAvailable: isTrial, product: product)
+                        }
+                        let data: PurchasableProductsData = .init(products: purchasableProductsWithTrial)
                         self?.purchasableProductsData = data
                         completion(.success(data))
                     case .failure(let error):
@@ -118,6 +135,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     
     private func reloadProducts() {
         view?.setLoading(true)
+        deps.purchasesService.requestProducts()
         getAndCachePurchasableProductsData { result in
             self.view?.setLoading(false)
             switch result {
@@ -142,15 +160,15 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     }
     
     private func buildViewData(
-        from products: [PurchaseProduct]
+        from products: [TrialableProduct]
     ) -> [PlanDetails] {
-        let productsGroupedByType = Dictionary(grouping: products, by: { $0.data.type }).sorted { $0.key < $1.key }
+        let productsGroupedByType = Dictionary(grouping: products, by: { $0.product.data.type }).sorted { $0.key < $1.key }
         
         return productsGroupedByType.map { type, products in
             PlanDetails(
                 planSubscriptionType: type,
-                periods: products.map { $0.data.periodMonths },
-                maxUsers: products.map { $0.data.maxUsers }
+                periods: products.map { $0.product.data.periodMonths },
+                maxUsers: products.map { $0.product.data.maxUsers }
             )
         }
     }
@@ -166,7 +184,6 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         let planModels: [PurchaseSubscriptionChoosePlansView.Plan] = plansData.map {
             .init(title: $0.planSubscriptionType.localizedTitle, subtitle: $0.planSubscriptionType.localizeDescription)
         }
-        let isTrialSubscriptions = purchasableProductsData?.isTrialProducts == true
         let periodModels: [PurchaseSubscriptionPeriodView.Option]
         let maxUsersModels: [PurchaseSubscriptionMaxUsersView.Option]
         let periods: [Int]
@@ -257,19 +274,35 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             )
         }
         
+        let isPurchaseButtonEnabled: Bool
+        let isTrialAvailableForSelectedProduct: Bool
+        if
+            let selectedPlanIndex = selectedPlanIndex,
+            let selectedPeriodIndex = selectedPeriodIndex,
+            let selectedMaxUserIndex = selectedMaxUserIndex,
+            let selectedPurchasableProduct = getSelectedProductToPurchase(plansData: plansData)
+        {
+            isTrialAvailableForSelectedProduct = selectedPurchasableProduct.isTrialAvailable
+            isPurchaseButtonEnabled = true
+            
+        } else {
+            isTrialAvailableForSelectedProduct = false
+            isPurchaseButtonEnabled = false
+        }
+        
+        
         let priceModel: PurchaseSubscriptionPriceView.Model?
         
-        if isTrialSubscriptions {
+        if isTrialAvailableForSelectedProduct {
             // No price for trial
             priceModel = nil
         } else {
             priceModel = nil
         }
         
-        let isPurchaseButtonEnabled = selectedPlanIndex != nil && selectedPeriodIndex != nil && selectedMaxUserIndex != nil
         let purchaseButtonModel: PurchaseSubscriptionOfferView.PurchaseButtonModel?
         
-        if isTrialSubscriptions {
+        if isTrialAvailableForSelectedProduct {
             purchaseButtonModel = .init(
                 title: NSLocalizedString("Start your 7-day free trial", comment: ""),
                 isEnabled: isPurchaseButtonEnabled,
@@ -362,13 +395,8 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         }
         let availableProducts = purchasableProductsData.products
         let plansData = buildViewData(from: availableProducts)
-        
         let selectedPlan = plansData[selectedPlanIndex]
-        let selectedProductToPurchase = availableProducts.first(where: { product in
-            return product.data.maxUsers == selectedPlan.maxUsers[selectedMaxUserIndex]
-                && product.data.periodMonths == selectedPlan.periods[selectedPeriodIndex]
-                && product.data.type == selectedPlan.planSubscriptionType
-        })
+        let selectedProductToPurchase = getSelectedProductToPurchase(plansData: plansData)
         
         let selectedCountry: Country?
         if selectedPlan.planSubscriptionType == .dedicated, let selectedDedicatedCountryIndex = selectedDedicatedCountryIndex {
@@ -378,8 +406,8 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         }
         
         makePurchase(
-            productToPurchase: selectedProductToPurchase,
-            requestTrialOnly: purchasableProductsData.isTrialProducts,
+            productToPurchase: selectedProductToPurchase?.product,
+            requestTrialOnly: selectedProductToPurchase?.isTrialAvailable ?? false,
             country: selectedCountry,
             quantity: 1
         )
@@ -423,6 +451,25 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             deps.purchasesService.buy(product: productToPurchase)
         }
     }
+    
+    private func getSelectedProductToPurchase(plansData: [PlanDetails]) -> TrialableProduct? {
+        guard
+            let selectedPlanIndex = selectedPlanIndex,
+            let selectedPeriodIndex = selectedPeriodIndex,
+            let selectedMaxUserIndex = selectedMaxUserIndex,
+            let purchasableProductsData = purchasableProductsData
+        else {
+            return nil
+        }
+        let availableProducts = purchasableProductsData.products
+        let selectedPlan = plansData[selectedPlanIndex]
+        let selectedProductToPurchase = availableProducts.first(where: { product in
+            return product.product.data.maxUsers == selectedPlan.maxUsers[selectedMaxUserIndex]
+                && product.product.data.periodMonths == selectedPlan.periods[selectedPeriodIndex]
+                && product.product.data.type == selectedPlan.planSubscriptionType
+        })
+        return selectedProductToPurchase
+    }
 
 }
 
@@ -434,7 +481,11 @@ extension PurchaseSubscriptionOfferViewModel {
     }
     
     struct PurchasableProductsData {
-        let isTrialProducts: Bool
-        let products: [PurchaseProduct]
+        let products: [TrialableProduct]
+    }
+    
+    struct TrialableProduct {
+        let isTrialAvailable: Bool
+        let product: PurchaseProduct
     }
 }

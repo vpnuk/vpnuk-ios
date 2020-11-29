@@ -1,0 +1,59 @@
+{
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "2B12A5AF",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "oneToOneDedicatedIp1Month1User",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "68152",
+      "referenceName" : "oneToOneDedicatedIp1Month1User",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "ECFDAD2F",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "dedicatedIp1Month2User",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "6633",
+      "referenceName" : "dedicatedIp1Month2User",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "7193A4A3",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "sharedIp1Month1User",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "59160",
+      "referenceName" : "sharedIp1Month1User",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 0
+  }
+}

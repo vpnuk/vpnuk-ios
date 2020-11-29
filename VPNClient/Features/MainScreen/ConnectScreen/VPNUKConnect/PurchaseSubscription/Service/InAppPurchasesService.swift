@@ -24,6 +24,8 @@ protocol InAppPurchasesService: AnyObject {
     func buy(product: PurchaseProduct)
     func restorePurchases()
     func getBase64ReceiptData() -> String?
+    
+    func getReceiptResponse(completion: @escaping (_ response: Result<ReceiptResponseEntity, Error>) -> Void)
 }
 
 class InAppPurchasesServiceMock: InAppPurchasesService {
@@ -46,8 +48,13 @@ class InAppPurchasesServiceMock: InAppPurchasesService {
     func updateSubscriptionsExpiration() {
         
     }
+    
     func getBase64ReceiptData() -> String? {
         return nil
+    }
+    
+    func getReceiptResponse(completion: @escaping (_ response: Result<ReceiptResponseEntity, Error>) -> Void) {
+        completion(.success(.init()))
     }
 }
 
@@ -115,6 +122,42 @@ extension InAppPurchasesServiceImpl: InAppPurchasesService {
         }
     }
     
+    func getReceiptResponse(completion: @escaping (_ response: Result<ReceiptResponseEntity, Error>) -> Void) {
+        //        prod: https://buy.itunes.apple.com/verifyReceipt
+        //        dev: https://sandbox.itunes.apple.com/verifyReceipt
+        let verificationUrlString = "https://sandbox.itunes.apple.com/verifyReceipt"
+        let sharedSecret = "888"
+        
+        if let base64ReceiptData = getBase64ReceiptData() {
+            
+            let receiptDictionary = ["receipt-data" : base64ReceiptData, "password" : sharedSecret]
+            let requestData = try! JSONSerialization.data(withJSONObject: receiptDictionary)
+            
+            let storeURL = URL(string: verificationUrlString)!
+            var storeRequest = URLRequest(url: storeURL)
+            storeRequest.httpMethod = "POST"
+            storeRequest.httpBody = requestData
+
+            AF.request(storeRequest).responseData(completionHandler: { result in
+                if let error = result.error {
+                    completion(.failure(error))
+                } else {
+                    let data = result.data ?? Data()
+                    do {
+                        
+                        let decoded = try JSONDecoder().decode(ReceiptResponseEntity.self, from: data)
+                        completion(.success(decoded))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                
+            })
+            
+        } else {
+            completion(.failure(InAppPurchaseError.noReceiptUrl))
+        }
+    }
 
     private func getPurchasedProducts(
         fromReceiptResponse response: ReceiptResponseEntity?
@@ -143,44 +186,6 @@ extension InAppPurchasesServiceImpl: InAppPurchasesService {
     private func setPurchased(product: PurchaseProduct, isPurchased: Bool) {
         defaults.set(isPurchased, forKey: product.rawValue)
         defaults.synchronize()
-    }
-    
-    private func getReceiptResponse(completion: @escaping (_ response: Result<ReceiptResponseEntity, Error>) -> Void) {
-        //        prod: https://buy.itunes.apple.com/verifyReceipt
-        //        dev: https://sandbox.itunes.apple.com/verifyReceipt
-        let verificationUrlString = "https://buy.itunes.apple.com/verifyReceipt"
-        let sharedSecret = "888"
-        
-        if let base64ReceiptData = getBase64ReceiptData() {
-            
-            let receiptDictionary = ["receipt-data" : base64ReceiptData, "password" : sharedSecret]
-            let requestData = try! JSONSerialization.data(withJSONObject: receiptDictionary)
-            
-            let storeURL = URL(string: verificationUrlString)!
-            var storeRequest = URLRequest(url: storeURL)
-            storeRequest.httpMethod = "POST"
-            storeRequest.httpBody = requestData
-            
-            
-            AF.request(storeRequest).responseData(completionHandler: { result in
-                if let error = result.error {
-                    completion(.failure(error))
-                } else {
-                    let data = result.data ?? Data()
-                    do {
-                        
-                        let decoded = try JSONDecoder().decode(ReceiptResponseEntity.self, from: data)
-                        completion(.success(decoded))
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-                
-            })
-            
-        } else {
-            completion(.failure(InAppPurchaseError.noReceiptUrl))
-        }
     }
 }
 

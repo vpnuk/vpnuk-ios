@@ -11,7 +11,10 @@ import UIKit
 import StoreKit
 
 class PurchaseSubscriptionFactory {
-    func create(reloadSubscriptionsAction: @escaping Action) -> UIViewController {
+    func create(
+        allPurchasableProducts: [PurchaseProduct],
+        reloadSubscriptionsAction: @escaping Action
+    ) -> UIViewController {
         
         let router = PurchaseSubscriptionOfferRouter()
         let purchasesService: InAppPurchasesService = InAppPurchasesServiceImpl(
@@ -22,6 +25,7 @@ class PurchaseSubscriptionFactory {
             fileManager: FileManager.default
         )
         let viewModel = PurchaseSubscriptionOfferViewModel(
+            allPurchasableProducts: allPurchasableProducts,
             reloadSubscriptionsAction: reloadSubscriptionsAction,
             deps: .init(
                 router: router,
@@ -34,6 +38,10 @@ class PurchaseSubscriptionFactory {
         router.viewController = viewController
         
         return viewController
+    }
+    
+    func create(reloadSubscriptionsAction: @escaping Action) -> UIViewController {
+        return create(allPurchasableProducts: PurchaseProduct.availableProducts, reloadSubscriptionsAction: reloadSubscriptionsAction)
     }
 }
 
