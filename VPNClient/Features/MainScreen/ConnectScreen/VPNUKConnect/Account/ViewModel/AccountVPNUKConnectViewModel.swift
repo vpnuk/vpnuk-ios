@@ -61,7 +61,7 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
         view?.updatePurchaseSubscriptionBanner(
             model: .init(
                 image: UIImage(named: "shopping-cart"),
-                title: NSLocalizedString("Get trial subscription", comment: ""),
+                title: NSLocalizedString("Get new subscription", comment: ""),
                 tapAction: { [weak self] in
                     self?.deps.router.openPurchaseSubscriptionScreen {
                         self?.reloadSubscriptions()
