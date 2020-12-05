@@ -12,3 +12,8 @@ struct IAPReceiptDTO: Codable {
     let receipt: String
     let country: String?
 }
+
+
+struct IAPReceiptWithoutCountryDTO: Codable {
+    let receipt: String
+}

@@ -88,7 +88,7 @@ class InAppPurchasesServiceImpl: NSObject {
 extension InAppPurchasesServiceImpl: InAppPurchasesService {
     
     func buy(product: PurchaseProduct) {
-        if let skProduct = (products.first { $0.productIdentifier == product.rawValue }) {
+        if let skProduct = (products.first { $0.productIdentifier == product.productId }) {
             let payment = SKPayment(product: skProduct)
             paymentQueue.add(payment)
         }
@@ -102,7 +102,7 @@ extension InAppPurchasesServiceImpl: InAppPurchasesService {
     @discardableResult
     func requestProducts() -> Bool {
         if SKPaymentQueue.canMakePayments() {
-            let request = SKProductsRequest(productIdentifiers: Set(PurchaseProduct.allCases.map { $0.rawValue } ))
+            let request = SKProductsRequest(productIdentifiers: Set(availableProducts.map { $0.productId } ))
             productsRequest = request
             request.delegate = self
             request.start()
@@ -116,7 +116,7 @@ extension InAppPurchasesServiceImpl: InAppPurchasesService {
         if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
             fileManager.fileExists(atPath: appStoreReceiptURL.path),
             let receiptData = NSData(contentsOf: appStoreReceiptURL) {
-            return  receiptData.base64EncodedString()
+            return receiptData.base64EncodedString()
         } else {
             return nil
         }
@@ -184,7 +184,7 @@ extension InAppPurchasesServiceImpl: InAppPurchasesService {
     }
     
     private func setPurchased(product: PurchaseProduct, isPurchased: Bool) {
-        defaults.set(isPurchased, forKey: product.rawValue)
+        defaults.set(isPurchased, forKey: product.productId)
         defaults.synchronize()
     }
 }

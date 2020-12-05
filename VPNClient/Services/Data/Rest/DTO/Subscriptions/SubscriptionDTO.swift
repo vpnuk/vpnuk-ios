@@ -82,6 +82,7 @@ struct SubscriptionDTO: Codable, Equatable {
     let status: SubscriptionStatus
     let trialEnd: String?
     let vpnAccounts: [VPNAccountDTO]
+    let pendingOrders: [PendingSubscriptionOrderDTO]?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -95,6 +96,7 @@ struct SubscriptionDTO: Codable, Equatable {
         case status = "status"
         case trialEnd = "trial_end"
         case vpnAccounts = "vpnaccounts"
+        case pendingOrders = "pending_orders"
     }
 }
 

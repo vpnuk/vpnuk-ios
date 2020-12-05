@@ -20,6 +20,7 @@ protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable 
     )
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
     func openPurchaseSubscriptionScreen(reloadSubscriptionsAction: @escaping Action)
+    func openRenewSubscriptionScreen(for subscription: SubscriptionDTO)
 }
 
 protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
@@ -89,5 +90,19 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
         let controller = PurchaseSubscriptionFactory().create(reloadSubscriptionsAction: reloadSubscriptionsAction)
         controller.modalPresentationStyle = .fullScreen
         parentRouter.present(controller: controller, animated: true)
+    }
+    
+    func openRenewSubscriptionScreen(
+        for subscription: SubscriptionDTO
+    ) {
+        let controller = RenewPendingSubscriptionFactory().create(
+            subscriptionToRenew: subscription,
+            reloadSubscriptionsAction: {}
+        )
+        parentRouter.present(controller: controller, animated: true)
+    }
+    
+    func setLoading(_ present: Bool) {
+        parentRouter.setLoading(present)
     }
 }

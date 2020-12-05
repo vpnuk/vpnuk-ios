@@ -20,7 +20,6 @@ protocol MainScreenRouterProtocol: AlertPresentable, LoaderPresentable {
 }
 
 class MainScreenRouter: MainScreenRouterProtocol {
-
     weak var viewController: (UIViewController & MainScreenViewProtocol)?
     
     func switchToCustomConnectView(connectorDelegate: VPNConnectorDelegate) {
@@ -65,4 +64,7 @@ class MainScreenRouter: MainScreenRouterProtocol {
         viewController?.present(controller, animated: animated, completion: nil)
     }
     
+    func setLoading(_ present: Bool) {
+        viewController?.setLoading(present)
+    }
 }

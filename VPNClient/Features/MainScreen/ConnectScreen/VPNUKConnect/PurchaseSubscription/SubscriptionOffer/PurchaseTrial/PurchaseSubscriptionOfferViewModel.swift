@@ -41,6 +41,8 @@ class PurchaseSubscriptionOfferViewModel {
         .init(title: NSLocalizedString("Italy", comment: ""), descr: "", image: UIImage(named: "it1")!, name: "Italy" ),
     ]
     
+    // TODO: Currently disabled, because user can purchase IAP after trial period only, use RenewPendingSubscriptionFactory for that
+    private let disableInAppPurchases: Bool = true
     
     init(allPurchasableProducts: [PurchaseProduct], reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
         self.allProducts = allPurchasableProducts
@@ -53,7 +55,7 @@ class PurchaseSubscriptionOfferViewModel {
     
     private func handlePurchaseTransactionsResults(results: [TransactionResult]) {
         // TODO: Analyze what subscriptions were purchased
-        if results.contains(where: { $0.transactionState == .purchased}) {
+        if results.contains(where: { $0.transactionState == .purchased }) {
             sendPurchaseReceiptToServer()
         }
     }
@@ -66,6 +68,7 @@ class PurchaseSubscriptionOfferViewModel {
             lastSelectedCountry = nil
         }
         if let base64ReceiptData = deps.purchasesService.getBase64ReceiptData() {
+            // debug
             deps.purchasesService.getReceiptResponse { result in
                 switch result {
                 case .success(let entity):
@@ -215,12 +218,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 },
                 infoTapAction: { [weak self] in
                     self?.deps.router.presentAlert(
-                        message: NSLocalizedString(
-                            """
-                               There are three types of account at VPNUK. The entry level account is our ‘Shared IP‘ account, which provides users with a randomly assigned ‘dynamic’ IP address and unlimited access to all of our servers located in 22 prime locations. Our most popular account is the ‘Dedicated IP‘ account, providing users with a personal IP, its a totally unique, ‘Static’ IP address. Users also have unlimited access to all of the Shared IP servers with this account. Our 1:1 Dedicated IP account is the same as the regular Dedicated IP account, this account type is an ideal solution for users that require incoming connections.
-                            """,
-                            comment: ""
-                        )
+                        message: SubscriptionConstants.subscriptionsPlansInfo
                     )
                 }
             )
@@ -239,12 +237,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 },
                 infoTapAction: { [weak self] in
                     self?.deps.router.presentAlert(
-                        message: NSLocalizedString(
-                            """
-                               Subscription period in months
-                            """,
-                            comment: ""
-                        )
+                        message: SubscriptionConstants.subscriptionsPeriodsInfo
                     )
                 }
             )
@@ -263,40 +256,31 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                 },
                 infoTapAction: { [weak self] in
                     self?.deps.router.presentAlert(
-                        message: NSLocalizedString(
-                            """
-                               Maximum simultaneous VPN connections
-                            """,
-                            comment: ""
-                        )
+                        message: SubscriptionConstants.subscriptionsMaxUsersInfo
                     )
                 }
             )
         }
         
+        let priceModel: PurchaseSubscriptionPriceView.Model?
         let isPurchaseButtonEnabled: Bool
         let isTrialAvailableForSelectedProduct: Bool
-        if
-            let selectedPlanIndex = selectedPlanIndex,
-            let selectedPeriodIndex = selectedPeriodIndex,
-            let selectedMaxUserIndex = selectedMaxUserIndex,
-            let selectedPurchasableProduct = getSelectedProductToPurchase(plansData: plansData)
-        {
+        if let selectedPurchasableProduct = getSelectedProductToPurchase(plansData: plansData) {
             isTrialAvailableForSelectedProduct = selectedPurchasableProduct.isTrialAvailable
             isPurchaseButtonEnabled = true
-            
+            if isTrialAvailableForSelectedProduct {
+                // No price for trial
+                priceModel = nil
+            } else {
+                if let product = deps.purchasesService.products.first(where: { $0.productIdentifier == selectedPurchasableProduct.product.productId }) {
+                    priceModel = .init(title: NSLocalizedString("Price", comment: ""), moneySum: product.localizedPrice)
+                } else {
+                    priceModel = nil
+                }
+            }
         } else {
             isTrialAvailableForSelectedProduct = false
             isPurchaseButtonEnabled = false
-        }
-        
-        
-        let priceModel: PurchaseSubscriptionPriceView.Model?
-        
-        if isTrialAvailableForSelectedProduct {
-            // No price for trial
-            priceModel = nil
-        } else {
             priceModel = nil
         }
         
@@ -329,20 +313,10 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             periodModel: periodsModel,
             maxUsersModel: maxUsersModel,
             priceModel: priceModel,
-            advantagesModel: .init(
-                title: NSLocalizedString("Why Subscribe?", comment: ""),
-                reasons: [
-                    .init(title: NSLocalizedString("Additional Security", comment: "")),
-                    .init(title: NSLocalizedString("Complete Privacy", comment: "")),
-                    .init(title: NSLocalizedString("Fully Encrypted", comment: "")),
-                    .init(title: NSLocalizedString("Personal IP Address", comment: ""))
-                ]
-            ),
+            advantagesModel: SubscriptionConstants.subscriptionAdvantagesModel,
             termsDetailsModel: .init(
                 title: NSLocalizedString("Subscribtion details:", comment: ""),
-                termsDetails: NSMutableAttributedString(string:"-Your Apple ID account will be charged on the last day of your free trial. \n \n-Your subscription will automatically renew at the end of each billing period unless it is canceled at least 24 hours before the expiry date. \n \n-You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy."),
-                
-                termsDetailsURL: "https://www.vpnuk.net/terms/"
+                termsDetails: SubscriptionConstants.termsDetails
             ),
             purchaseButtonModel: purchaseButtonModel
         )
@@ -387,8 +361,6 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
     private func purchaseTouched() {
         guard
             let selectedPlanIndex = selectedPlanIndex,
-            let selectedPeriodIndex = selectedPeriodIndex,
-            let selectedMaxUserIndex = selectedMaxUserIndex,
             let purchasableProductsData = purchasableProductsData
         else {
             return
@@ -396,7 +368,10 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         let availableProducts = purchasableProductsData.products
         let plansData = buildViewData(from: availableProducts)
         let selectedPlan = plansData[selectedPlanIndex]
-        let selectedProductToPurchase = getSelectedProductToPurchase(plansData: plansData)
+        guard let selectedProductToPurchase = getSelectedProductToPurchase(plansData: plansData) else {
+            // Product not selected
+            return
+        }
         
         let selectedCountry: Country?
         if selectedPlan.planSubscriptionType == .dedicated, let selectedDedicatedCountryIndex = selectedDedicatedCountryIndex {
@@ -406,8 +381,8 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         }
         
         makePurchase(
-            productToPurchase: selectedProductToPurchase?.product,
-            requestTrialOnly: selectedProductToPurchase?.isTrialAvailable ?? false,
+            productToPurchase: selectedProductToPurchase.product,
+            requestTrialOnly: selectedProductToPurchase.isTrialAvailable,
             country: selectedCountry,
             quantity: 1
         )
@@ -448,6 +423,15 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             }
         } else {
             lastPurchaseSelectedDedicatedCountryIndex = selectedDedicatedCountryIndex
+            purchaseProductWithStoreKit(productToPurchase: productToPurchase)
+        }
+    }
+    
+    private func purchaseProductWithStoreKit(productToPurchase: PurchaseProduct) {
+        if disableInAppPurchases {
+            let message = NSLocalizedString("You can not purchase products, please request trial subscription first and prolong it later", comment: "")
+            self.deps.router.presentAlert(message: message)
+        } else {
             deps.purchasesService.buy(product: productToPurchase)
         }
     }

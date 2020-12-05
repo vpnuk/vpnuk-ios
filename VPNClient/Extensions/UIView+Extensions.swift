@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import SnapKit
-import SVProgressHUD
+import MBProgressHUD
 
 extension UIStackView {
     func removeArrangedSubviews() {
@@ -78,13 +78,22 @@ protocol LoaderPresentable {
     func setLoading(_ present: Bool)
 }
 
-extension LoaderPresentable {
+extension UIViewController: LoaderPresentable {
     func setLoading(_ present: Bool) {
         if present {
-//            SVProgressHUD.setDefaultMaskType(.clear)
-            SVProgressHUD.show(withStatus: NSLocalizedString("Please wait...", comment: "Please wait..."))
+            MBProgressHUD.showAdded(to: view, animated: true)
         } else {
-            SVProgressHUD.dismiss()
+            MBProgressHUD.hide(for: view, animated: true)
+        }
+    }
+}
+
+extension UIView: LoaderPresentable {
+    func setLoading(_ present: Bool) {
+        if present {
+            MBProgressHUD.showAdded(to: self, animated: true)
+        } else {
+            MBProgressHUD.hide(for: self, animated: true)
         }
     }
 }

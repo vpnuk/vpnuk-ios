@@ -11,6 +11,10 @@ import UIKit
 
 class PickedSubscriptionInfoView: UIView {
     
+    private let appearance = Appearance()
+    
+    private var renewSubscriptionAction: Action?
+    
     // MARK: Title and type
     
     private lazy var titleLabel: UILabel = {
@@ -196,6 +200,27 @@ class PickedSubscriptionInfoView: UIView {
         return stackView
     }()
     
+    // MARK: Renew subscription
+    
+    private lazy var renewSubscriptionButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = appearance.chooseButtonTitleFont
+        button.layer.backgroundColor = appearance.chooseButtonColor.cgColor
+        button.layer.cornerRadius = appearance.chooseButtonCornerRadius
+        button.addTarget(self, action: #selector(renewSubscriptionTouched), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var renewSubscriptionStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            renewSubscriptionButton
+        ])
+        stackView.axis = .vertical
+        stackView.isHidden = true
+        return stackView
+    }()
+    
     
     // MARK: Content view
     
@@ -206,7 +231,8 @@ class PickedSubscriptionInfoView: UIView {
             maxSessionsStackView,
             subscriptionStatusStackView,
             subscriptionPeriodStackView,
-            trialEndStackView
+            trialEndStackView,
+            renewSubscriptionStackView
         ])
         stackView.axis = .vertical
         stackView.spacing = 0
@@ -248,6 +274,14 @@ class PickedSubscriptionInfoView: UIView {
             trialEndValueLabel.text = "\(trialEnd)"
         }
         trialEndStackView.isHidden = model.trialEnd == nil
+        
+        if let renewSubscriptionModel = model.renewSubscriptionModel {
+            renewSubscriptionButton.setTitle(renewSubscriptionModel.title, for: .normal)
+            renewSubscriptionAction = renewSubscriptionModel.action
+            renewSubscriptionStackView.isHidden = false
+        } else {
+            renewSubscriptionStackView.isHidden = true
+        }
     }
     
     private func setupSubviews() {
@@ -264,6 +298,11 @@ class PickedSubscriptionInfoView: UIView {
         setupSubviews()
         setupConstraints()
     }
+    
+    @objc
+    private func renewSubscriptionTouched() {
+        renewSubscriptionAction?()
+    }
 }
 
 
@@ -276,5 +315,22 @@ extension PickedSubscriptionInfoView {
         let periodMonths: Int?
         let trialEnd: Date?
         let subscriptionType: SubscriptionType
+        let renewSubscriptionModel: RenewSubscriptionModel?
+    }
+    
+    struct RenewSubscriptionModel {
+        let title: String
+        let action: Action
+    }
+    
+    struct Appearance {
+        // MARK: - ChooseButton Appearance
+        let chooseButtonTitleFont = Style.Fonts.bigBoldFont
+        let chooseButtonColor = Style.Color.blueColor
+        let chooseButtonDisabledColor = Style.Color.grayColor
+        let chooseButtonCornerRadius = Style.CornerRadius.standartCornerRadius
+        let chooseButtonLeftRightInsetSize = Style.Constraint.standartConstreint
+        let chooseButtonBottomSize = -11
+        let chooseButtonHeightSize = 54
     }
 }

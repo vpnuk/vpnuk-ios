@@ -26,6 +26,7 @@ protocol SubscripionsAPI {
     func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
     func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
     func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
+    func renewOrder(orderId: String, base64EncodedReceipt: String, callback: @escaping (_ subscription: Result<Void, Error>) -> ())
 }
 
 class RestAPI {
@@ -256,6 +257,7 @@ extension RestAPI: SubscripionsAPI {
             URL(string: baseUrl + "/wp-json/vpnuk/v1/inapp/purchase")!,
             method: .post,
             parameters: IAPReceiptDTO(receipt: base64EncodedReceipt, country: country),
+            encoder: JSONParameterEncoder.default,
             headers: getAuthHeaders()
         )
         .validate()
@@ -303,6 +305,32 @@ extension RestAPI: SubscripionsAPI {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
+                }
+            }
+        }
+    }
+    
+    func renewOrder(
+        orderId: String,
+        base64EncodedReceipt: String,
+        callback: @escaping (_ subscription: Result<Void, Error>) -> ()
+    ) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/inapp/purchase/order/\(orderId)")!,
+            method: .post,
+            parameters: IAPReceiptWithoutCountryDTO(receipt: base64EncodedReceipt),
+            encoder: JSONParameterEncoder.default,
+            headers: getAuthHeaders()
+        )
+        .validate()
+        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+            if let error = response.error {
+                DispatchQueue.main.async {
+                    callback(.failure(error))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    callback(.success(()))
                 }
             }
         }

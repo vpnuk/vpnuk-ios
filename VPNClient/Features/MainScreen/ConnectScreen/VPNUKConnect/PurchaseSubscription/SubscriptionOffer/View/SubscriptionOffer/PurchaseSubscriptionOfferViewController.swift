@@ -19,13 +19,14 @@ class PurchaseSubscriptionOfferViewController: UIViewController {
     private let viewModel: PurchaseSubscriptionOfferViewModelProtocol
     
     init(viewModel: PurchaseSubscriptionOfferViewModelProtocol) {
-         self.viewModel = viewModel
-         super.init(nibName: nil, bundle: nil)
-     }
-     
-     required init?(coder: NSCoder) {
-         fatalError("init(coder:) has not been implemented")
-     }
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .fullScreen
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +48,13 @@ class PurchaseSubscriptionOfferViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(customView)
+        customView.isHidden = true
     }
 }
 
 extension PurchaseSubscriptionOfferViewController: PurchaseSubscriptionOfferViewProtocol {
     func update(model: PurchaseSubscriptionOfferView.Model) {
         customView.update(model: model)
+        customView.isHidden = false
     }
 }

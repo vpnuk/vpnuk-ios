@@ -49,14 +49,8 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
     }
     
     func update(model: Model) {
-        let attributedString = model.termsDetails
-        let url = URL(string: model.termsDetailsURL)!
-        attributedString.addAttribute(.foregroundColor,
-                                      value: appearance.textColor,
-                                      range: appearance.attributedMainTextRange)
-        attributedString.setAttributes([.link: url], range: appearance.attributedLinkTextRange)
         headerLabel.text = model.title
-        termsDetailsTextView.attributedText = attributedString
+        termsDetailsTextView.attributedText = model.termsDetails
     }
     
     private func setupSubviews() {
@@ -78,8 +72,7 @@ class PurchaseSubscriptionTermsAndDetailsView: UIView {
 extension PurchaseSubscriptionTermsAndDetailsView {
     struct Model {
         let title: String
-        let termsDetails: NSMutableAttributedString
-        let termsDetailsURL: String
+        let termsDetails: NSAttributedString
     }
     
     struct Appearance {
@@ -88,8 +81,8 @@ extension PurchaseSubscriptionTermsAndDetailsView {
         let termsDetailsLabelNumberOfLines = 0
         let termsDetailsLabelFont = Style.Fonts.minFont
         let contentStackViewSpacing = Style.Spacing.bigSpacing
-        let attributedLinkTextRange = NSMakeRange(477, 36)
-        let attributedMainTextRange = NSMakeRange(0, 477)
-        let attributedTextLinkColor = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1)]
+        let attributedTextLinkColor = [
+            NSAttributedString.Key.foregroundColor: UIColor(red: 0.18, green: 0.439, blue: 0.627, alpha: 1)
+        ]
     }
 }

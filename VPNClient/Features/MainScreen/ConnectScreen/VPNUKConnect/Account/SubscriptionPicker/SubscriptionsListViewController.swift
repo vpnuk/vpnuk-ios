@@ -142,11 +142,31 @@ extension SubscriptionsListViewController: UITableViewDelegate, UITableViewDataS
                     subscriptionStatus: subscription.status,
                     periodMonths: subscription.period,
                     trialEnd: subscription.trialEndDate,
-                    subscriptionType: subscription.type
+                    subscriptionType: subscription.type,
+                    renewSubscriptionModel: getRenewSubscriptionModel(for: subscription)
                 )
             )
         )
         return cell
+    }
+    
+    private func getRenewSubscriptionModel(
+        for subscription: SubscriptionDTO
+    ) -> PickedSubscriptionInfoView.RenewSubscriptionModel? {
+        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription) { [weak self] subscription in
+            self?.openRenewSubscriptionScreen(for: subscription)
+        }
+        return model
+    }
+    
+    private func openRenewSubscriptionScreen(
+        for subscription: SubscriptionDTO
+    ) {
+        let controller = RenewPendingSubscriptionFactory().create(
+            subscriptionToRenew: subscription,
+            reloadSubscriptionsAction: {}
+        )
+        present(controller, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -159,6 +179,7 @@ extension SubscriptionsListViewController: UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let subscription = subscriptions[indexPath.row]
         openVPNAccountsList(forSubscription: subscription)
     }

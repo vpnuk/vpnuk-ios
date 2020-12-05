@@ -18,7 +18,7 @@ class PurchaseSubscriptionFactory {
         
         let router = PurchaseSubscriptionOfferRouter()
         let purchasesService: InAppPurchasesService = InAppPurchasesServiceImpl(
-            availableProducts: PurchaseProduct.availableProducts,
+            availableProducts: allPurchasableProducts,
             allProducts: PurchaseProduct.allCases,
             paymentQueue: SKPaymentQueue.default(),
             defaults: UserDefaults.standard,
@@ -41,7 +41,10 @@ class PurchaseSubscriptionFactory {
     }
     
     func create(reloadSubscriptionsAction: @escaping Action) -> UIViewController {
-        return create(allPurchasableProducts: PurchaseProduct.availableProducts, reloadSubscriptionsAction: reloadSubscriptionsAction)
+        return create(
+            allPurchasableProducts: PurchaseProduct.availableProducts,
+            reloadSubscriptionsAction: reloadSubscriptionsAction
+        )
     }
 }
 

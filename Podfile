@@ -10,7 +10,7 @@ target 'VPNClient' do
   pod 'Alamofire'
   pod 'TunnelKit'
   pod 'SnapKit'
-  pod 'SVProgressHUD'
+  pod 'MBProgressHUD', '~> 1.2.0'
   pod 'IQKeyboardManagerSwift'
 
 end

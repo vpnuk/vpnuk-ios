@@ -61,6 +61,7 @@ PODS:
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
   - IQKeyboardManagerSwift (6.5.6)
+  - MBProgressHUD (1.2.0)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -69,7 +70,6 @@ PODS:
   - OpenSSL-Apple (1.1.1g.6)
   - PromisesObjC (1.2.11)
   - SnapKit (5.0.1)
-  - SVProgressHUD (2.2.5)
   - SwiftyBeaver (1.9.2)
   - TunnelKit (2.2.7):
     - TunnelKit/Protocols/OpenVPN (= 2.2.7)
@@ -89,8 +89,8 @@ DEPENDENCIES:
   - Fabric
   - Firebase/Analytics
   - IQKeyboardManagerSwift
+  - MBProgressHUD (~> 1.2.0)
   - SnapKit
-  - SVProgressHUD
   - SwiftyBeaver
   - TunnelKit
 
@@ -108,11 +108,11 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - IQKeyboardManagerSwift
+    - MBProgressHUD
     - nanopb
     - OpenSSL-Apple
     - PromisesObjC
     - SnapKit
-    - SVProgressHUD
     - SwiftyBeaver
     - TunnelKit
 
@@ -129,14 +129,14 @@ SPEC CHECKSUMS:
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   OpenSSL-Apple: c9c1b9c5b2b1fc4e1758fc5f0836b58ae7fd8183
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyBeaver: b8239f6bfe9e1ea3303e6139abc8c24228081d84
   TunnelKit: cbd063b8b6f4f6a182cf48e646ff35cb2365bf91
 
-PODFILE CHECKSUM: f2425cb0f8a22b08283d40e8a6ec60b5e32aef1e
+PODFILE CHECKSUM: 921704c7f05739a40a7ba3adb2e692617d62e8ce
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

@@ -61,7 +61,7 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
         view?.updatePurchaseSubscriptionBanner(
             model: .init(
                 image: UIImage(named: "shopping-cart"),
-                title: NSLocalizedString("Purchase subscription", comment: ""),
+                title: NSLocalizedString("Get trial subscription", comment: ""),
                 tapAction: { [weak self] in
                     self?.deps.router.openPurchaseSubscriptionScreen {
                         self?.reloadSubscriptions()
@@ -304,7 +304,8 @@ private extension AccountVPNUKConnectViewModel {
                         subscriptionStatus: subscription.status,
                         periodMonths: subscription.period,
                         trialEnd: subscription.trialEndDate,
-                        subscriptionType: subscription.type
+                        subscriptionType: subscription.type,
+                        renewSubscriptionModel: getRenewSubscriptionModel(for: subscription)
                     ),
                     dedicatedServerModel: dedicatedServerModel,
                     pickedVPNAccountModel: vpnAccountModel,
@@ -328,6 +329,16 @@ private extension AccountVPNUKConnectViewModel {
             view?.updateSubscriptionPicker(withState: state)
         }
     }
+    
+    private func getRenewSubscriptionModel(
+        for subscription: SubscriptionDTO
+    ) -> PickedSubscriptionInfoView.RenewSubscriptionModel? {
+        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription) { [weak self] subscription in
+            self?.deps.router.openRenewSubscriptionScreen(for: subscription)
+        }
+        return model
+    }
+    
     
     
     private func handleSubscriptionPickerTapAction() {

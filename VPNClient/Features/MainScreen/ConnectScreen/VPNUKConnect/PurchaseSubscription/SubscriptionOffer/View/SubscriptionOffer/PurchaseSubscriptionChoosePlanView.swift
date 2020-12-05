@@ -24,6 +24,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
     // MARK: - ImageViews
     private lazy var planMarkImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "unchecked.pdf"))
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }()
     
