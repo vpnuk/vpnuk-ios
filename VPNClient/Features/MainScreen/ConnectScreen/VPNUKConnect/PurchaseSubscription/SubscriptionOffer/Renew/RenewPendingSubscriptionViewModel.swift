@@ -78,7 +78,7 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
         if let skProductToPurchase = deps.purchasesService.products.first(where: { $0.productIdentifier == product.productId }) {
             isPurchaseButtonEnabled = true
             priceModel = .init(
-                title: NSLocalizedString("Price", comment: ""),
+                title: NSLocalizedString("Price:", comment: ""),
                 moneySum: skProductToPurchase.localizedPrice
             )
         } else {

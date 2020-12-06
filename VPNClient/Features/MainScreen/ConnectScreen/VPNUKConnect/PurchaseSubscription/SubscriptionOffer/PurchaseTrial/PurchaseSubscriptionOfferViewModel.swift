@@ -42,7 +42,7 @@ class PurchaseSubscriptionOfferViewModel {
     ]
     
     // TODO: Currently disabled, because user can purchase IAP after trial period only, use RenewPendingSubscriptionFactory for that
-    private let disableInAppPurchases: Bool = true
+    private let disableInAppPurchases: Bool = false
     
     init(allPurchasableProducts: [PurchaseProduct], reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
         self.allProducts = allPurchasableProducts
@@ -268,15 +268,16 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         if let selectedPurchasableProduct = getSelectedProductToPurchase(plansData: plansData) {
             isTrialAvailableForSelectedProduct = selectedPurchasableProduct.isTrialAvailable
             isPurchaseButtonEnabled = true
-            if isTrialAvailableForSelectedProduct {
-                // No price for trial
-                priceModel = nil
-            } else {
-                if let product = deps.purchasesService.products.first(where: { $0.productIdentifier == selectedPurchasableProduct.product.productId }) {
-                    priceModel = .init(title: NSLocalizedString("Price", comment: ""), moneySum: product.localizedPrice)
+            
+            if let product = deps.purchasesService.products.first(where: { $0.productIdentifier == selectedPurchasableProduct.product.productId }) {
+                if isTrialAvailableForSelectedProduct {
+                    priceModel = .init(title: NSLocalizedString("Price after trial:", comment: ""), moneySum: product.localizedPrice)
                 } else {
-                    priceModel = nil
+                    priceModel = .init(title: NSLocalizedString("Price:", comment: ""), moneySum: product.localizedPrice)
+                    
                 }
+            } else {
+                priceModel = nil
             }
         } else {
             isTrialAvailableForSelectedProduct = false
