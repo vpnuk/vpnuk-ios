@@ -173,7 +173,7 @@ class ConnectionStatusView: UIView, ConnectionStatusViewProtocol {
         case .disconnected:
             connectButton.setTitle("Connect", for: .normal)
             statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnected", descriptionColor: appearance.disconnectedStatusColor))
-             connectButton.backgroundColor = appearance.connectButtonColor
+            connectButton.backgroundColor = appearance.connectButtonColor
         case .disconnecting:
             connectButton.setTitle("Disconnecting", for: .normal)
             statusStackView.addArrangedSubview(buildLine(title: "Status:", description: "Disconnecting", descriptionColor: appearance.disconnectingStatusColor))
@@ -214,7 +214,7 @@ extension ConnectionStatusView {
         
         let disconnectingStatusColor: UIColor = .systemOrange
         let connectingStatusColor: UIColor = .systemOrange
-        let connectedStatusColor: UIColor = Style.Color.blueColor
+        let connectedStatusColor: UIColor = .systemGreen
         let disconnectedStatusColor: UIColor = .systemRed
         
         let containerViewInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)

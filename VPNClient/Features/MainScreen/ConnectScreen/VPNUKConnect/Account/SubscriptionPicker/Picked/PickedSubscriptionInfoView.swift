@@ -11,6 +11,13 @@ import UIKit
 
 class PickedSubscriptionInfoView: UIView {
     
+    private let dateFormatter: DateFormatter = {
+       let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
+    
     private let appearance = Appearance()
     
     private var renewSubscriptionAction: Action?
@@ -271,7 +278,7 @@ class PickedSubscriptionInfoView: UIView {
         subscriptionPeriodStackView.isHidden = model.periodMonths == nil
         
         if let trialEnd = model.trialEnd {
-            trialEndValueLabel.text = "\(trialEnd)"
+            trialEndValueLabel.text = dateFormatter.string(from: trialEnd)
         }
         trialEndStackView.isHidden = model.trialEnd == nil
         
