@@ -19,7 +19,7 @@ class PurchaseSubscriptionFactory {
         let router = PurchaseSubscriptionOfferRouter()
         let purchasesService: InAppPurchasesService = InAppPurchasesServiceImpl(
             availableProducts: allPurchasableProducts,
-            allProducts: PurchaseProduct.allCases,
+            allProducts: allPurchasableProducts,
             paymentQueue: SKPaymentQueue.default(),
             defaults: UserDefaults.standard,
             fileManager: FileManager.default

@@ -57,6 +57,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
         let label = UILabel()
         label.textColor = .lightGray
         label.font = appearance.detailLabelFont
+        label.numberOfLines = 3
         return label
     }()
     

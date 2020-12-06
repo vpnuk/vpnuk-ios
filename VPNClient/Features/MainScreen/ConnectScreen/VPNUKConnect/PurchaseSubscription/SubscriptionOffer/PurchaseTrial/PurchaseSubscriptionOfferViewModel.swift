@@ -162,8 +162,8 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
         return productsGroupedByType.map { type, products in
             PlanDetails(
                 planSubscriptionType: type,
-                periods: products.map { $0.product.data.periodMonths },
-                maxUsers: products.map { $0.product.data.maxUsers }
+                periods: products.map { $0.product.data.periodMonths }.unique,
+                maxUsers: products.map { $0.product.data.maxUsers }.unique
             )
         }
     }
