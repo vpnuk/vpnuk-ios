@@ -68,15 +68,6 @@ class PurchaseSubscriptionOfferViewModel {
             lastSelectedCountry = nil
         }
         if let base64ReceiptData = deps.purchasesService.getBase64ReceiptData() {
-            // debug
-            deps.purchasesService.getReceiptResponse { result in
-                switch result {
-                case .success(let entity):
-                    print(entity)
-                case .failure(let error):
-                    print(error)
-                }
-            }
             
             view?.setLoading(true)
             deps.subscripionsAPI.sendPurchaseReceipt(base64EncodedReceipt: base64ReceiptData, country: lastSelectedCountry?.name) { [weak self] result in
@@ -93,6 +84,7 @@ class PurchaseSubscriptionOfferViewModel {
                     let message = NSLocalizedString("Purchase failed with error:", comment: "") + "\n" + error.localizedDescription
                     self.deps.router.presentAlert(message: message)
                 }
+                self.reloadProducts()
             }
         } else {
             let message = NSLocalizedString("Purchase failed", comment: "")

@@ -180,15 +180,6 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
             updateView()
             return
         }
-        // debug
-        deps.purchasesService.getReceiptResponse { result in
-            switch result {
-            case .success(let entity):
-                print(entity)
-            case .failure(let error):
-                print(error)
-            }
-        }
         
         view?.setLoading(true)
         deps.subscripionsAPI.renewOrder(
@@ -208,7 +199,7 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
                 let message = NSLocalizedString("Purchase failed with error:", comment: "") + "\n" + error.localizedDescription
                 self.deps.router.presentAlert(message: message)
             }
-            self.updateView()
+            self.reloadSubscriptionAndProducts()
         }
     }
     
