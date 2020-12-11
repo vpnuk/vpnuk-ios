@@ -3,9 +3,9 @@ platform :ios, '11.0'
 use_frameworks!
 
 target 'VPNClient' do
-  pod 'Fabric'
-  pod 'Crashlytics'
+  pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
+
   pod 'SwiftyBeaver'
   pod 'Alamofire'
   pod 'TunnelKit'
