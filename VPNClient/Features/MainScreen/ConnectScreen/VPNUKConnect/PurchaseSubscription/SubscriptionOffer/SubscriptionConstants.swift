@@ -15,7 +15,7 @@ enum SubscriptionConstants {
         let termsDetailsLabelNumberOfLines = 0
         let attributedLinkTextRange = NSMakeRange(477, 36)
         let attributedMainTextRange = NSMakeRange(0, 477)
-        let termsDetails = NSMutableAttributedString(string:"-Your Apple ID account will be charged on the last day of your free trial. \n \n-Your subscription will automatically renew at the end of each billing period unless it is canceled at least 24 hours before the expiry date. \n \n-You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy.")
+        let termsDetails = NSMutableAttributedString(string:"- Your Apple ID will only be charged if you choose to renew your subscription at the end of the free trial period. \n \n- Your subscription will not automatically renew at the end of the subscription period. \n \n- You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy.")
         
         let termsDetailsURL = "https://www.vpnuk.net/terms/"
         let attributedString = termsDetails

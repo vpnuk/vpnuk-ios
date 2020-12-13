@@ -101,16 +101,11 @@ extension UIView: LoaderPresentable {
 extension UIViewController: AlertPresentable {
     
     func presentAlert(message: String, completion: @escaping () -> ()) {
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok"), style: .default, handler: { _ in completion() })
-        alertController.addAction(okAction)
+        let alertController = AlertUtils.buildOkAlert(with: message, completion: completion)
         present(alertController, animated: true)
     }
     
     func presentAlert(message: String) {
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok"), style: .default, handler: nil)
-        alertController.addAction(okAction)
-        present(alertController, animated: true)
+        presentAlert(message: message, completion: {})
     }
 }

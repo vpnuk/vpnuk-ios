@@ -11,7 +11,7 @@ import UIKit
 
 typealias SubscriptionPickedAction = (_ data: SubscriptionVPNAccount?) -> Void
 
-protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
+protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable, RenewSubscriptionButtonRouterProtocol {
     func switchToAuthorizationScreen()
     func openSubscriptionAndVPNAccountPicker(
         subscriptions: [SubscriptionDTO],
@@ -104,5 +104,12 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
     
     func setLoading(_ present: Bool) {
         parentRouter.setLoading(present)
+    }
+}
+
+extension VPNUKConnectRouter: RenewSubscriptionButtonRouterProtocol {
+    func presentOkCancelAlert(withText text: String, okAction: @escaping Action) {
+        let alert = AlertUtils.buildOkCancelAlert(with: text, okAction: { okAction() })
+        parentRouter.present(controller: alert, animated: true)
     }
 }

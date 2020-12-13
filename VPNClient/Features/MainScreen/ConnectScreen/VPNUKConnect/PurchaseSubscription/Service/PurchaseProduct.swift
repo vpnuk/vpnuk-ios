@@ -134,7 +134,7 @@ extension SubscriptionType {
       var localizeDescription: String {
           switch self {
           case .oneToOne:
-              return NSLocalizedString("Your unique server IP (UK only)", comment: "")
+              return NSLocalizedString("Your unique 1:1 IP based in the UK", comment: "")
           case .dedicated:
               return NSLocalizedString("Your unique personal IP", comment: "")
           case .shared:

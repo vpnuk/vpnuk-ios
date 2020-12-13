@@ -153,20 +153,8 @@ extension SubscriptionsListViewController: UITableViewDelegate, UITableViewDataS
     private func getRenewSubscriptionModel(
         for subscription: SubscriptionDTO
     ) -> PickedSubscriptionInfoView.RenewSubscriptionModel? {
-        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription) { [weak self] subscription in
-            self?.openRenewSubscriptionScreen(for: subscription)
-        }
+        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription, router: self)
         return model
-    }
-    
-    private func openRenewSubscriptionScreen(
-        for subscription: SubscriptionDTO
-    ) {
-        let controller = RenewPendingSubscriptionFactory().create(
-            subscriptionToRenew: subscription,
-            reloadSubscriptionsAction: {}
-        )
-        present(controller, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -185,3 +173,19 @@ extension SubscriptionsListViewController: UITableViewDelegate, UITableViewDataS
     }
 }
 
+extension SubscriptionsListViewController: RenewSubscriptionButtonRouterProtocol {
+    func presentOkCancelAlert(withText text: String, okAction: @escaping Action) {
+        let alert = AlertUtils.buildOkCancelAlert(with: text, okAction: { okAction() })
+        present(alert, animated: true)
+    }
+    
+    func openRenewSubscriptionScreen(
+        for subscription: SubscriptionDTO
+    ) {
+        let controller = RenewPendingSubscriptionFactory().create(
+            subscriptionToRenew: subscription,
+            reloadSubscriptionsAction: {}
+        )
+        present(controller, animated: true, completion: nil)
+    }
+}

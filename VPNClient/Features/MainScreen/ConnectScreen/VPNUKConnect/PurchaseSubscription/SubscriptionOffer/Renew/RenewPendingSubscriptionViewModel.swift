@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class RenewPendingSubscriptionViewModel {
     weak var view: PurchaseSubscriptionOfferViewProtocol?
     private var subscriptionToRenew: SubscriptionDTO
@@ -64,12 +63,37 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
     }
     
     private func updateView() {
-        guard let product = productToRenew else { return }
+        guard let product = productToRenew else {
+            let model = buildEmptyModelForView()
+            view?.update(model: model)
+            return
+        }
         
         let model = buildModelForView(product: product)
         view?.update(model: model)
     }
     
+    private func buildEmptyModelForView() -> PurchaseSubscriptionOfferView.Model {
+        let model = PurchaseSubscriptionOfferView.Model(
+            logo: #imageLiteral(resourceName: "logo"),
+            closeScreenAction: { [weak self] in
+                self?.deps.router.close(completion: nil)
+            },
+            plansModel: nil,
+            periodModel: nil,
+            maxUsersModel: nil,
+            priceModel: nil,
+            advantagesModel: nil,
+            termsDetailsModel: nil,
+            purchaseButtonModel: .init(
+                title: NSLocalizedString("Nothing to renew", comment: ""),
+                isEnabled: false,
+                action: {}
+            )
+        )
+        
+        return model
+    }
     
     private func buildModelForView(product: PurchaseProduct) -> PurchaseSubscriptionOfferView.Model {
         let isPurchaseButtonEnabled: Bool

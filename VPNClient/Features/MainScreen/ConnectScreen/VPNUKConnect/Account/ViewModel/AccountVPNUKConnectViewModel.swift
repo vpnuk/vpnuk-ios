@@ -333,9 +333,7 @@ private extension AccountVPNUKConnectViewModel {
     private func getRenewSubscriptionModel(
         for subscription: SubscriptionDTO
     ) -> PickedSubscriptionInfoView.RenewSubscriptionModel? {
-        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription) { [weak self] subscription in
-            self?.deps.router.openRenewSubscriptionScreen(for: subscription)
-        }
+        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription, router: deps.router)
         return model
     }
     

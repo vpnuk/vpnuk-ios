@@ -102,6 +102,7 @@
 		78B8DDC924B65086009399C5 /* SubscriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDC824B65086009399C5 /* SubscriptionTableViewCell.swift */; };
 		78B8DDCB24B653BB009399C5 /* VPNAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDCA24B653BB009399C5 /* VPNAccountTableViewCell.swift */; };
 		78B8DDCD24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDCC24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift */; };
+		78BEA73225867CE200A5C20D /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BEA73125867CE200A5C20D /* AlertUtils.swift */; };
 		78C0491424A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */; };
 		78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */; };
 		78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0124672E120004161B /* MainScreenViewModel.swift */; };
@@ -246,6 +247,7 @@
 		78B8DDC824B65086009399C5 /* SubscriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTableViewCell.swift; sourceTree = "<group>"; };
 		78B8DDCA24B653BB009399C5 /* VPNAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNAccountTableViewCell.swift; sourceTree = "<group>"; };
 		78B8DDCC24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCreateRequestDTO.swift; sourceTree = "<group>"; };
+		78BEA73125867CE200A5C20D /* AlertUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
 		78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectViewModel.swift; sourceTree = "<group>"; };
 		78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectView.swift; sourceTree = "<group>"; };
 		78FE0A0124672E120004161B /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				1782F018235CE3AE0082F9CD /* ViewModels */,
 				1782F011235CC3D10082F9CD /* Constants */,
 				1782EFF4235CC0270082F9CD /* Services */,
+				78BEA73025867B3200A5C20D /* Helpers */,
 				783B35E1244CE31900425A9F /* Resources */,
 				1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */,
 				1782EFEE235CBF8F0082F9CD /* Info.plist */,
@@ -834,6 +837,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		78BEA73025867B3200A5C20D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				78BEA73125867CE200A5C20D /* AlertUtils.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		78C0491024A7BE4D00932E0A /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -1171,6 +1182,7 @@
 				1782F01B235CE8110082F9CD /* MainViewController.swift in Sources */,
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
 				78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */,
+				78BEA73225867CE200A5C20D /* AlertUtils.swift in Sources */,
 				7844C0EA24D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift in Sources */,
 				78360DD924634B4900988F14 /* AccountVPNUKConnectViewModel.swift in Sources */,
 				7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift in Sources */,
