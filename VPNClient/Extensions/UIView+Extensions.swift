@@ -74,10 +74,18 @@ protocol AlertPresentable {
     func presentAlert(message: String)
 }
 
-protocol LoaderPresentable {
+protocol LoaderPresentable: AnyObject {
     func setLoading(_ present: Bool)
 }
 
+extension LoaderPresentable {
+    func showAndHideLoader(after seconds: TimeInterval) {
+        self.setLoading(true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
+            self?.setLoading(false)
+        }
+    }
+}
 extension UIViewController: LoaderPresentable {
     func setLoading(_ present: Bool) {
         if present {

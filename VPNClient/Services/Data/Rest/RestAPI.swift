@@ -25,7 +25,7 @@ protocol SubscripionsAPI {
     func getSubscriptions(callback: @escaping (_ subscriptions: Result<[SubscriptionDTO], Error>) -> ())
     func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
     func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
-    func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
+    func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (_ subscription: Result<Void, Error>) -> ())
     func renewOrder(orderId: String, base64EncodedReceipt: String, callback: @escaping (_ subscription: Result<Void, Error>) -> ())
 }
 
@@ -252,7 +252,7 @@ extension RestAPI: SubscripionsAPI {
         }
     }
     
-    func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (Result<SubscriptionCreateResponseDTO, Error>) -> ()) {
+    func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (Result<Void, Error>) -> ()) {
         AF.request(
             URL(string: baseUrl + "/wp-json/vpnuk/v1/inapp/purchase")!,
             method: .post,
@@ -261,22 +261,14 @@ extension RestAPI: SubscripionsAPI {
             headers: getAuthHeaders()
         )
         .validate()
-        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+        .response(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
             if let error = response.error {
                 DispatchQueue.main.async {
                     callback(.failure(error))
                 }
             } else {
-                let data = response.data ?? Data()
-                do {
-                    let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
-                    DispatchQueue.main.async {
-                        callback(.success(servers))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        callback(.failure(error))
-                    }
+                DispatchQueue.main.async {
+                    callback(.success(()))
                 }
             }
         }

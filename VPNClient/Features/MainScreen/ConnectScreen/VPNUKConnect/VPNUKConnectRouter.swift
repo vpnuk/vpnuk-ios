@@ -115,7 +115,7 @@ extension VPNUKConnectRouter: RenewSubscriptionButtonRouterProtocol {
     ) {
         let controller = RenewPendingSubscriptionFactory().create(
             subscriptionToRenew: subscription,
-            reloadSubscriptionsAction: {}
+            reloadSubscriptionsAction: reloadSubscriptionsAction
         )
         parentRouter.present(controller: controller, animated: true)
     }

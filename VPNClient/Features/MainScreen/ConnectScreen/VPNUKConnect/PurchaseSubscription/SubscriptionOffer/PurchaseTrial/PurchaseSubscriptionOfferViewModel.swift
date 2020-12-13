@@ -42,7 +42,7 @@ class PurchaseSubscriptionOfferViewModel {
     ]
     
     // TODO: Currently disabled, because user can purchase IAP after trial period only, use RenewPendingSubscriptionFactory for that
-    private let disableInAppPurchases: Bool = false
+    private let disableInAppPurchases: Bool = true
     
     init(allPurchasableProducts: [PurchaseProduct], reloadSubscriptionsAction: @escaping Action, deps: Dependencies) {
         self.allProducts = allPurchasableProducts
@@ -96,25 +96,24 @@ class PurchaseSubscriptionOfferViewModel {
         completion: @escaping (_ result: Result<PurchasableProductsData, Error>) -> Void
     ) {
         let allProducts: [PurchaseProduct] = self.allProducts
-        deps.subscripionsAPI.getSubscriptions { [weak self] result in
+        let disableInAppPurchases = self.disableInAppPurchases
+        deps.subscripionsAPI.getPurchasableProductIds { [weak self] result in
             switch result {
-            case .success(let subscriptions):
-                self?.deps.subscripionsAPI.getPurchasableProductIds { result in
-                    switch result {
-                    case .success(let idTrialPairs):
-                        let purchasableIds = Set(idTrialPairs.keys.map { String($0) })
-                        let purchasableProducts = allProducts.filter { purchasableIds.contains($0.rawValue) }
-                        let purchasableProductsWithTrial: [TrialableProduct] = purchasableProducts.compactMap { product in
-                            guard let id = Int(product.rawValue), let isTrial = idTrialPairs[id] else { return nil }
-                            return TrialableProduct(isTrialAvailable: isTrial, product: product)
-                        }
-                        let data: PurchasableProductsData = .init(products: purchasableProductsWithTrial)
-                        self?.purchasableProductsData = data
-                        completion(.success(data))
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
+            case .success(let idTrialPairs):
+                let purchasableIds = Set(idTrialPairs.keys.map { String($0) })
+                let purchasableProducts = allProducts.filter { purchasableIds.contains($0.rawValue) }
+                let purchasableProductsWithTrial: [TrialableProduct] = purchasableProducts.compactMap { product in
+                    guard let id = Int(product.rawValue), let isTrial = idTrialPairs[id] else { return nil }
+                    return TrialableProduct(isTrialAvailable: isTrial, product: product)
                 }
+                
+                let products = disableInAppPurchases
+                    ? purchasableProductsWithTrial.filter { $0.isTrialAvailable } // must be only with trial
+                    : purchasableProductsWithTrial
+                
+                let data: PurchasableProductsData = .init(products: products)
+                self?.purchasableProductsData = data
+                completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -426,6 +425,7 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
             let message = NSLocalizedString("You can not purchase products, please request trial subscription first and prolong it later", comment: "")
             self.deps.router.presentAlert(message: message)
         } else {
+            view?.showAndHideLoader(after: 2.0)
             deps.purchasesService.buy(product: productToPurchase)
         }
     }

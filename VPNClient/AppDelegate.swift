@@ -51,13 +51,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func clearCredentialsIfFirstLaunch() {
         if UserDefaults.isFirstLaunch {
-            let passwordKey = OpenVPNConstants.keychainPasswordKey
-            let usernameKey = OpenVPNConstants.keychainUsernameKey
-            let keychain = Keychain(group: OpenVPNConstants.appGroup)
-            keychain.removePassword(for: usernameKey)
-            keychain.removePassword(for: passwordKey)
+            resetAllCredentials()
             UserDefaults.isFirstLaunch = false
         }
+    }
+    
+    private func resetAllCredentials() {
+        let passwordKey = OpenVPNConstants.keychainPasswordKey
+        let usernameKey = OpenVPNConstants.keychainUsernameKey
+        let keychain = Keychain(group: OpenVPNConstants.appGroup)
+        keychain.removePassword(for: usernameKey)
+        keychain.removePassword(for: passwordKey)
+        
+        let vpnukStorage = KeychainCredentialsStorage.buildForVPNUKAccount()
+        try? vpnukStorage.setCredentials(nil)
     }
     
 }

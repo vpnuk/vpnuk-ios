@@ -193,6 +193,7 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
         let subscriptionCanBeRenewed = subscription.status == .onHold && subscription.pendingOrders?.isEmpty == false
         if subscriptionCanBeRenewed {
             if let productToRenew = productToRenew {
+                view?.showAndHideLoader(after: 2.0)
                 deps.purchasesService.buy(product: productToRenew)
             }
             
