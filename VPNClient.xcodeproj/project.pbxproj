@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		10A16BAFEB6E574F7EF16304 /* Pods_VPNClientNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD297D895FE5A9A1E2595F2 /* Pods_VPNClientNetworkExtension.framework */; };
-		171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1710675F2381851B00A72FDE /* GoogleService-Info.plist */; };
-		171067612381851B00A72FDE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1710675F2381851B00A72FDE /* GoogleService-Info.plist */; };
 		1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */; };
 		1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1782EFE3235CBF8D0082F9CD /* Main.storyboard */; };
 		1782EFE8235CBF8D0082F9CD /* VPNClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1782EFE6235CBF8D0082F9CD /* VPNClient.xcdatamodeld */; };
@@ -85,6 +83,8 @@
 		784CEFE224B26B8D00D95ED6 /* SubscriptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE124B26B8D00D95ED6 /* SubscriptionPickerView.swift */; };
 		784CEFE524B26DA000D95ED6 /* SubscriptionsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */; };
 		784CEFE724B26DBB00D95ED6 /* VPNAccountsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */; };
+		7852466425839A7600CAE94C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7852466325839A7600CAE94C /* GoogleService-Info.plist */; };
+		7852466525839A7600CAE94C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7852466325839A7600CAE94C /* GoogleService-Info.plist */; };
 		786B8D3124E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */; };
 		786B8D3524E99CCD003AE398 /* PurchaseSubscriptionChooseCountryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3424E99CCD003AE398 /* PurchaseSubscriptionChooseCountryFactory.swift */; };
 		786B8D3724E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3624E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift */; };
@@ -147,7 +147,6 @@
 /* Begin PBXFileReference section */
 		01793B1015A841CA6038392C /* Pods-VPNClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.release.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.release.xcconfig"; sourceTree = "<group>"; };
 		0CD297D895FE5A9A1E2595F2 /* Pods_VPNClientNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNClientNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1710675F2381851B00A72FDE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		175105A8236A126D0097D78C /* VPNClient 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "VPNClient 2.xcdatamodel"; sourceTree = "<group>"; };
 		1782EFDA235CBF8D0082F9CD /* VPNUK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNUK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1782EFDD235CBF8D0082F9CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -229,6 +228,7 @@
 		784CEFE124B26B8D00D95ED6 /* SubscriptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPickerView.swift; sourceTree = "<group>"; };
 		784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsListViewController.swift; sourceTree = "<group>"; };
 		784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNAccountsListViewController.swift; sourceTree = "<group>"; };
+		7852466325839A7600CAE94C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryViewModel.swift; sourceTree = "<group>"; };
 		786B8D3424E99CCD003AE398 /* PurchaseSubscriptionChooseCountryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryFactory.swift; sourceTree = "<group>"; };
 		786B8D3624E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryRouter.swift; sourceTree = "<group>"; };
@@ -311,8 +311,8 @@
 		1782EFDC235CBF8D0082F9CD /* VPNClient */ = {
 			isa = PBXGroup;
 			children = (
+				7852466325839A7600CAE94C /* GoogleService-Info.plist */,
 				78360DB324606DFE00988F14 /* Features */,
-				1710675F2381851B00A72FDE /* GoogleService-Info.plist */,
 				1782F041235D2CAE0082F9CD /* VPNClient.entitlements */,
 				1782F025235D07A10082F9CD /* Extensions */,
 				1782F019235CE3B70082F9CD /* ViewControllers */,
@@ -971,11 +971,11 @@
 			files = (
 				1782EFED235CBF8F0082F9CD /* LaunchScreen.storyboard in Resources */,
 				17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */,
-				171067602381851B00A72FDE /* GoogleService-Info.plist in Resources */,
 				78FE0A0C246752750004161B /* ServerPickerPickedView.xib in Resources */,
 				1782EFEA235CBF8F0082F9CD /* Assets.xcassets in Resources */,
 				FA53E42324C8B61500E552AB /* Podfile in Resources */,
 				1782EFE5235CBF8D0082F9CD /* Main.storyboard in Resources */,
+				7852466425839A7600CAE94C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -984,7 +984,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA53E42424C8B61500E552AB /* Podfile in Resources */,
-				171067612381851B00A72FDE /* GoogleService-Info.plist in Resources */,
+				7852466525839A7600CAE94C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
