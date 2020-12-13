@@ -13,9 +13,9 @@ enum SubscriptionConstants {
     static let termsDetails: NSAttributedString = {
         let textColor = Style.Color.grayUIColor
         let termsDetailsLabelNumberOfLines = 0
-        let attributedLinkTextRange = NSMakeRange(477, 36)
-        let attributedMainTextRange = NSMakeRange(0, 477)
-        let termsDetails = NSMutableAttributedString(string:"- Your Apple ID will only be charged if you choose to renew your subscription at the end of the free trial period. \n \n- Your subscription will not automatically renew at the end of the subscription period. \n \n- You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n-Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n-By subscribing, you agree to the Terms of Service and Privacy Policy.")
+        let attributedLinkTextRange = NSMakeRange(474, 28)
+        let attributedMainTextRange = NSMakeRange(0, 474)
+        let termsDetails = NSMutableAttributedString(string:"- Your Apple ID will only be charged if you choose to renew your subscription at the end of the free trial period. \n \n- Your subscription will not automatically renew at the end of the subscription period. \n \n- You can manage and cancel your subscriptions by going to your App Store account settings after purchase. \n \n- Any unused portion of a free trial period, if offered, will be forfeited when you purchase a subscription. \n \n- By subscribing, you agree to the Terms of Service and Privacy Policy.")
         
         let termsDetailsURL = "https://www.vpnuk.net/terms/"
         let attributedString = termsDetails
@@ -68,4 +68,6 @@ enum SubscriptionConstants {
             comment: ""
         )
     }()
+    
+    static let liveHelpUrl = "https://tawk.to/chat/56bae5de496019e65d794d8f/default"
 }

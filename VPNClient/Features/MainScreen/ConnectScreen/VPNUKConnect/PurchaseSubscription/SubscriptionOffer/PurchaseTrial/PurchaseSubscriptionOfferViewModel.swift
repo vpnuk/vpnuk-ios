@@ -231,7 +231,8 @@ extension PurchaseSubscriptionOfferViewModel: PurchaseSubscriptionOfferViewModel
                     self?.deps.router.presentAlert(
                         message: SubscriptionConstants.subscriptionsPeriodsInfo
                     )
-                }
+                },
+                tooltipModel: nil
             )
         }
         

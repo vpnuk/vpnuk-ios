@@ -18,13 +18,32 @@ protocol MainScreenViewProtocol: AnyObject, AlertPresentable, LoaderPresentable 
 class MainScreenViewController: UIViewController {
     
     private let viewModel: MainScreenViewModelProtocol
+    
     // header
     
     private lazy var settingsButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "gear"), for: .normal)
         button.addTarget(self, action: #selector(settingsTouched), for: .touchUpInside)
+        button.imageView?.contentMode = .scaleAspectFit
         return button
+    }()
+    
+    private lazy var supportButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "live_support"), for: .normal)
+        button.addTarget(self, action: #selector(supportTouched), for: .touchUpInside)
+        button.imageView?.contentMode = .scaleAspectFit
+        return button
+    }()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.addArrangedSubview(supportButton)
+        stack.addArrangedSubview(settingsButton)
+        stack.axis = .horizontal
+        stack.spacing = 20
+        return stack
     }()
     
     private lazy var headerImageView: UIImageView = {
@@ -137,7 +156,8 @@ class MainScreenViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(contentStackView)
-        view.addSubview(settingsButton)
+        view.addSubview(buttonsStackView)
+        
     }
     
     private func setupConstraints() {
@@ -158,8 +178,17 @@ class MainScreenViewController: UIViewController {
             make.height.equalTo(100)
         }
         
-        settingsButton.snp.makeConstraints { make in
+        buttonsStackView.snp.makeConstraints { make in
             make.top.right.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.height.equalTo(25)
+        }
+        
+        settingsButton.snp.makeConstraints { make in
+            make.size.equalTo(25)
+        }
+        
+        supportButton.snp.makeConstraints { make in
+            make.size.equalTo(25)
         }
     }
     
@@ -184,6 +213,11 @@ class MainScreenViewController: UIViewController {
     @objc
     private func settingsTouched() {
         viewModel.openSettingsTouched()
+    }
+    
+    @objc
+    private func supportTouched() {
+        viewModel.openSupportTouched()
     }
 
 }

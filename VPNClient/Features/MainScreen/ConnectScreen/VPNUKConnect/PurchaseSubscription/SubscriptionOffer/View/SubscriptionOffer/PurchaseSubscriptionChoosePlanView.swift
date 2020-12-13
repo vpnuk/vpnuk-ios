@@ -50,6 +50,7 @@ class PurchaseSubscriptionChoosePlanView: UIView {
     private lazy var planLabel : UILabel = {
         let label = UILabel()
         label.font = appearance.planLabelFont
+        label.numberOfLines = 2
         return label
     }()
     

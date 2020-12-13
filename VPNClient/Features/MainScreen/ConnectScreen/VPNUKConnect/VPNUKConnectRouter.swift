@@ -16,11 +16,15 @@ protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable,
     func openSubscriptionAndVPNAccountPicker(
         subscriptions: [SubscriptionDTO],
         subscriptionPickedAction: @escaping SubscriptionPickedAction,
+        reloadSubscriptionsAction: @escaping Action,
         initiallySelectedSubscription: SubscriptionVPNAccount?
     )
     func presentServersPicker(viewModel: ServerPickerListViewModelProtocol)
     func openPurchaseSubscriptionScreen(reloadSubscriptionsAction: @escaping Action)
-    func openRenewSubscriptionScreen(for subscription: SubscriptionDTO)
+    func openRenewSubscriptionScreen(
+        for subscription: SubscriptionDTO,
+        reloadSubscriptionsAction: @escaping Action
+    )
 }
 
 protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
@@ -71,11 +75,13 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
     func openSubscriptionAndVPNAccountPicker(
         subscriptions: [SubscriptionDTO],
         subscriptionPickedAction: @escaping SubscriptionPickedAction,
+        reloadSubscriptionsAction: @escaping Action,
         initiallySelectedSubscription: SubscriptionVPNAccount?
     ) {
         let controller = SubscriptionsListPickerFactory().create(
             withSubscriptionsToPick: subscriptions,
             subscriptionPickedAction: subscriptionPickedAction,
+            reloadSubscriptionsAction: reloadSubscriptionsAction,
             initiallySelectedSubscription: initiallySelectedSubscription
         )
         
@@ -92,16 +98,6 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
         parentRouter.present(controller: controller, animated: true)
     }
     
-    func openRenewSubscriptionScreen(
-        for subscription: SubscriptionDTO
-    ) {
-        let controller = RenewPendingSubscriptionFactory().create(
-            subscriptionToRenew: subscription,
-            reloadSubscriptionsAction: {}
-        )
-        parentRouter.present(controller: controller, animated: true)
-    }
-    
     func setLoading(_ present: Bool) {
         parentRouter.setLoading(present)
     }
@@ -111,5 +107,16 @@ extension VPNUKConnectRouter: RenewSubscriptionButtonRouterProtocol {
     func presentOkCancelAlert(withText text: String, okAction: @escaping Action) {
         let alert = AlertUtils.buildOkCancelAlert(with: text, okAction: { okAction() })
         parentRouter.present(controller: alert, animated: true)
+    }
+    
+    func openRenewSubscriptionScreen(
+        for subscription: SubscriptionDTO,
+        reloadSubscriptionsAction: @escaping Action
+    ) {
+        let controller = RenewPendingSubscriptionFactory().create(
+            subscriptionToRenew: subscription,
+            reloadSubscriptionsAction: {}
+        )
+        parentRouter.present(controller: controller, animated: true)
     }
 }

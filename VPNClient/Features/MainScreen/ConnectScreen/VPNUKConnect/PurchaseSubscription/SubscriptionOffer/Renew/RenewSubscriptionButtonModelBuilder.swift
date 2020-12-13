@@ -10,14 +10,15 @@ import Foundation
 import UIKit
 
 protocol RenewSubscriptionButtonRouterProtocol: AnyObject {
-    func openRenewSubscriptionScreen(for subscription: SubscriptionDTO)
+    func openRenewSubscriptionScreen(for subscription: SubscriptionDTO, reloadSubscriptionsAction: @escaping Action)
     func presentOkCancelAlert(withText text: String, okAction: @escaping Action)
 }
 
 class RenewSubscriptionButtonModelBuilder {
     func build(
         for subscription: SubscriptionDTO,
-        router: RenewSubscriptionButtonRouterProtocol
+        router: RenewSubscriptionButtonRouterProtocol,
+        reloadSubscriptionsAction: @escaping Action
     ) -> PickedSubscriptionInfoView.RenewSubscriptionModel? {
         guard let productId = subscription.productId else {
             return nil
@@ -31,7 +32,10 @@ class RenewSubscriptionButtonModelBuilder {
             let renewAction: Action
             if userCanRenewSubscriptionFromApp {
                 renewAction = { [weak router] in
-                    router?.openRenewSubscriptionScreen(for: subscription)
+                    router?.openRenewSubscriptionScreen(
+                        for: subscription,
+                        reloadSubscriptionsAction: reloadSubscriptionsAction
+                    )
                 }
             } else {
                 let purchaseOnWebsiteText = NSLocalizedString(
@@ -40,7 +44,7 @@ class RenewSubscriptionButtonModelBuilder {
                 )
                 renewAction = { [weak router] in
                     router?.presentOkCancelAlert(withText: purchaseOnWebsiteText, okAction: {
-                        if let link = URL(string: Constants.chatUrlString) {
+                        if let link = URL(string: Constants.accountUrlString) {
                             UIApplication.shared.open(link)
                         }
                     })
@@ -59,7 +63,7 @@ class RenewSubscriptionButtonModelBuilder {
 
 private extension RenewSubscriptionButtonModelBuilder {
     enum Constants {
-        static let chatUrlString = "https://tawk.to/chat/56bae5de496019e65d794d8f/default"
+        static let accountUrlString = "https://www.vpnuk.net/my-account/"
     }
 }
 

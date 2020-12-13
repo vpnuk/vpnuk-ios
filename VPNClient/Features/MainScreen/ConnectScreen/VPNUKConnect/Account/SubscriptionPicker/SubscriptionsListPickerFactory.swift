@@ -13,11 +13,13 @@ class SubscriptionsListPickerFactory {
     func create(
         withSubscriptionsToPick subscriptions: [SubscriptionDTO],
         subscriptionPickedAction: @escaping SubscriptionPickedAction,
+        reloadSubscriptionsAction: @escaping Action,
         initiallySelectedSubscription: SubscriptionVPNAccount? = nil
     ) -> UIViewController {
         let controller = SubscriptionsListViewController(
             subscriptions: subscriptions,
             subscriptionPickedAction: subscriptionPickedAction,
+            reloadSubscriptionsAction: reloadSubscriptionsAction,
             initiallySelectedSubscription: initiallySelectedSubscription
         )
         

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import NetworkExtension
 
 protocol VPNConnectorDelegate: AnyObject {
@@ -27,6 +28,7 @@ enum ConnectScreenType: Int {
 protocol MainScreenViewModelProtocol {
     func viewLoaded()
     func openSettingsTouched()
+    func openSupportTouched()
     func connectTypeChanged(type: ConnectScreenType)
 }
 
@@ -94,6 +96,12 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     
     func openSettingsTouched() {
         router.presentSettings()
+    }
+    
+    func openSupportTouched() {
+        if let link = URL(string: Constants.supportUrl) {
+            UIApplication.shared.open(link)
+        }
     }
 }
 
@@ -173,5 +181,11 @@ extension MainScreenViewModel: VPNServiceDelegate {
             break
         }
         connectionStatusUpdatedAction?(status)
+    }
+}
+
+extension MainScreenViewModel {
+    enum Constants {
+        static let supportUrl: String = SubscriptionConstants.liveHelpUrl
     }
 }

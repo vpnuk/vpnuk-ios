@@ -12,6 +12,7 @@ import UIKit
 class SubscriptionsListViewController: UIViewController {
     private let subscriptions: [SubscriptionDTO]
     private let subscriptionPickedAction: SubscriptionPickedAction
+    private let reloadSubscriptionsAction: Action
     private let initiallySelectedSubscription: SubscriptionVPNAccount?
     
     private lazy var contentView = UIView()
@@ -47,10 +48,12 @@ class SubscriptionsListViewController: UIViewController {
     init(
         subscriptions: [SubscriptionDTO],
         subscriptionPickedAction: @escaping SubscriptionPickedAction,
+        reloadSubscriptionsAction: @escaping Action,
         initiallySelectedSubscription: SubscriptionVPNAccount? = nil
     ) {
         self.subscriptions = subscriptions
         self.subscriptionPickedAction = subscriptionPickedAction
+        self.reloadSubscriptionsAction = reloadSubscriptionsAction
         self.initiallySelectedSubscription = initiallySelectedSubscription
         super.init(nibName: nil, bundle: nil)
     }
@@ -153,7 +156,11 @@ extension SubscriptionsListViewController: UITableViewDelegate, UITableViewDataS
     private func getRenewSubscriptionModel(
         for subscription: SubscriptionDTO
     ) -> PickedSubscriptionInfoView.RenewSubscriptionModel? {
-        let model = RenewSubscriptionButtonModelBuilder().build(for: subscription, router: self)
+        let model = RenewSubscriptionButtonModelBuilder().build(
+            for: subscription,
+            router: self,
+            reloadSubscriptionsAction: reloadSubscriptionsAction
+        )
         return model
     }
     
@@ -180,11 +187,12 @@ extension SubscriptionsListViewController: RenewSubscriptionButtonRouterProtocol
     }
     
     func openRenewSubscriptionScreen(
-        for subscription: SubscriptionDTO
+        for subscription: SubscriptionDTO,
+        reloadSubscriptionsAction: @escaping Action
     ) {
         let controller = RenewPendingSubscriptionFactory().create(
             subscriptionToRenew: subscription,
-            reloadSubscriptionsAction: {}
+            reloadSubscriptionsAction: reloadSubscriptionsAction
         )
         present(controller, animated: true, completion: nil)
     }

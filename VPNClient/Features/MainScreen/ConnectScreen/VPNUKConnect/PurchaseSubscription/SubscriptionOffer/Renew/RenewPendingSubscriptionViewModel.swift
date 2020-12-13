@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class RenewPendingSubscriptionViewModel {
     weak var view: PurchaseSubscriptionOfferViewProtocol?
@@ -110,7 +111,6 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
             priceModel = nil
         }
         
-        
         let model = PurchaseSubscriptionOfferView.Model(
             logo: #imageLiteral(resourceName: "logo"),
             closeScreenAction: { [weak self] in
@@ -140,7 +140,8 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
                     self?.deps.router.presentAlert(
                         message: SubscriptionConstants.subscriptionsPeriodsInfo
                     )
-                }
+                },
+                tooltipModel: buildPeriodTooltipModel()
             ),
             maxUsersModel: .init(
                 title: NSLocalizedString("Max users", comment: ""),
@@ -171,6 +172,17 @@ extension RenewPendingSubscriptionViewModel: PurchaseSubscriptionOfferViewModelP
         )
         
         return model
+    }
+    
+    private func buildPeriodTooltipModel() -> PurchaseSubscriptionTooltipView.Model? {
+        let string = NSMutableAttributedString()
+        string.append(NSAttributedString(string: NSLocalizedString("If you would like to alter the subscription period please contact the ", comment: "")))
+        
+        let linkString = NSMutableAttributedString(string: "Live Help support")
+        linkString.addAttribute(.link, value: SubscriptionConstants.liveHelpUrl, range: NSRange(location: 0, length: linkString.length))
+        string.append(linkString)
+        string.append(NSAttributedString(string: NSLocalizedString(" before proceeding with your renewal.", comment: "")))
+        return .init(tooltip: string)
     }
     
     private func purchaseTouched() {

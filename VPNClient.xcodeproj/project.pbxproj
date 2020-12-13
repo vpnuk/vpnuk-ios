@@ -103,6 +103,7 @@
 		78B8DDCB24B653BB009399C5 /* VPNAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDCA24B653BB009399C5 /* VPNAccountTableViewCell.swift */; };
 		78B8DDCD24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B8DDCC24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift */; };
 		78BEA73225867CE200A5C20D /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BEA73125867CE200A5C20D /* AlertUtils.swift */; };
+		78BEA7382586897200A5C20D /* PurchaseSubscriptionTooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BEA7372586897200A5C20D /* PurchaseSubscriptionTooltipView.swift */; };
 		78C0491424A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */; };
 		78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */; };
 		78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0124672E120004161B /* MainScreenViewModel.swift */; };
@@ -248,6 +249,7 @@
 		78B8DDCA24B653BB009399C5 /* VPNAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNAccountTableViewCell.swift; sourceTree = "<group>"; };
 		78B8DDCC24B662ED009399C5 /* SubscriptionCreateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCreateRequestDTO.swift; sourceTree = "<group>"; };
 		78BEA73125867CE200A5C20D /* AlertUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
+		78BEA7372586897200A5C20D /* PurchaseSubscriptionTooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionTooltipView.swift; sourceTree = "<group>"; };
 		78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectViewModel.swift; sourceTree = "<group>"; };
 		78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectView.swift; sourceTree = "<group>"; };
 		78FE0A0124672E120004161B /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
@@ -672,6 +674,7 @@
 				7849602B24C6321700157AB4 /* PurchaseSubscriptionPriceView.swift */,
 				7849602D24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift */,
 				7849602F24C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift */,
+				78BEA7372586897200A5C20D /* PurchaseSubscriptionTooltipView.swift */,
 			);
 			path = SubscriptionOffer;
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				78461EEC25363C1000D01978 /* IAPReceiptDTO.swift in Sources */,
 				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
 				FA859BDA24CED44C002F12E7 /* Style.swift in Sources */,
+				78BEA7382586897200A5C20D /* PurchaseSubscriptionTooltipView.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,
 				7844C0F124D750E000EF5588 /* PurchaseSubscriptionBannerView.swift in Sources */,

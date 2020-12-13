@@ -13,7 +13,11 @@ class PurchaseSubscriptionPeriodView: UIView {
     private lazy var appearance = Appearance()
     private var optionSelectedAction: ((_ index: Int) -> Void)?
     private var infoTapAction: (() -> Void)?
+    
     // MARK: - Content
+    
+    private lazy var tooltipView = PurchaseSubscriptionTooltipView()
+    
     private lazy var periodQuastionButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "questionMark.pdf"), for: .normal)
@@ -21,7 +25,7 @@ class PurchaseSubscriptionPeriodView: UIView {
         return button
     }()
     
-    private lazy var choosePeriodLabel : UILabel = {
+    private lazy var choosePeriodLabel: UILabel = {
         let label = UILabel()
         label.textColor = appearance.choosePeriodLabelColor
         label.font = appearance.choosePeriodLabelFont
@@ -35,7 +39,7 @@ class PurchaseSubscriptionPeriodView: UIView {
         return stackView
     }()
     
-    private lazy var contentStackView: UIStackView = {
+    private lazy var headerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             choosePeriodLabel,
             periodQuastionButton,
@@ -43,6 +47,17 @@ class PurchaseSubscriptionPeriodView: UIView {
         ])
         stackView.axis = .horizontal
         stackView.spacing = appearance.periodLabelStackViewSpacing
+        return stackView
+    }()
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            headerStackView,
+            scrollView,
+            tooltipView
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = appearance.headerAndScrollViewSpacing
         return stackView
     }()
     
@@ -86,8 +101,16 @@ class PurchaseSubscriptionPeriodView: UIView {
         for optionView in newOptionsView {
             optionsStackView.addArrangedSubview(optionView)
         }
-      periodQuastionButton.isHidden = model.infoTapAction == nil
+        periodQuastionButton.isHidden = model.infoTapAction == nil
         infoTapAction = model.infoTapAction
+        
+        if let tooltip = model.tooltipModel {
+            tooltipView.isHidden = false
+            tooltipView.update(model: tooltip)
+        } else {
+            tooltipView.isHidden = true
+        }
+        
     }
     
     @objc private func quastionButtonTapped(){
@@ -95,8 +118,8 @@ class PurchaseSubscriptionPeriodView: UIView {
     }
     
     private func setupSubviews() {
+        tooltipView.isHidden = true
         addSubview(contentStackView)
-        addSubview(scrollView)
         scrollView.contentInset = appearance.scrollViewContentInsets
         scrollView.clipsToBounds = false
         scrollView.showsVerticalScrollIndicator = false
@@ -105,12 +128,10 @@ class PurchaseSubscriptionPeriodView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(contentStackView.snp.bottom).inset(-appearance.headerAndScrollViewSpacing)
-            make.left.bottom.right.equalToSuperview()
             make.height.equalTo(optionsStackView.snp.height)
         }
         contentStackView.snp.makeConstraints { make in
-            make.left.top.right.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         optionsStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -130,6 +151,7 @@ extension PurchaseSubscriptionPeriodView {
         let selectedOptionIndex: Int?
         let optionSelectedAction: (_ index: Int) -> Void
         let infoTapAction: (() -> Void)?
+        let tooltipModel: PurchaseSubscriptionTooltipView.Model?
     }
     
     struct Option {

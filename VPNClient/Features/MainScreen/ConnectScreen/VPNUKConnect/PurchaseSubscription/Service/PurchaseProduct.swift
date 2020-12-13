@@ -75,7 +75,7 @@ extension PurchaseProduct {
     var localizeDescription: String {
         switch self {
         case .oneToOneDedicatedIp1Month1User, .oneToOneDedicatedIp3Month1User, .oneToOneDedicatedIp6Month1User, .oneToOneDedicatedIp12Month1User:
-            return NSLocalizedString("Your own unique 1:1 IP (UK only)", comment: "")
+            return NSLocalizedString("Your unique 1:1 IP based in the UK", comment: "")
         case .dedicatedIp1Month2User, .dedicatedIp3Month2User, .dedicatedIp6Month2User, .dedicatedIp12Month2User:
             return NSLocalizedString("Your own unique IP", comment: "")
         case .sharedIp1Month1User, .sharedIp3Month1User, .sharedIp6Month1User, .sharedIp12Month1User:
