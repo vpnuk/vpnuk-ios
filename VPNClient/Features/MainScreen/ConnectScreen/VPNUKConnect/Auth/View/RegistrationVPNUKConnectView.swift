@@ -55,6 +55,9 @@ class RegistrationVPNUKConnectView: UIView {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Username", comment: "Username")
         textField.delegate = self
+        textField.autocapitalizationType = .none
+        textField.textContentType = .username
+        textField.autocorrectionType = .no
         return textField
     }()
     
@@ -80,6 +83,7 @@ class RegistrationVPNUKConnectView: UIView {
         textField.placeholder = NSLocalizedString("Password", comment: "Username")
         textField.isSecureTextEntry = true
         textField.delegate = self
+        textField.textContentType = .password
         return textField
     }()
     
@@ -104,6 +108,9 @@ class RegistrationVPNUKConnectView: UIView {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Email", comment: "")
         textField.delegate = self
+        textField.autocapitalizationType = .none
+        textField.textContentType = .emailAddress
+        textField.autocorrectionType = .no
         return textField
     }()
     
@@ -128,6 +135,7 @@ class RegistrationVPNUKConnectView: UIView {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("First name", comment: "")
         textField.delegate = self
+        textField.textContentType = .givenName
         return textField
     }()
     
@@ -152,6 +160,7 @@ class RegistrationVPNUKConnectView: UIView {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Last name", comment: "")
         textField.delegate = self
+        textField.textContentType = .familyName
         return textField
     }()
     
