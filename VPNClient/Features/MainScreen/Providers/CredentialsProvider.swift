@@ -9,7 +9,7 @@
 import Foundation
 
 protocol VPNCredentialsProvider {
-    func getCredentials() throws -> UsernamePasswordCredentials?
+    func getStoredCredentials() throws -> UsernamePasswordCredentials?
     var credentialsChangedListener: ((_ newCredentials: UsernamePasswordCredentials) -> ())? { get set }
 }
 

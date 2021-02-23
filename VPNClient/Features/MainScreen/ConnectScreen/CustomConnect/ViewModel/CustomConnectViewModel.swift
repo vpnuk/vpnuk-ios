@@ -21,6 +21,13 @@ class CustomConnectViewModel {
         }
     }
     
+    private var currentViewCredentials: UsernamePasswordCredentials? {
+        guard let view = view else {
+            return nil
+        }
+        return .init(username: view.username ?? "", password: view.password ?? "")
+    }
+    
     private var connectedServerData: ConnectionData? {
         if connectorDelegate?.connectionStatus == .connected {
             return connectorDelegate?.connectedServerData
@@ -98,7 +105,8 @@ extension CustomConnectViewModel {
             return
         }
         
-        if let username = view?.username, let password = view?.password {
+        let creds = currentViewCredentials
+        if let username = creds?.username, let password = creds?.password {
             if username == "" {
                 router.presentAlert(message: "Please input username")
                 return
@@ -188,13 +196,13 @@ extension CustomConnectViewModel {
 
 extension CustomConnectViewModel: CustomConnectViewModelProtocol {
     var credentialsIsStoring: Bool {
-        return (try? credentialsStorage.getCredentials()) != nil
+        return (try? getStoredCredentials()) != nil
     }
     
     func storeCredentials(_ store: Bool) {
         let credentials: UsernamePasswordCredentials?
-        if store, let password = view?.password, let username = view?.username {
-            credentials = UsernamePasswordCredentials(username: username, password: password)
+        if store, let creds = currentViewCredentials {
+            credentials = UsernamePasswordCredentials(username: creds.username, password: creds.password)
         } else {
             credentials = nil
         }
@@ -206,7 +214,7 @@ extension CustomConnectViewModel: CustomConnectViewModelProtocol {
         view?.updateCredentials()
     }
     
-    func getCredentials() throws -> UsernamePasswordCredentials? {
+    func getStoredCredentials() throws -> UsernamePasswordCredentials? {
         return try credentialsStorage.getCredentials()
     }
 }

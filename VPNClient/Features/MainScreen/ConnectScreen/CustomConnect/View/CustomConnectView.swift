@@ -198,7 +198,7 @@ extension CustomConnectView: CustomConnectViewProtocol {
     
     func updateCredentials() {
         saveCredentialsButton.isSelected = viewModel.credentialsIsStoring
-        let credentials = try? viewModel.getCredentials()
+        let credentials = try? viewModel.getStoredCredentials()
         username = credentials?.username
         password = credentials?.password
     }
@@ -209,5 +209,16 @@ extension CustomConnectView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)
         return false
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+        case usernameTextField, passwordTextField:
+            if viewModel.credentialsIsStoring {
+                viewModel.storeCredentials(true)
+            }
+        default:
+            break
+        }
     }
 }

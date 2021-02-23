@@ -45,14 +45,14 @@ class KeychainCredentialsStorage: CredentialsStorage {
         guard let passwordReference = try? keychain.passwordReference(for: passwordKey) else {
             throw KeychainCredentialsError.couldntGetPasswordReference
         }
-        guard let fetchedPassword = try? Keychain.password(for: passwordKey, reference: passwordReference) else {
+        guard let fetchedPassword = try? keychain.password(for: passwordKey, reference: passwordReference) else {
             throw KeychainCredentialsError.couldntFetchPassword
         }
         
         guard let usernameReference = try? keychain.passwordReference(for: usernameKey) else {
             throw KeychainCredentialsError.couldntGetUsernameReference
         }
-        guard let fetchedUsername = try? Keychain.password(for: usernameKey, reference: usernameReference) else {
+        guard let fetchedUsername = try? keychain.password(for: usernameKey, reference: usernameReference) else {
             throw KeychainCredentialsError.couldntFetchUsername
         }
         return UsernamePasswordCredentials(username: fetchedUsername, password: fetchedPassword)

@@ -71,7 +71,7 @@ class MainViewModel: NSObject {
                 print("Couldn't get password reference")
                 return nil
             }
-            guard let fetchedPassword = try? Keychain.password(for: passwordKey, reference: passwordReference) else {
+            guard let fetchedPassword = try? keychain.password(for: passwordKey, reference: passwordReference) else {
                 print("Couldn't fetch password")
                 return nil
             }
@@ -80,7 +80,7 @@ class MainViewModel: NSObject {
                 print("Couldn't get username reference")
                 return nil
             }
-            guard let fetchedUsername = try? Keychain.password(for: usernameKey, reference: usernameReference) else {
+            guard let fetchedUsername = try? keychain.password(for: usernameKey, reference: usernameReference) else {
                 print("Couldn't fetch username")
                 return nil
             }

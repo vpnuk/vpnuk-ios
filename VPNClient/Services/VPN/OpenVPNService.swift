@@ -17,7 +17,6 @@ enum VPNError: Error {
     case error(description: String)
 }
 
-
 struct ConnectionSettings {
     let hostname: String
     let port: UInt16
@@ -25,6 +24,12 @@ struct ConnectionSettings {
     let socketType: SocketType
     let credentials: OpenVPN.Credentials
     let onDemandRuleConnect: Bool
+}
+
+struct ConnectionData {
+    let serverIP: String
+    let socketType: SocketType
+    let port: UInt16
 }
 
 protocol VPNServiceDelegate: class {
@@ -48,6 +53,8 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
     
     static let shared: VPNService = OpenVPNService()
     
+    private let tunnelIdentifier = OpenVPNConstants.tunnelIdentifier
+    private let appGroup = OpenVPNConstants.appGroup
     
     weak var delegate: VPNServiceDelegate?
     var configuration: ConnectionSettings?
@@ -55,7 +62,6 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         return currentManager?.protocolConfiguration as? NETunnelProviderProtocol
     }
  
-    
     private var currentManager: NETunnelProviderManager?
     
     var status = NEVPNStatus.invalid {
@@ -67,13 +73,11 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
     override init() {
         super.init()
         setup()
-        
     }
     
     func configure(settings: ConnectionSettings) {
         configuration = settings
     }
-    
     
     private func makeProtocol() -> NETunnelProviderProtocol {
         guard let config = configuration else {
@@ -95,28 +99,37 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         sessionBuilder.hostname = config.hostname
         sessionBuilder.endpointProtocols = [EndpointProtocol(config.socketType, config.port)]
         sessionBuilder.usesPIAPatches = false
+        sessionBuilder.mtu = 1542
         var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
-        builder.mtu = 1542
         builder.shouldDebug = true
         builder.masksPrivateData = false
         
         let configuration = builder.build()
+        
+        let keychain = Keychain(group: appGroup)
+        try? keychain.set(
+            password: config.credentials.password,
+            for: config.credentials.username,
+            context: tunnelIdentifier
+        )
+        
         return try! configuration.generatedTunnelProtocol(
-            withBundleIdentifier: OpenVPNConstants.tunnelIdentifier,
-            appGroup: OpenVPNConstants.appGroup,
-            credentials: config.credentials
+            withBundleIdentifier: tunnelIdentifier,
+            appGroup: appGroup,
+            context: tunnelIdentifier,
+            username: config.credentials.username
         )
     }
     
-    
     private func setup() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(VPNStatusDidChange(notification:)),
-                                               name: .NEVPNStatusDidChange,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(VPNStatusDidChange(notification:)),
+            name: .NEVPNStatusDidChange,
+            object: nil
+        )
         
         reloadCurrentManager(nil)
-//        testFetchRef()
     }
     
     func connectionClicked() {
@@ -229,7 +242,6 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         }
     }
     
-    
     func reloadCurrentManager(_ completionHandler: ((Error?) -> Void)?) {
         NETunnelProviderManager.loadAllFromPreferences { (managers, error) in
             if let error = error {
@@ -241,7 +253,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
             
             for m in managers! {
                 if let p = m.protocolConfiguration as? NETunnelProviderProtocol {
-                    if (p.providerBundleIdentifier == OpenVPNConstants.tunnelIdentifier) {
+                    if (p.providerBundleIdentifier == self.tunnelIdentifier) {
                         manager = m
                         break
                     }
@@ -254,7 +266,6 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
             
             self.currentManager = manager
             self.status = manager!.connection.status
-//            self.updateButton()
             completionHandler?(nil)
         }
     }
@@ -266,16 +277,9 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         }
         print("VPNStatusDidChange: \(status.rawValue)")
         self.status = status
-//        updateButton()
     }
     
     
-}
-
-struct ConnectionData {
-    let serverIP: String
-    let socketType: SocketType
-    let port: UInt16
 }
 
 extension NETunnelProviderProtocol {
