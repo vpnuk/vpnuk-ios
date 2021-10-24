@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol RegistrationVPNUKConnectViewProtocol: class {
+protocol RegistrationVPNUKConnectViewProtocol: AnyObject {
     func update(model: RegistrationVPNUKConnectView.Model)
 }
 

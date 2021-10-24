@@ -9,7 +9,7 @@
 
 import UIKit
 
-protocol ServerListDelegate: class {
+protocol ServerListDelegate: AnyObject {
     func serverPicked(atIndexPath indexPath: IndexPath, server: ServerEntity)
     func isConnected(toServer server: ServerEntity) -> Bool
     var selectedServer: ServerEntity? { get }

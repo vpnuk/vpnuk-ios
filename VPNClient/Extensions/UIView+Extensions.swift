@@ -69,7 +69,7 @@ extension UIView {
     }
 }
 
-protocol AlertPresentable {
+protocol AlertPresentable: AnyObject {
     func presentAlert(message: String, completion: @escaping () -> ())
     func presentAlert(message: String)
 }

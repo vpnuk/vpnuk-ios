@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol AuthVPNUKConnectViewProtocol: class {
+protocol AuthVPNUKConnectViewProtocol: AnyObject {
     func update(model: AuthVPNUKConnectView.Model)
 }
 

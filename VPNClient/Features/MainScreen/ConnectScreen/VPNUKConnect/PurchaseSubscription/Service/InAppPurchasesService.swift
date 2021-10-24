@@ -20,6 +20,7 @@ enum InAppPurchaseError: Error {
 protocol InAppPurchasesService: AnyObject {
     var products: [SKProduct] { get }
     var transactionUpdatedListener: ((_ result: [TransactionResult]) -> Void)? { get set }
+    @discardableResult
     func requestProducts() -> Bool
     func buy(product: PurchaseProduct)
     func restorePurchases()
@@ -214,6 +215,8 @@ extension InAppPurchasesServiceImpl: SKProductsRequestDelegate, SKPaymentTransac
             case .deferred:
                 break
             case .purchasing:
+                break
+            @unknown default:
                 break
             }
         }

@@ -32,7 +32,7 @@ struct ConnectionData {
     let port: UInt16
 }
 
-protocol VPNServiceDelegate: class {
+protocol VPNServiceDelegate: AnyObject {
     func statusUpdated(newStatus status: NEVPNStatus)
     func raised(error: VPNError)
 }

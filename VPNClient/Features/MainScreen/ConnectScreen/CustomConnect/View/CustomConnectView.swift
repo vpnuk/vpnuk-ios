@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol CustomConnectViewProtocol: class {
+protocol CustomConnectViewProtocol: AnyObject {
     var username: String? { get set }
     var password: String? { get set }
     

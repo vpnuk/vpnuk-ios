@@ -13,7 +13,7 @@ import CoreData
 import NetworkExtension
 import Alamofire
 
-protocol MainView: class {
+protocol MainView: AnyObject {
     var username: String? { get set }
     var password: String? { get set }
     func statusUpdated(newStatus status: NEVPNStatus)
@@ -178,7 +178,7 @@ class MainViewModel: NSObject {
                             self.fetchServers()
                             UserDefaults.lastServersVersion = sVersion
                         }
-                    case .failure(let error):
+                    case .failure(_):
                         self.view?.showError(description: "Error occurred during update")
                     }
                     self.view?.serversLoadingIndicator(show: false)

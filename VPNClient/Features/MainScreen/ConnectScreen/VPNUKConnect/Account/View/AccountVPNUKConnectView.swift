@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol AccountVPNUKConnectViewProtocol: AnyObject, LoaderPresentable {
+protocol AccountVPNUKConnectViewProtocol: LoaderPresentable {
     func updateSubscriptionPicker(withState state: SubscriptionPickerView.State)
     func updateServerPicker(state: ServerPickerView.State, action: @escaping Action)
     func updatePurchaseSubscriptionBanner(model: PurchaseSubscriptionBannerView.Model?)
