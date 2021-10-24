@@ -50,25 +50,24 @@ protocol VPNService {
 }
 
 class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
-    
     static let shared: VPNService = OpenVPNService()
-    
-    private let tunnelIdentifier = OpenVPNConstants.tunnelIdentifier
-    private let appGroup = OpenVPNConstants.appGroup
-    
+
     weak var delegate: VPNServiceDelegate?
-    var configuration: ConnectionSettings?
+    
     var currentProtocolConfiguration: NETunnelProviderProtocol? {
         return currentManager?.protocolConfiguration as? NETunnelProviderProtocol
     }
- 
-    private var currentManager: NETunnelProviderManager?
     
     var status = NEVPNStatus.invalid {
         didSet {
             delegate?.statusUpdated(newStatus: status)
         }
     }
+    
+    private(set) var configuration: ConnectionSettings?
+    private let tunnelIdentifier = OpenVPNConstants.tunnelIdentifier
+    private let appGroup = OpenVPNConstants.appGroup
+    private var currentManager: NETunnelProviderManager?
     
     override init() {
         super.init()
@@ -237,8 +236,6 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
                 self.reloadCurrentManager(completionHandler)
             }
             
-            
-            
         }
     }
     
@@ -283,7 +280,6 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
 }
 
 extension NETunnelProviderProtocol {
-
     var connectionData: ConnectionData? {
         guard let serverIP = serverIP, let socketType = socketType, let port = port else {
             return nil
