@@ -12,7 +12,7 @@ import TunnelKit
 
 class SettingsViewController: UIViewController {
     
-    private let vpnService: VPNService = OpenVPNService.shared
+    private let vpnService: VPNServiceProtocol = OpenVPNService.shared
     private var logReloadTimer: Timer?
     private var logText: String = "" {
         didSet {

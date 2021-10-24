@@ -122,7 +122,7 @@ class MainViewModel: NSObject {
         }
     }
     
-    private var vpnService: VPNService
+    private var vpnService: VPNServiceProtocol
     private let api: RestAPI
     private let coreDataStack: CoreDataStack
     private(set) lazy var serverListController: NSFetchedResultsController<ServerEntity> = {
@@ -134,7 +134,7 @@ class MainViewModel: NSObject {
         return controller
     }()
     
-    init(vpnService: VPNService = OpenVPNService.shared, coreDataStack: CoreDataStack = CoreDataStack.shared, api: RestAPI = RestAPI.shared) {
+    init(vpnService: VPNServiceProtocol = OpenVPNService.shared, coreDataStack: CoreDataStack = CoreDataStack.shared, api: RestAPI = RestAPI.shared) {
         self.vpnService = vpnService
         self.coreDataStack = coreDataStack
         self.api = api
@@ -244,10 +244,10 @@ class MainViewModel: NSObject {
                 let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
                 let dnsServers = server.dns == nil ? nil : [server.dns!]
                 vpnService.configure(settings: .init(hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
-                vpnService.connectionClicked()
+                vpnService.toggleConnection()
             }
         case .connected, .connecting:
-            vpnService.connectionClicked()
+            vpnService.toggleConnection()
         default:
             break
         }

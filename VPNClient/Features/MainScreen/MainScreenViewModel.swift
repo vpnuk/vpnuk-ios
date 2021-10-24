@@ -35,7 +35,7 @@ protocol MainScreenViewModelProtocol {
 class MainScreenViewModel: MainScreenViewModelProtocol {
     private let router: MainScreenRouterProtocol
     weak var view: MainScreenViewProtocol?
-    private var vpnService: VPNService
+    private var vpnService: VPNServiceProtocol
     private let serversRepository: ServersRepository
     
     var connectPressedAction: Action?
@@ -51,7 +51,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         }
     }
     
-    init(router: MainScreenRouterProtocol, vpnService: VPNService, serversRepository: ServersRepository) {
+    init(router: MainScreenRouterProtocol, vpnService: VPNServiceProtocol, serversRepository: ServersRepository) {
         self.router = router
         self.vpnService = vpnService
         self.serversRepository = serversRepository
@@ -115,7 +115,7 @@ extension MainScreenViewModel: VPNConnectorDelegate {
         case .invalid, .disconnected:
             connectPressedAction?()
         case .connected, .connecting:
-            vpnService.connectionClicked()
+            vpnService.toggleConnection()
         default:
             break
         }
@@ -129,9 +129,9 @@ extension MainScreenViewModel: VPNConnectorDelegate {
         switch vpnService.status {
         case .invalid, .disconnected:
             vpnService.configure(settings: settings)
-            vpnService.connectionClicked()
+            vpnService.toggleConnection()
         case .connected, .connecting:
-            vpnService.connectionClicked()
+            vpnService.toggleConnection()
         default:
             break
         }

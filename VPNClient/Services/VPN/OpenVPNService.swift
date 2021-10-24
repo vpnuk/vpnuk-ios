@@ -37,20 +37,20 @@ protocol VPNServiceDelegate: AnyObject {
     func raised(error: VPNError)
 }
 
-protocol VPNService {
+protocol VPNServiceProtocol {
     var currentProtocolConfiguration: NETunnelProviderProtocol? { get }
     var delegate: VPNServiceDelegate? { get set }
     var configuration: ConnectionSettings? { get }
     var status: NEVPNStatus { get }
     func connect()
     func disconnect()
-    func connectionClicked()
+    func toggleConnection()
     func getLog(callback: @escaping (_ log: String?) -> ())
     func configure(settings: ConnectionSettings)
 }
 
-class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
-    static let shared: VPNService = OpenVPNService()
+class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
+    static let shared: VPNServiceProtocol = OpenVPNService()
 
     weak var delegate: VPNServiceDelegate?
     
@@ -58,10 +58,8 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
         return currentManager?.protocolConfiguration as? NETunnelProviderProtocol
     }
     
-    var status = NEVPNStatus.invalid {
-        didSet {
-            delegate?.statusUpdated(newStatus: status)
-        }
+    var status: NEVPNStatus {
+        currentManager?.connection.status ?? NEVPNStatus.invalid
     }
     
     private(set) var configuration: ConnectionSettings?
@@ -76,6 +74,87 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
     
     func configure(settings: ConnectionSettings) {
         configuration = settings
+    }
+    
+    func toggleConnection() {
+        let block = { [weak self] in
+            guard let self = self else { return }
+            
+            switch self.status {
+            case .invalid, .disconnected:
+                self.connect()
+            case .connected, .connecting:
+                self.disconnect()
+            default:
+                break
+            }
+        }
+        
+        if status == .invalid {
+            reloadCurrentManager { _ in
+                block()
+            }
+        } else {
+            block()
+        }
+    }
+    
+    func connect() {
+        configureVPN(
+            { manager in
+                return self.makeProtocol()
+            },
+            completion: { result in
+                switch result {
+                case .success(let manager):
+                    let session = manager.connection as? NETunnelProviderSession
+                    do {
+                        try session?.startTunnel()
+                    } catch {
+                        print("error starting tunnel: \(error)")
+                        self.delegate?.raised(error: VPNError.error(description: "Error starting tunnel: \(error.localizedDescription)"))
+                    }
+                case .failure(let error):
+                    print("configure error: \(error)")
+                    self.delegate?.raised(error: VPNError.error(description: "Configure error: \(error.localizedDescription)"))
+                }
+            }
+        )
+    }
+    
+    func disconnect() {
+        configuration = nil
+        configureVPN(
+            { manager in
+                return nil
+            },
+            completion: { [weak self] result in
+                switch result {
+                case .success(let manager):
+                    manager.connection.stopVPNTunnel()
+                case .failure(_):
+                    self?.currentManager?.connection.stopVPNTunnel()
+                }
+            }
+        )
+    }
+    
+    func getLog(callback: @escaping (_ log: String?) -> ()) {
+        guard let vpn = currentManager?.connection as? NETunnelProviderSession else {
+            callback(nil)
+            return
+        }
+        do {
+            try vpn.sendProviderMessage(OpenVPNTunnelProvider.Message.requestLog.data) { (data) in
+                guard let data = data, let log = String(data: data, encoding: .utf8) else {
+                    callback(nil)
+                    return
+                }
+                callback(log)
+            }
+        } catch {
+            callback(nil)
+        }
     }
     
     private func makeProtocol() -> NETunnelProviderProtocol {
@@ -128,155 +207,96 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNService {
             object: nil
         )
         
-        reloadCurrentManager(nil)
+        reloadCurrentManager(completion: { _ in })
     }
     
-    func connectionClicked() {
-        let block = {
-            switch (self.status) {
-            case .invalid, .disconnected:
-                self.connect()
+    private func configureVPN(
+        _ configure: @escaping (NETunnelProviderManager) -> NETunnelProviderProtocol?,
+        completion: @escaping (Result<NETunnelProviderManager, Error>) -> Void
+    ) {
+        reloadCurrentManager { result in
+            switch result {
+            case .success(let manager):
+                let connectRule = NEOnDemandRuleConnect()
+                connectRule.interfaceTypeMatch = .any
+                manager.onDemandRules = [connectRule]
                 
-            case .connected, .connecting:
-                self.disconnect()
-                
-            default:
-                break
-            }
-        }
-        
-        if (status == .invalid) {
-            reloadCurrentManager({ (error) in
-                block()
-            })
-        }
-        else {
-            block()
-        }
-    }
-    
-    func connect() {
-        configureVPN({ (manager) in
-            return self.makeProtocol()
-        }, completionHandler: { (error) in
-            if let error = error {
-                print("configure error: \(error)")
-                self.delegate?.raised(error: VPNError.error(description: "Configure error: \(error.localizedDescription)"))
-                return
-            }
-            let session = self.currentManager?.connection as! NETunnelProviderSession
-            do {
-                try session.startTunnel()
-            } catch let e {
-                print("error starting tunnel: \(e)")
-                self.delegate?.raised(error: VPNError.error(description: "Error starting tunnel: \(e.localizedDescription)"))
-            }
-        })
-    }
-    
-    func disconnect() {
-        configuration = nil
-        configureVPN({ (manager) in
-            return nil
-        }, completionHandler: { (error) in
-            self.currentManager?.connection.stopVPNTunnel()
-        })
-    }
-    
-    func getLog(callback: @escaping (_ log: String?) -> ()) {
-        guard let vpn = currentManager?.connection as? NETunnelProviderSession else {
-            callback(nil)
-            return
-        }
-        do {
-            try vpn.sendProviderMessage(OpenVPNTunnelProvider.Message.requestLog.data) { (data) in
-                guard let data = data, let log = String(data: data, encoding: .utf8) else {
-                    callback(nil)
-                    return
+                if let protocolConfiguration = configure(manager) {
+                    manager.protocolConfiguration = protocolConfiguration
+                    manager.isOnDemandEnabled = self.configuration?.onDemandRuleConnect == true
+                } else {
+                    manager.isOnDemandEnabled = false
                 }
-                callback(log)
-            }
-        } catch {
-            callback(nil)
-        }
-    }
-    
-    func configureVPN(_ configure: @escaping (NETunnelProviderManager) -> NETunnelProviderProtocol?, completionHandler: @escaping (Error?) -> Void) {
-        reloadCurrentManager { (error) in
-            if let error = error {
+                
+                manager.isEnabled = true
+                
+                manager.saveToPreferences { (error) in
+                    if let error = error {
+                        print("error saving preferences: \(error)")
+                        self.delegate?.raised(error: VPNError.error(description: "Error saving preferences: \(error.localizedDescription)"))
+                        completion(.failure(error))
+                        return
+                    }
+                    print("saved preferences")
+                    self.reloadCurrentManager(completion: completion)
+                }
+            case .failure(let error):
                 print("error reloading preferences: \(error)")
                 self.delegate?.raised(error: VPNError.error(description: "Error reloading preferences: \(error.localizedDescription)"))
-                completionHandler(error)
-                return
+                completion(.failure(error))
             }
-            
-            let manager = self.currentManager!
-            
-            let connectRule = NEOnDemandRuleConnect()
-            connectRule.interfaceTypeMatch = .any
-            manager.onDemandRules = [connectRule]
-            
-            if let protocolConfiguration = configure(manager) {
-                manager.protocolConfiguration = protocolConfiguration
-                manager.isOnDemandEnabled = self.configuration?.onDemandRuleConnect == true
-            } else {
-                manager.isOnDemandEnabled = false
-            }
-            
-            manager.isEnabled = true
-            
-            manager.saveToPreferences { (error) in
-                if let error = error {
-                    print("error saving preferences: \(error)")
-                    self.delegate?.raised(error: VPNError.error(description: "Error saving preferences: \(error.localizedDescription)"))
-                    completionHandler(error)
-                    return
-                }
-                print("saved preferences")
-                self.reloadCurrentManager(completionHandler)
-            }
-            
         }
     }
     
-    func reloadCurrentManager(_ completionHandler: ((Error?) -> Void)?) {
+    private func getTunnelProviderManager(
+        for tunnelIdentifier: String,
+        completion: @escaping ((Result<NETunnelProviderManager, Error>) -> Void)
+    ) {
         NETunnelProviderManager.loadAllFromPreferences { (managers, error) in
             if let error = error {
-                completionHandler?(error)
+                completion(.failure(error))
                 return
             }
             
-            var manager: NETunnelProviderManager?
-            
-            for m in managers! {
-                if let p = m.protocolConfiguration as? NETunnelProviderProtocol {
-                    if (p.providerBundleIdentifier == self.tunnelIdentifier) {
-                        manager = m
-                        break
-                    }
+            let manager = managers?.first(where: { m in
+                if let p = m.protocolConfiguration as? NETunnelProviderProtocol, p.providerBundleIdentifier == tunnelIdentifier {
+                    return true
                 }
-            }
+                return false
+            })
             
-            if (manager == nil) {
-                manager = NETunnelProviderManager()
-            }
+            let resultManager = manager ?? NETunnelProviderManager()
             
-            self.currentManager = manager
-            self.status = manager!.connection.status
-            completionHandler?(nil)
+            completion(.success(resultManager))
         }
     }
     
-    @objc private func VPNStatusDidChange(notification: NSNotification) {
+    private func reloadCurrentManager(completion: @escaping ((Result<NETunnelProviderManager, Error>) -> Void)) {
+        getTunnelProviderManager(for: tunnelIdentifier) { result in
+            switch result {
+            case .success(let manager):
+                self.currentManager = manager
+                self.statusUpdated(manager.connection.status)
+                completion(.success(manager))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    @objc
+    private func VPNStatusDidChange(notification: NSNotification) {
         guard let status = currentManager?.connection.status else {
             print("VPNStatusDidChange")
             return
         }
         print("VPNStatusDidChange: \(status.rawValue)")
-        self.status = status
+        statusUpdated(status)
     }
     
-    
+    private func statusUpdated(_ status: NEVPNStatus) {
+        delegate?.statusUpdated(newStatus: status)
+    }
 }
 
 extension NETunnelProviderProtocol {
