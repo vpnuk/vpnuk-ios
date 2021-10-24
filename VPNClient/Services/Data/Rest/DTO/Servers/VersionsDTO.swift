@@ -9,18 +9,20 @@
 
 import Foundation
 
-class ServersVersionDTO: Codable {
-    internal init(servers: String?, win32Generic: String?) {
-        self.servers = servers
-        self.win32Generic = win32Generic
-    }
-    
+class VersionsDTO: Codable {
     var servers: String?
+    var ovpn: String?
     var win32Generic: String?
     
+    init(servers: String? = nil, ovpn: String? = nil, win32Generic: String? = nil) {
+        self.servers = servers
+        self.ovpn = ovpn
+        self.win32Generic = win32Generic
+    }
     
     enum CodingKeys: String, CodingKey {
         case servers
         case win32Generic = "win32_generic"
+        case ovpn
     }
 }

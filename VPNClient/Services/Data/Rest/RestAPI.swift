@@ -17,7 +17,14 @@ protocol AuthAPI {
 
 protocol ServersAPI {
     func getServerList(callback: @escaping (_ servers: Result<[ServerDTO], Error>) -> ())
-    func getServersVersion(callback: @escaping (_ servers: Result<ServersVersionDTO, Error>) -> ())
+}
+
+protocol VersionsAPI {
+    func getVersions(callback: @escaping (_ servers: Result<VersionsDTO, Error>) -> ())
+}
+
+protocol ServerFilesAPI {
+    func downloadOVPNConfigurationFile(destinationUrl: URL, callback: @escaping (_ servers: Result<URL?, Error>) -> ())
 }
 
 protocol SubscripionsAPI {
@@ -54,6 +61,26 @@ class RestAPI {
     }
 }
 
+extension RestAPI: ServerFilesAPI {
+    func downloadOVPNConfigurationFile(destinationUrl destUrl: URL, callback: @escaping (Result<URL?, Error>) -> ()) {
+        let destination: DownloadRequest.Destination = { _, _ in
+            return (destUrl, [.removePreviousFile])
+        }
+        let url = serversBaseUrl + "/openvpn-configuration.ovpn"
+        AF.download(url, to: destination).response { response in
+            if let error = response.error {
+                callback(.failure(error))
+                return
+            } else if let fileURL = response.fileURL {
+                callback(.success(fileURL))
+            } else {
+                callback(.success(nil))
+            }
+        }
+    }
+}
+
+
 extension RestAPI: ServersAPI {
     func getServerList(callback: @escaping (_ servers: Result<[ServerDTO], Error>) -> ()) {
         AF.request(URL(string: serversBaseUrl + "/servers.json")!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
@@ -79,8 +106,10 @@ extension RestAPI: ServersAPI {
                 }
         }
     }
-    
-    func getServersVersion(callback: @escaping (_ servers: Result<ServersVersionDTO, Error>) -> ()) {
+}
+
+extension RestAPI: VersionsAPI {
+    func getVersions(callback: @escaping (_ servers: Result<VersionsDTO, Error>) -> ()) {
         AF.request(
             URL(string: serversBaseUrl + "/versions.json")!,
             method: .get,
@@ -97,7 +126,7 @@ extension RestAPI: ServersAPI {
                 } else {
                     let data = response.data ?? Data()
                     do {
-                        let servers = try JSONDecoder().decode(ServersVersionDTO.self, from: data)
+                        let servers = try JSONDecoder().decode(VersionsDTO.self, from: data)
                         DispatchQueue.main.async {
                             callback(.success(servers))
                         }
@@ -107,7 +136,7 @@ extension RestAPI: ServersAPI {
                         }
                     }
                 }
-        }
+            }
     }
 }
 

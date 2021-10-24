@@ -51,9 +51,13 @@ class MainViewModel: NSObject {
        return nil
     }
     
-    var socketType: SocketType? {
-        let proto = getPortAndProtocol(from: vpnService.currentProtocolConfiguration?.providerConfiguration)?.protocol
-        return proto ?? vpnService.configuration?.socketType
+    var socketType: UserVPNConnectionSettings.SocketType? {
+        guard
+            let proto = getPortAndProtocol(from: vpnService.currentProtocolConfiguration?.providerConfiguration)?.protocol
+        else {
+            return vpnService.configuration?.socketType
+        }
+        return .init(socketType: proto)
     }
     
     var port: UInt16? {
@@ -162,7 +166,7 @@ class MainViewModel: NSObject {
     func updateServersIfNeeded(forceReload: Bool = false) {
         let localServersCount = serverListController.fetchedObjects?.count ?? 0
         view?.serversLoadingIndicator(show: true)
-        api.getServersVersion { [weak self] (result) in
+        api.getVersions { [weak self] (result) in
             guard let `self` = self else { return }
             let sVersion = try? result.get().servers
             if let lastServersVersion = UserDefaults.lastServersVersion, let sVersion = sVersion, let currentServerVersion = Int(sVersion), let currentClientVersion = Int(lastServersVersion), currentClientVersion == currentServerVersion, localServersCount > 0, !forceReload {
@@ -243,7 +247,16 @@ class MainViewModel: NSObject {
                 let credentials = OpenVPN.Credentials(username, password)
                 let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
                 let dnsServers = server.dns == nil ? nil : [server.dns!]
-                vpnService.configure(settings: .init(hostname: server.address!, port: UInt16(port), dnsServers: dnsServers, socketType: type, credentials: credentials, onDemandRuleConnect: onDemandRuleConnect))
+                vpnService.configure(
+                    settings: .init(
+                        hostname: server.address!,
+                        port: UInt16(port),
+                        dnsServers: dnsServers,
+                        socketType: .init(socketType: type),
+                        credentials: .init(credentials: credentials),
+                        onDemandRuleConnect: onDemandRuleConnect
+                    )
+                )
                 vpnService.toggleConnection()
             }
         case .connected, .connecting:

@@ -87,4 +87,14 @@ extension UserDefaults {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    static var lastOVPNVersion: String? {
+        get {
+            return UserDefaults.standard.string(forKey: "lastOVPNVersion")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "lastOVPNVersion")
+            UserDefaults.standard.synchronize()
+        }
+    }
 }

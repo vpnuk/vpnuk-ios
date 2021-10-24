@@ -17,15 +17,6 @@ enum VPNError: Error {
     case error(description: String)
 }
 
-struct ConnectionSettings {
-    let hostname: String
-    let port: UInt16
-    let dnsServers: [String]?
-    let socketType: SocketType
-    let credentials: OpenVPN.Credentials
-    let onDemandRuleConnect: Bool
-}
-
 struct ConnectionData {
     let serverIP: String
     let socketType: SocketType
@@ -40,17 +31,21 @@ protocol VPNServiceDelegate: AnyObject {
 protocol VPNServiceProtocol {
     var currentProtocolConfiguration: NETunnelProviderProtocol? { get }
     var delegate: VPNServiceDelegate? { get set }
-    var configuration: ConnectionSettings? { get }
+    var configuration: UserVPNConnectionSettings? { get }
     var status: NEVPNStatus { get }
     func connect()
     func disconnect()
     func toggleConnection()
     func getLog(callback: @escaping (_ log: String?) -> ())
-    func configure(settings: ConnectionSettings)
+    
+    func configure(settings: UserVPNConnectionSettings)
+    func updateWithNewOVPNConfigurationFile(fileURL url: URL, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
-    static let shared: VPNServiceProtocol = OpenVPNService()
+    static let shared: VPNServiceProtocol = OpenVPNService(
+        openVPNConfigurationsProvider: OpenVPNConfigurationsProvider()
+    )
 
     weak var delegate: VPNServiceDelegate?
     
@@ -62,18 +57,27 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
         currentManager?.connection.status ?? NEVPNStatus.invalid
     }
     
-    private(set) var configuration: ConnectionSettings?
+    var configuration: UserVPNConnectionSettings? {
+        openVPNConfigurationsProvider.getUserVPNConnectionSettings()
+    }
+    
     private let tunnelIdentifier = OpenVPNConstants.tunnelIdentifier
     private let appGroup = OpenVPNConstants.appGroup
     private var currentManager: NETunnelProviderManager?
+    private let openVPNConfigurationsProvider: UserVPNConnectionSettingsProviderProtocol & OpenVPNConfigurationProviderProtocol
     
-    override init() {
+    init(openVPNConfigurationsProvider: UserVPNConnectionSettingsProviderProtocol & OpenVPNConfigurationProviderProtocol) {
+        self.openVPNConfigurationsProvider = openVPNConfigurationsProvider
         super.init()
         setup()
     }
     
-    func configure(settings: ConnectionSettings) {
-        configuration = settings
+    func configure(settings: UserVPNConnectionSettings) {
+        openVPNConfigurationsProvider.setUserVPNConnectionSettings(settings)
+    }
+    
+    func updateWithNewOVPNConfigurationFile(fileURL url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
+        openVPNConfigurationsProvider.updateWithNewOVPNConfigurationFile(fileURL: url, completion: completion)
     }
     
     func toggleConnection() {
@@ -123,7 +127,8 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
     }
     
     func disconnect() {
-        configuration = nil
+        openVPNConfigurationsProvider.setUserVPNConnectionSettings(nil)
+        
         configureVPN(
             { manager in
                 return nil
@@ -161,28 +166,15 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
         guard let config = configuration else {
             fatalError("OpenVPNService not configured")
         }
-        var sessionBuilder = OpenVPN.ConfigurationBuilder()
+        guard let openVPNConfig = openVPNConfigurationsProvider.buildOpenVPNConfiguration(using: config) else {
+            fatalError("OpenVPN configuration not loaded")
+        }
         
-        sessionBuilder.ca = OpenVPNConstants.ca
-        sessionBuilder.clientCertificate = OpenVPNConstants.cert
-        sessionBuilder.clientKey = OpenVPNConstants.key
+        let sessionConfiguration = openVPNConfig
         
-        sessionBuilder.dnsServers = ["8.8.8.8", "8.8.4.4", "208.67.222.222", "208.67.220.220"]
-        let k = OpenVPN.StaticKey(lines: OpenVPNConstants.openVPNStaticKey, direction: .client)
-        sessionBuilder.tlsWrap = OpenVPN.TLSWrap(strategy: .auth, key: k!)
-        sessionBuilder.cipher = .aes256gcm
-        sessionBuilder.digest = .sha1
-        sessionBuilder.compressionFraming = .compLZO
-        sessionBuilder.renegotiatesAfter = nil
-        sessionBuilder.hostname = config.hostname
-        sessionBuilder.endpointProtocols = [EndpointProtocol(config.socketType, config.port)]
-        sessionBuilder.usesPIAPatches = false
-        sessionBuilder.mtu = 1542
-        var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
         builder.shouldDebug = true
         builder.masksPrivateData = false
-        
-        let configuration = builder.build()
         
         let keychain = Keychain(group: appGroup)
         try? keychain.set(
@@ -190,6 +182,8 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
             for: config.credentials.username,
             context: tunnelIdentifier
         )
+        
+        let configuration = builder.build()
         
         return try! configuration.generatedTunnelProtocol(
             withBundleIdentifier: tunnelIdentifier,

@@ -30,7 +30,7 @@
 		1782F042235D2CBE0082F9CD /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1782F03F235D2BEF0082F9CD /* NetworkExtension.framework */; };
 		17D61E202364BA6900ECAEBE /* ServerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D61E1F2364BA6900ECAEBE /* ServerListViewController.swift */; };
 		17D61E222364BD4100ECAEBE /* ServerItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D61E212364BD4100ECAEBE /* ServerItemTableViewCell.xib */; };
-		17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */; };
+		17D61E242364C60100ECAEBE /* VersionsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D61E232364C60100ECAEBE /* VersionsDTO.swift */; };
 		4A5DF31520B9F03E4A7629CB /* Pods_VPNClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8411DE80B22FB7A88AF01EBF /* Pods_VPNClient.framework */; };
 		78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DB624606E7900988F14 /* ConnectionStatusView.swift */; };
 		78360DB92461E33000988F14 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78360DB82461E33000988F14 /* UIView+Extensions.swift */; };
@@ -106,6 +106,10 @@
 		78BEA7382586897200A5C20D /* PurchaseSubscriptionTooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BEA7372586897200A5C20D /* PurchaseSubscriptionTooltipView.swift */; };
 		78C0491424A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */; };
 		78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */; };
+		78CC17642725850E00224DA5 /* OpenVPNConfigurationsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CC17632725850E00224DA5 /* OpenVPNConfigurationsProvider.swift */; };
+		78CC1767272585E600224DA5 /* UserVPNConnectionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CC1766272585E600224DA5 /* UserVPNConnectionSettings.swift */; };
+		78CC17692725AFFB00224DA5 /* ServerUpdatesChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CC17682725AFFB00224DA5 /* ServerUpdatesChecker.swift */; };
+		78CC176B2725B92F00224DA5 /* OpenVPNConfigurationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CC176A2725B92F00224DA5 /* OpenVPNConfigurationRepository.swift */; };
 		78FE0A0224672E120004161B /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A0124672E120004161B /* MainScreenViewModel.swift */; };
 		78FE0A042467329B0004161B /* MainScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A032467329B0004161B /* MainScreenFactory.swift */; };
 		78FE0A0A246752670004161B /* ServerPickerPickedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE0A09246752670004161B /* ServerPickerPickedView.swift */; };
@@ -176,7 +180,7 @@
 		1782F041235D2CAE0082F9CD /* VPNClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VPNClient.entitlements; sourceTree = "<group>"; };
 		17D61E1F2364BA6900ECAEBE /* ServerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListViewController.swift; sourceTree = "<group>"; };
 		17D61E212364BD4100ECAEBE /* ServerItemTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServerItemTableViewCell.xib; sourceTree = "<group>"; };
-		17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersVersionDTO.swift; sourceTree = "<group>"; };
+		17D61E232364C60100ECAEBE /* VersionsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionsDTO.swift; sourceTree = "<group>"; };
 		6930C09787686C98BABADA50 /* Pods-VPNClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNClient.debug.xcconfig"; path = "Target Support Files/Pods-VPNClient/Pods-VPNClient.debug.xcconfig"; sourceTree = "<group>"; };
 		78360DB624606E7900988F14 /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
 		78360DB82461E33000988F14 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -252,6 +256,10 @@
 		78BEA7372586897200A5C20D /* PurchaseSubscriptionTooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionTooltipView.swift; sourceTree = "<group>"; };
 		78C0491324A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectViewModel.swift; sourceTree = "<group>"; };
 		78C0491524A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVPNUKConnectView.swift; sourceTree = "<group>"; };
+		78CC17632725850E00224DA5 /* OpenVPNConfigurationsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConfigurationsProvider.swift; sourceTree = "<group>"; };
+		78CC1766272585E600224DA5 /* UserVPNConnectionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVPNConnectionSettings.swift; sourceTree = "<group>"; };
+		78CC17682725AFFB00224DA5 /* ServerUpdatesChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUpdatesChecker.swift; sourceTree = "<group>"; };
+		78CC176A2725B92F00224DA5 /* OpenVPNConfigurationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConfigurationRepository.swift; sourceTree = "<group>"; };
 		78FE0A0124672E120004161B /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
 		78FE0A032467329B0004161B /* MainScreenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenFactory.swift; sourceTree = "<group>"; };
 		78FE0A09246752670004161B /* ServerPickerPickedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerPickedView.swift; sourceTree = "<group>"; };
@@ -337,6 +345,7 @@
 				783B35F2244D00EB00425A9F /* User */,
 				1782F00E235CC3A10082F9CD /* VPN */,
 				1782EFF5235CC0300082F9CD /* Data */,
+				78CC17682725AFFB00224DA5 /* ServerUpdatesChecker.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -371,7 +380,9 @@
 		1782F00E235CC3A10082F9CD /* VPN */ = {
 			isa = PBXGroup;
 			children = (
+				78CC1765272585DC00224DA5 /* OpenVPNConfigurationsProvider */,
 				1782F00F235CC3BC0082F9CD /* OpenVPNService.swift */,
+				78CC176A2725B92F00224DA5 /* OpenVPNConfigurationRepository.swift */,
 			);
 			path = VPN;
 			sourceTree = "<group>";
@@ -714,7 +725,7 @@
 			isa = PBXGroup;
 			children = (
 				1782F016235CC70C0082F9CD /* ServerDto.swift */,
-				17D61E232364C60100ECAEBE /* ServersVersionDTO.swift */,
+				17D61E232364C60100ECAEBE /* VersionsDTO.swift */,
 			);
 			path = Servers;
 			sourceTree = "<group>";
@@ -875,6 +886,15 @@
 				78360DDE2463555400988F14 /* View */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		78CC1765272585DC00224DA5 /* OpenVPNConfigurationsProvider */ = {
+			isa = PBXGroup;
+			children = (
+				78CC17632725850E00224DA5 /* OpenVPNConfigurationsProvider.swift */,
+				78CC1766272585E600224DA5 /* UserVPNConnectionSettings.swift */,
+			);
+			path = OpenVPNConfigurationsProvider;
 			sourceTree = "<group>";
 		};
 		78FE0A0D24675BD90004161B /* PickerView */ = {
@@ -1138,10 +1158,12 @@
 				78C0491624A7BFFC00932E0A /* RegistrationVPNUKConnectView.swift in Sources */,
 				78360DE32463564200988F14 /* AccountVPNUKConnectView.swift in Sources */,
 				78761748257BCD39004EA19B /* RenewPendingSubscriptionViewModel.swift in Sources */,
+				78CC1767272585E600224DA5 /* UserVPNConnectionSettings.swift in Sources */,
 				7844C0EE24D7096D00EF5588 /* PurchaseSubscriptionOfferRouter.swift in Sources */,
 				78360DF2246375D400988F14 /* VPNUKConnectRouter.swift in Sources */,
 				7849602E24C6322400157AB4 /* PurchaseSubscriptionAdvantagesView.swift in Sources */,
 				1782F017235CC70C0082F9CD /* ServerDto.swift in Sources */,
+				78CC176B2725B92F00224DA5 /* OpenVPNConfigurationRepository.swift in Sources */,
 				7849603024C6323F00157AB4 /* PurchaseSubscriptionTermsAndDetailsView.swift in Sources */,
 				78360DE9246356AD00988F14 /* CustomConnectView.swift in Sources */,
 				7844C0E624D6C9E100EF5588 /* PurchaseProduct.swift in Sources */,
@@ -1156,8 +1178,9 @@
 				1782F021235CFD5A0082F9CD /* MainViewModel.swift in Sources */,
 				78360DF82465DE2800988F14 /* MainScreenViewController.swift in Sources */,
 				78461EEC25363C1000D01978 /* IAPReceiptDTO.swift in Sources */,
-				17D61E242364C60100ECAEBE /* ServersVersionDTO.swift in Sources */,
+				17D61E242364C60100ECAEBE /* VersionsDTO.swift in Sources */,
 				FA859BDA24CED44C002F12E7 /* Style.swift in Sources */,
+				78CC17642725850E00224DA5 /* OpenVPNConfigurationsProvider.swift in Sources */,
 				78BEA7382586897200A5C20D /* PurchaseSubscriptionTooltipView.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,
@@ -1171,6 +1194,7 @@
 				78C0491424A7BFE400932E0A /* RegistrationVPNUKConnectViewModel.swift in Sources */,
 				786B8D3724E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift in Sources */,
 				78360DB92461E33000988F14 /* UIView+Extensions.swift in Sources */,
+				78CC17692725AFFB00224DA5 /* ServerUpdatesChecker.swift in Sources */,
 				78AC52E8257D2AF000D8DFA2 /* Array+Unique.swift in Sources */,
 				784CEFE724B26DBB00D95ED6 /* VPNAccountsListViewController.swift in Sources */,
 				783B35F6244D018500425A9F /* UserData.swift in Sources */,

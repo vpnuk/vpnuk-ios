@@ -124,12 +124,12 @@ extension AccountVPNUKConnectViewModel {
         let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
         let dnsServers = serverDns == nil ? nil : [serverDns!]
         
-        let connectionSettings = ConnectionSettings(
+        let connectionSettings = UserVPNConnectionSettings(
             hostname: serverIp,
             port: UInt16(port),
             dnsServers: dnsServers,
-            socketType: type,
-            credentials: credentials,
+            socketType: .init(socketType: type),
+            credentials: .init(credentials: credentials),
             onDemandRuleConnect: onDemandRuleConnect
         )
         deps.connectorDelegate?.connect(withSettings: connectionSettings)

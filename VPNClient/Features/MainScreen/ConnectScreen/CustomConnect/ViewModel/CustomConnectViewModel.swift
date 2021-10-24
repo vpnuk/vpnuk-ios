@@ -119,12 +119,12 @@ extension CustomConnectViewModel {
             let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
             let dnsServers = server.dns == nil ? nil : [server.dns!]
             
-            let connectionSettings = ConnectionSettings(
+            let connectionSettings = UserVPNConnectionSettings(
                 hostname: server.address!,
                 port: UInt16(port),
                 dnsServers: dnsServers,
-                socketType: type,
-                credentials: credentials,
+                socketType: .init(socketType: type),
+                credentials: .init(credentials: credentials),
                 onDemandRuleConnect: onDemandRuleConnect
             )
             connectorDelegate?.connect(withSettings: connectionSettings)

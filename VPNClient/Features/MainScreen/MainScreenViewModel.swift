@@ -15,7 +15,7 @@ protocol VPNConnectorDelegate: AnyObject {
     var connectPressedAction: Action? { get set }
     var connectionStatusUpdatedAction: ConnectionStatusUpdatedAction? { get set }
     var connectedServerData: ConnectionData? { get }
-    func connect(withSettings settings: ConnectionSettings)
+    func connect(withSettings settings: UserVPNConnectionSettings)
     var connectionStatus: NEVPNStatus { get }
 
 }
@@ -37,6 +37,8 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     weak var view: MainScreenViewProtocol?
     private var vpnService: VPNServiceProtocol
     private let serversRepository: ServersRepository
+    private let openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
+    private let serverUpdatesChecker: ServerUpdatesCheckerProtocol
     
     var connectPressedAction: Action?
     var connectionStatusUpdatedAction: ConnectionStatusUpdatedAction?
@@ -51,10 +53,18 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         }
     }
     
-    init(router: MainScreenRouterProtocol, vpnService: VPNServiceProtocol, serversRepository: ServersRepository) {
+    init(
+        router: MainScreenRouterProtocol,
+        vpnService: VPNServiceProtocol,
+        serversRepository: ServersRepository,
+        openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol,
+        serverUpdatesChecker: ServerUpdatesCheckerProtocol
+    ) {
         self.router = router
         self.vpnService = vpnService
         self.serversRepository = serversRepository
+        self.openVPNConfigurationRepository = openVPNConfigurationRepository
+        self.serverUpdatesChecker = serverUpdatesChecker
     }
     
     func viewLoaded() {
@@ -65,10 +75,59 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
             self?.connectButtonTouched()
         }
         
-        reloadServers()
+        checkVersionsAndUpdateDataIfNeeded()
     }
     
-    private func reloadServers() {
+    private func checkVersionsAndUpdateDataIfNeeded() {
+        view?.setLoading(true)
+        serverUpdatesChecker.checkVersions { [weak self] result in
+            self?.view?.setLoading(false)
+            
+            switch result {
+            case .success(let updates):
+                if updates.shouldUpdateServerlist {
+                    self?.reloadServers { result in
+                        switch result {
+                        case .success:
+                            self?.serverUpdatesChecker.setLastServersVersion(Int(updates.versionsOnServer.servers ?? "") ?? 0)
+                        case .failure:
+                            self?.view?.presentAlert(message: NSLocalizedString("Servers update error.", comment: ""))
+                        }
+                    }
+                }
+                
+                if updates.shouldUpdateOVPNFile {
+                    self?.reloadOVPNConfiguration { result in
+                        switch result {
+                        case .success:
+                            self?.serverUpdatesChecker.setLastOVPNVersion(Int(updates.versionsOnServer.ovpn ?? "") ?? 0)
+                        case .failure:
+                            self?.view?.presentAlert(message: NSLocalizedString(".ovpn file update error.", comment: ""))
+                        }
+                    }
+                }
+            case .failure:
+                self?.view?.presentAlert(message: NSLocalizedString("Server connection error.", comment: ""))
+            }
+        }
+    }
+    
+    private func reloadOVPNConfiguration(completion: @escaping (Result<Void, Error>) -> Void) {
+        view?.setLoading(true)
+        openVPNConfigurationRepository.downloadOVPNConfigurationFile { [weak self] result in
+            guard let self = self else { return }
+            self.view?.setLoading(false)
+            switch result {
+            case .success(let url):
+                self.vpnService.updateWithNewOVPNConfigurationFile(fileURL: url, completion: completion)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func reloadServers(completion: @escaping (Result<Void, Error>) -> Void) {
         view?.setLoading(true)
         serversRepository.updateServers { [weak self] result in
             guard let self = self else { return }
@@ -76,9 +135,9 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
             
             switch result {
             case .success(_):
-                break
-            case .failure(_):
-                self.view?.presentAlert(message: NSLocalizedString("Servers update error.", comment: ""))
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
@@ -125,7 +184,7 @@ extension MainScreenViewModel: VPNConnectorDelegate {
         return vpnService.currentProtocolConfiguration?.connectionData
     }
     
-    func connect(withSettings settings: ConnectionSettings) {
+    func connect(withSettings settings: UserVPNConnectionSettings) {
         switch vpnService.status {
         case .invalid, .disconnected:
             vpnService.configure(settings: settings)

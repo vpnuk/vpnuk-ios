@@ -12,14 +12,19 @@ import UIKit
 class MainScreenFactory {
     func create() -> UIViewController {
         let router = MainScreenRouter()
+        let api = RestAPI.shared
         let repository = ServersRepositoryImpl(
             coreDataStack: CoreDataStack.shared,
-            serversRestAPI: RestAPI.shared
+            serversRestAPI: api
         )
+        let openVPNConfigurationRepository = OpenVPNConfigurationRepository(api: api)
+        let serverUpdatesChecker = ServerUpdatesChecker(api: api)
         let viewModel = MainScreenViewModel(
             router: router,
             vpnService: OpenVPNService.shared,
-            serversRepository: repository
+            serversRepository: repository,
+            openVPNConfigurationRepository: openVPNConfigurationRepository,
+            serverUpdatesChecker: serverUpdatesChecker
         )
         let view = MainScreenViewController(viewModel: viewModel)
         viewModel.view = view
