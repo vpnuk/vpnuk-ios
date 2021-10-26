@@ -37,7 +37,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     weak var view: MainScreenViewProtocol?
     private var vpnService: VPNServiceProtocol
     private let serversRepository: ServersRepository
-    private let openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
+    private let openVPNConfigurationProvider: OpenVPNConfigurationProviderProtocol
     private let serverUpdatesChecker: ServerUpdatesCheckerProtocol
     
     var connectPressedAction: Action?
@@ -57,13 +57,13 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         router: MainScreenRouterProtocol,
         vpnService: VPNServiceProtocol,
         serversRepository: ServersRepository,
-        openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol,
+        openVPNConfigurationProvider: OpenVPNConfigurationProviderProtocol,
         serverUpdatesChecker: ServerUpdatesCheckerProtocol
     ) {
         self.router = router
         self.vpnService = vpnService
         self.serversRepository = serversRepository
-        self.openVPNConfigurationRepository = openVPNConfigurationRepository
+        self.openVPNConfigurationProvider = openVPNConfigurationProvider
         self.serverUpdatesChecker = serverUpdatesChecker
     }
     
@@ -85,7 +85,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
             
             switch result {
             case .success(let updates):
-                if updates.shouldUpdateServerlist {
+                if updates.isServerlistVersionOutdated {
                     self?.reloadServers { result in
                         switch result {
                         case .success:
@@ -96,8 +96,8 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
                     }
                 }
                 
-                if updates.shouldUpdateOVPNFile {
-                    self?.reloadOVPNConfiguration { result in
+                if updates.isOVPNFileVersionOutdated || self?.openVPNConfigurationProvider.isConfigurationsLoaded == false {
+                    self?.reloadOVPNConfiguration(forceRedownload: updates.isOVPNFileVersionOutdated) { result in
                         switch result {
                         case .success:
                             self?.serverUpdatesChecker.setLastOVPNVersion(Int(updates.versionsOnServer.ovpn ?? "") ?? 0)
@@ -112,14 +112,13 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         }
     }
     
-    private func reloadOVPNConfiguration(completion: @escaping (Result<Void, Error>) -> Void) {
+    private func reloadOVPNConfiguration(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         view?.setLoading(true)
-        openVPNConfigurationRepository.downloadOVPNConfigurationFile { [weak self] result in
+        openVPNConfigurationProvider.reloadConfigurations(forceRedownload: forceRedownload) { [weak self] result in
             guard let self = self else { return }
             self.view?.setLoading(false)
             switch result {
-            case .success(let url):
-                self.vpnService.updateWithNewOVPNConfigurationFile(fileURL: url, completion: completion)
+            case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
@@ -185,9 +184,13 @@ extension MainScreenViewModel: VPNConnectorDelegate {
     }
     
     func connect(withSettings settings: UserVPNConnectionSettings) {
+        guard let configuration = openVPNConfigurationProvider.getUpdatedOpenVPNConfiguration(with: settings) else {
+            view?.presentAlert(message: NSLocalizedString("OpenVPN configuration not loaded", comment: ""))
+            return
+        }
         switch vpnService.status {
         case .invalid, .disconnected:
-            vpnService.configure(settings: settings)
+            vpnService.configure(settings: .init(userSettings: settings, configuration: configuration))
             vpnService.toggleConnection()
         case .connected, .connecting:
             vpnService.toggleConnection()

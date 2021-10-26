@@ -31,21 +31,22 @@ protocol VPNServiceDelegate: AnyObject {
 protocol VPNServiceProtocol {
     var currentProtocolConfiguration: NETunnelProviderProtocol? { get }
     var delegate: VPNServiceDelegate? { get set }
-    var configuration: UserVPNConnectionSettings? { get }
     var status: NEVPNStatus { get }
     func connect()
     func disconnect()
     func toggleConnection()
     func getLog(callback: @escaping (_ log: String?) -> ())
     
-    func configure(settings: UserVPNConnectionSettings)
-    func updateWithNewOVPNConfigurationFile(fileURL url: URL, completion: @escaping (Result<Void, Error>) -> Void)
+    func configure(settings: VPNServiceSettings)
+}
+
+struct VPNServiceSettings {
+    let userSettings: UserVPNConnectionSettings
+    let configuration: OpenVPN.Configuration
 }
 
 class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
-    static let shared: VPNServiceProtocol = OpenVPNService(
-        openVPNConfigurationsProvider: OpenVPNConfigurationsProvider()
-    )
+    static let shared: VPNServiceProtocol = OpenVPNService()
 
     weak var delegate: VPNServiceDelegate?
     
@@ -57,27 +58,19 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
         currentManager?.connection.status ?? NEVPNStatus.invalid
     }
     
-    var configuration: UserVPNConnectionSettings? {
-        openVPNConfigurationsProvider.getUserVPNConnectionSettings()
-    }
+    private var vpnSettings: VPNServiceSettings?
     
     private let tunnelIdentifier = OpenVPNConstants.tunnelIdentifier
     private let appGroup = OpenVPNConstants.appGroup
     private var currentManager: NETunnelProviderManager?
-    private let openVPNConfigurationsProvider: UserVPNConnectionSettingsProviderProtocol & OpenVPNConfigurationProviderProtocol
     
-    init(openVPNConfigurationsProvider: UserVPNConnectionSettingsProviderProtocol & OpenVPNConfigurationProviderProtocol) {
-        self.openVPNConfigurationsProvider = openVPNConfigurationsProvider
+    override init() {
         super.init()
         setup()
     }
     
-    func configure(settings: UserVPNConnectionSettings) {
-        openVPNConfigurationsProvider.setUserVPNConnectionSettings(settings)
-    }
-    
-    func updateWithNewOVPNConfigurationFile(fileURL url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
-        openVPNConfigurationsProvider.updateWithNewOVPNConfigurationFile(fileURL: url, completion: completion)
+    func configure(settings: VPNServiceSettings) {
+        vpnSettings = settings
     }
     
     func toggleConnection() {
@@ -106,7 +99,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
     func connect() {
         configureVPN(
             { manager in
-                return self.makeProtocol()
+                return try self.makeProtocol()
             },
             completion: { result in
                 switch result {
@@ -127,7 +120,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
     }
     
     func disconnect() {
-        openVPNConfigurationsProvider.setUserVPNConnectionSettings(nil)
+        vpnSettings = nil
         
         configureVPN(
             { manager in
@@ -162,15 +155,12 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
         }
     }
     
-    private func makeProtocol() -> NETunnelProviderProtocol {
-        guard let config = configuration else {
-            fatalError("OpenVPNService not configured")
-        }
-        guard let openVPNConfig = openVPNConfigurationsProvider.buildOpenVPNConfiguration(using: config) else {
-            fatalError("OpenVPN configuration not loaded")
+    private func makeProtocol() throws -> NETunnelProviderProtocol {
+        guard let settings = vpnSettings else {
+            throw VPNError.error(description: "OpenVPNService not configured")
         }
         
-        let sessionConfiguration = openVPNConfig
+        let sessionConfiguration = settings.configuration
         
         var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
         builder.shouldDebug = true
@@ -178,18 +168,18 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
         
         let keychain = Keychain(group: appGroup)
         try? keychain.set(
-            password: config.credentials.password,
-            for: config.credentials.username,
+            password: settings.userSettings.credentials.password,
+            for: settings.userSettings.credentials.username,
             context: tunnelIdentifier
         )
         
         let configuration = builder.build()
         
-        return try! configuration.generatedTunnelProtocol(
+        return try configuration.generatedTunnelProtocol(
             withBundleIdentifier: tunnelIdentifier,
             appGroup: appGroup,
             context: tunnelIdentifier,
-            username: config.credentials.username
+            username: settings.userSettings.credentials.username
         )
     }
     
@@ -205,7 +195,7 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
     }
     
     private func configureVPN(
-        _ configure: @escaping (NETunnelProviderManager) -> NETunnelProviderProtocol?,
+        _ configure: @escaping (NETunnelProviderManager) throws -> NETunnelProviderProtocol?,
         completion: @escaping (Result<NETunnelProviderManager, Error>) -> Void
     ) {
         reloadCurrentManager { result in
@@ -215,11 +205,21 @@ class OpenVPNService: NSObject, URLSessionDataDelegate, VPNServiceProtocol {
                 connectRule.interfaceTypeMatch = .any
                 manager.onDemandRules = [connectRule]
                 
-                if let protocolConfiguration = configure(manager) {
-                    manager.protocolConfiguration = protocolConfiguration
-                    manager.isOnDemandEnabled = self.configuration?.onDemandRuleConnect == true
-                } else {
-                    manager.isOnDemandEnabled = false
+                do {
+                    if let protocolConfiguration = try configure(manager) {
+                        manager.protocolConfiguration = protocolConfiguration
+                        manager.isOnDemandEnabled = self.vpnSettings?.userSettings.onDemandRuleConnect == true
+                    } else {
+                        manager.isOnDemandEnabled = false
+                    }
+                } catch let error as VPNError {
+                    self.delegate?.raised(error: error)
+                    completion(.failure(error))
+                    return
+                } catch {
+                    self.delegate?.raised(error: VPNError.error(description: "Unknown error"))
+                    completion(.failure(error))
+                    return
                 }
                 
                 manager.isEnabled = true

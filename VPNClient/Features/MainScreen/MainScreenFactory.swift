@@ -17,13 +17,15 @@ class MainScreenFactory {
             coreDataStack: CoreDataStack.shared,
             serversRestAPI: api
         )
-        let openVPNConfigurationRepository = OpenVPNConfigurationRepository(api: api)
+        let openVPNConfigurationsProvider = OpenVPNConfigurationsProvider(
+            openVPNConfigurationRepository: OpenVPNConfigurationRepository(api: api)
+        )
         let serverUpdatesChecker = ServerUpdatesChecker(api: api)
         let viewModel = MainScreenViewModel(
             router: router,
             vpnService: OpenVPNService.shared,
             serversRepository: repository,
-            openVPNConfigurationRepository: openVPNConfigurationRepository,
+            openVPNConfigurationProvider: openVPNConfigurationsProvider,
             serverUpdatesChecker: serverUpdatesChecker
         )
         let view = MainScreenViewController(viewModel: viewModel)

@@ -9,48 +9,72 @@
 import Foundation
 import TunnelKit
 
-protocol UserVPNConnectionSettingsProviderProtocol: AnyObject {
-    func getUserVPNConnectionSettings() -> UserVPNConnectionSettings?
-    func setUserVPNConnectionSettings(_ settings: UserVPNConnectionSettings?)
-}
-
 protocol OpenVPNConfigurationProviderProtocol: AnyObject {
-    func buildOpenVPNConfiguration(
-        using userSettings: UserVPNConnectionSettings
+    var isConfigurationsLoaded: Bool { get }
+    func reloadConfigurations(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void)
+    func getUpdatedOpenVPNConfiguration(
+        with userSettings: UserVPNConnectionSettings
     ) -> OpenVPN.Configuration?
-    func updateWithNewOVPNConfigurationFile(fileURL url: URL, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 class OpenVPNConfigurationsProvider {
-    private var userVPNConnectionSettings: UserVPNConnectionSettings?
     private var openVPNConfigurationFromFile: OpenVPN.Configuration?
+    private var openVPNScrambledConfigurationFromFile: OpenVPN.Configuration?
     
-}
-
-extension OpenVPNConfigurationsProvider: UserVPNConnectionSettingsProviderProtocol {
-    func getUserVPNConnectionSettings() -> UserVPNConnectionSettings? {
-        userVPNConnectionSettings
-    }
+    private let openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
+    private let shouldUseOvpnFile: Bool = true
     
-    func setUserVPNConnectionSettings(_ settings: UserVPNConnectionSettings?) {
-        userVPNConnectionSettings = settings
+    init(openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol) {
+        self.openVPNConfigurationRepository = openVPNConfigurationRepository
     }
 }
 
 extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
-    func buildOpenVPNConfiguration(
-        using userSettings: UserVPNConnectionSettings
+    var isConfigurationsLoaded: Bool { !(shouldUseOvpnFile && openVPNConfigurationFromFile == nil) }
+    func getUpdatedOpenVPNConfiguration(
+        with userSettings: UserVPNConnectionSettings
     ) -> OpenVPN.Configuration? {
-        return buildVPNConfiguration(useOldConfig: true, withUserSettings: userSettings)
+        return buildVPNConfiguration(shouldUseOvpnFile: shouldUseOvpnFile, withUserSettings: userSettings)
     }
     
-    func updateWithNewOVPNConfigurationFile(fileURL url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
+    func reloadConfigurations(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        reloadConfiguration(forceRedownload: forceRedownload, completion: completion)
+    }
+    
+    /// Reload not scrambled config
+    private func reloadConfiguration(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        let loadConfig = { [weak self] (url: URL) in
+            self?.getOVPNConfiguration(from: url) { result in
+                switch result {
+                case .success(let config):
+                    self?.openVPNConfigurationFromFile = config
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+        
+        if openVPNConfigurationRepository.isFileExist && !forceRedownload {
+            loadConfig(openVPNConfigurationRepository.fileUrl)
+        } else {
+            openVPNConfigurationRepository.downloadOVPNConfigurationFile { result in
+                switch result {
+                case .success(let url):
+                    loadConfig(url)
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    private func getOVPNConfiguration(from fileURL: URL, completion: @escaping (Result<OpenVPN.Configuration, Error>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                let vpnConfig = try self.parseVPNConfig(from: url)
+                let vpnConfig = try self.parseVPNConfig(from: fileURL)
                 DispatchQueue.main.async {
-                    self.openVPNConfigurationFromFile = vpnConfig
-                    completion(.success(()))
+                    completion(.success(vpnConfig))
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -61,14 +85,14 @@ extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
     }
     
     private func buildVPNConfiguration(
-        useOldConfig: Bool,
+        shouldUseOvpnFile: Bool,
         withUserSettings userSettings: UserVPNConnectionSettings
     ) -> OpenVPN.Configuration? {
-        if useOldConfig {
-           return buildOpenVPNConfiguration(using: userSettings)
-        } else {
+        if shouldUseOvpnFile {
             guard let openVPNConfigurationFromFile = openVPNConfigurationFromFile else { return nil }
             return getUpdatedVPNConfig(openVPNConfigurationFromFile, withUserSettings: userSettings)
+        } else {
+            return buildOldVPNConfiguration(using: userSettings)
         }
     }
     

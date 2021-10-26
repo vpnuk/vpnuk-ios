@@ -42,7 +42,7 @@ class ServerUpdatesChecker: ServerUpdatesCheckerProtocol {
                     shouldUpdateOVPNFile = true
                 }
                 
-                callback(.success(.init(versionsOnServer: versions, shouldUpdateServerlist: shouldUpdateServerlist, shouldUpdateOVPNFile: shouldUpdateOVPNFile)))
+                callback(.success(.init(versionsOnServer: versions, isServerlistVersionOutdated: shouldUpdateServerlist, isOVPNFileVersionOutdated: shouldUpdateOVPNFile)))
             case .failure(let error):
                 callback(.failure(error))
             }
@@ -61,7 +61,7 @@ class ServerUpdatesChecker: ServerUpdatesCheckerProtocol {
 extension ServerUpdatesChecker {
     struct Updates {
         let versionsOnServer: VersionsDTO
-        let shouldUpdateServerlist: Bool
-        let shouldUpdateOVPNFile: Bool
+        let isServerlistVersionOutdated: Bool
+        let isOVPNFileVersionOutdated: Bool
     }
 }

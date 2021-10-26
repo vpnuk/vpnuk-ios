@@ -125,6 +125,7 @@ extension CustomConnectViewModel {
                 dnsServers: dnsServers,
                 socketType: .init(socketType: type),
                 credentials: .init(credentials: credentials),
+                scrambleFeatureEnabled: false,
                 onDemandRuleConnect: onDemandRuleConnect
             )
             connectorDelegate?.connect(withSettings: connectionSettings)

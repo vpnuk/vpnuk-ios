@@ -15,6 +15,7 @@ struct UserVPNConnectionSettings {
     let dnsServers: [String]?
     let socketType: SocketType
     let credentials: Credentials
+    let scrambleFeatureEnabled: Bool
     let onDemandRuleConnect: Bool
 }
 

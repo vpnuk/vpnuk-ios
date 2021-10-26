@@ -130,6 +130,7 @@ extension AccountVPNUKConnectViewModel {
             dnsServers: dnsServers,
             socketType: .init(socketType: type),
             credentials: .init(credentials: credentials),
+            scrambleFeatureEnabled: false,
             onDemandRuleConnect: onDemandRuleConnect
         )
         deps.connectorDelegate?.connect(withSettings: connectionSettings)
