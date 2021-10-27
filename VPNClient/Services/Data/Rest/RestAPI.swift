@@ -25,6 +25,7 @@ protocol VersionsAPI {
 
 protocol ServerFilesAPI {
     func downloadOVPNConfigurationFile(destinationUrl: URL, callback: @escaping (_ servers: Result<URL?, Error>) -> ())
+    func downloadOVPNScrambledConfigurationFile(destinationUrl: URL, callback: @escaping (_ servers: Result<URL?, Error>) -> ())
 }
 
 protocol SubscripionsAPI {
@@ -67,6 +68,23 @@ extension RestAPI: ServerFilesAPI {
             return (destUrl, [.removePreviousFile])
         }
         let url = serversBaseUrl + "/openvpn-configuration.ovpn"
+        AF.download(url, to: destination).response { response in
+            if let error = response.error {
+                callback(.failure(error))
+                return
+            } else if let fileURL = response.fileURL {
+                callback(.success(fileURL))
+            } else {
+                callback(.success(nil))
+            }
+        }
+    }
+    
+    func downloadOVPNScrambledConfigurationFile(destinationUrl destUrl: URL, callback: @escaping (_ servers: Result<URL?, Error>) -> ()) {
+        let destination: DownloadRequest.Destination = { _, _ in
+            return (destUrl, [.removePreviousFile])
+        }
+        let url = serversBaseUrl + "/openvpn-obfuscation-configuration.ovpn"
         AF.download(url, to: destination).response { response in
             if let error = response.error {
                 callback(.failure(error))

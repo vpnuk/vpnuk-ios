@@ -92,6 +92,7 @@
 		7876175D257BEE48004EA19B /* RenewSubscriptionButtonModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7876175C257BEE48004EA19B /* RenewSubscriptionButtonModelBuilder.swift */; };
 		78761790257BFF39004EA19B /* SKProduct+Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7876178F257BFF39004EA19B /* SKProduct+Price.swift */; };
 		78914B8A24C6291300BE0835 /* PurchaseSubscriptionOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */; };
+		789FAD812729ADFF00378CC6 /* Result+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789FAD802729ADFF00378CC6 /* Result+Error.swift */; };
 		78A382BA2470878F003AB50B /* LastConnectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A382B92470878F003AB50B /* LastConnectionStorage.swift */; };
 		78AC52E8257D2AF000D8DFA2 /* Array+Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AC52E7257D2AF000D8DFA2 /* Array+Unique.swift */; };
 		78B69D9624EC62CB00B4B6BC /* ReceiptResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B69D9524EC62CB00B4B6BC /* ReceiptResponseEntity.swift */; };
@@ -239,6 +240,7 @@
 		7876175C257BEE48004EA19B /* RenewSubscriptionButtonModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenewSubscriptionButtonModelBuilder.swift; sourceTree = "<group>"; };
 		7876178F257BFF39004EA19B /* SKProduct+Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKProduct+Price.swift"; sourceTree = "<group>"; };
 		78914B8924C6291300BE0835 /* PurchaseSubscriptionOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionOfferView.swift; sourceTree = "<group>"; };
+		789FAD802729ADFF00378CC6 /* Result+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Error.swift"; sourceTree = "<group>"; };
 		78A382B92470878F003AB50B /* LastConnectionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastConnectionStorage.swift; sourceTree = "<group>"; };
 		78AC52E7257D2AF000D8DFA2 /* Array+Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Unique.swift"; sourceTree = "<group>"; };
 		78B69D9524EC62CB00B4B6BC /* ReceiptResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptResponseEntity.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				1782F02A235D0DD90082F9CD /* ServerEntity+CRUD.swift */,
 				78360DB82461E33000988F14 /* UIView+Extensions.swift */,
 				78AC52E7257D2AF000D8DFA2 /* Array+Unique.swift */,
+				789FAD802729ADFF00378CC6 /* Result+Error.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1124,6 +1127,7 @@
 				78B8DDC624B636E7009399C5 /* SubscriptionsListPickerFactory.swift in Sources */,
 				784CEFE224B26B8D00D95ED6 /* SubscriptionPickerView.swift in Sources */,
 				1782EFDE235CBF8D0082F9CD /* AppDelegate.swift in Sources */,
+				789FAD812729ADFF00378CC6 /* Result+Error.swift in Sources */,
 				784CEFDC24B263BE00D95ED6 /* SubsriptionStatus.swift in Sources */,
 				78360DCC24620CE300988F14 /* ServerProvider.swift in Sources */,
 				783B35F4244D00FA00425A9F /* UserService.swift in Sources */,

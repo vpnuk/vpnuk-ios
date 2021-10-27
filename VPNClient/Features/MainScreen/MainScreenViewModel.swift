@@ -75,70 +75,89 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
             self?.connectButtonTouched()
         }
         
-        checkVersionsAndUpdateDataIfNeeded()
+        
+        loadData(forceReload: false)
     }
     
-    private func checkVersionsAndUpdateDataIfNeeded() {
+    private func loadData(forceReload: Bool) {
         view?.setLoading(true)
-        serverUpdatesChecker.checkVersions { [weak self] result in
+        checkVersionsAndUpdateDataIfNeeded(
+            forceUpdate: forceReload
+        ) { [weak self] result in
             self?.view?.setLoading(false)
             
             switch result {
+            case .success:
+                // Updated
+                break
+            case .failure(let error):
+                switch error {
+                case .error(let text):
+                    self?.view?.presentAlert(message: text)
+                }
+            }
+        }
+    }
+    
+    private func checkVersionsAndUpdateDataIfNeeded(forceUpdate: Bool, completion: @escaping (Result<Void, MainScreenError>) -> Void) {
+        serverUpdatesChecker.checkVersions { [weak self] result in
+            switch result {
             case .success(let updates):
-                if updates.isServerlistVersionOutdated {
+                
+                let shouldReloadServers = updates.isServerlistVersionOutdated
+                || forceUpdate
+                let shouldReloadOvpnConfigurations = updates.isOVPNFileVersionOutdated
+                || self?.openVPNConfigurationProvider.isConfigurationsLoaded == false
+                || forceUpdate
+                
+                let group = DispatchGroup()
+                var updateErrors: [MainScreenError] = []
+                
+                if shouldReloadServers {
+                    group.enter()
                     self?.reloadServers { result in
                         switch result {
                         case .success:
                             self?.serverUpdatesChecker.setLastServersVersion(Int(updates.versionsOnServer.servers ?? "") ?? 0)
                         case .failure:
-                            self?.view?.presentAlert(message: NSLocalizedString("Servers update error.", comment: ""))
+                            updateErrors.append(.error(description: NSLocalizedString("Servers update error.", comment: "")))
                         }
+                        group.leave()
                     }
                 }
                 
-                if updates.isOVPNFileVersionOutdated || self?.openVPNConfigurationProvider.isConfigurationsLoaded == false {
-                    self?.reloadOVPNConfiguration(forceRedownload: updates.isOVPNFileVersionOutdated) { result in
+                if shouldReloadOvpnConfigurations {
+                    group.enter()
+                    self?.reloadOVPNConfiguration(forceRedownload: updates.isOVPNFileVersionOutdated || forceUpdate) { result in
                         switch result {
                         case .success:
                             self?.serverUpdatesChecker.setLastOVPNVersion(Int(updates.versionsOnServer.ovpn ?? "") ?? 0)
                         case .failure:
-                            self?.view?.presentAlert(message: NSLocalizedString(".ovpn file update error.", comment: ""))
+                            updateErrors.append(.error(description: NSLocalizedString(".ovpn file update error.", comment: "")))
                         }
+                        group.leave()
+                    }
+                }
+                
+                group.notify(queue: DispatchQueue.main) {
+                    if let error = updateErrors.first {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
                     }
                 }
             case .failure:
-                self?.view?.presentAlert(message: NSLocalizedString("Server connection error.", comment: ""))
+                completion(.failure(.error(description: NSLocalizedString("Server connection error.", comment: ""))))
             }
         }
     }
     
     private func reloadOVPNConfiguration(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
-        view?.setLoading(true)
-        openVPNConfigurationProvider.reloadConfigurations(forceRedownload: forceRedownload) { [weak self] result in
-            guard let self = self else { return }
-            self.view?.setLoading(false)
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        openVPNConfigurationProvider.reloadConfigurations(forceRedownload: forceRedownload, completion: completion)
     }
     
     private func reloadServers(completion: @escaping (Result<Void, Error>) -> Void) {
-        view?.setLoading(true)
-        serversRepository.updateServers { [weak self] result in
-            guard let self = self else { return }
-            self.view?.setLoading(false)
-            
-            switch result {
-            case .success(_):
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        serversRepository.updateServers(completion: completion)
     }
     
     func connectTypeChanged(type: ConnectScreenType) {
@@ -246,7 +265,13 @@ extension MainScreenViewModel: VPNServiceDelegate {
     }
 }
 
-extension MainScreenViewModel {
+private extension MainScreenViewModel {
+    enum MainScreenError: Error {
+        case error(description: String)
+    }
+}
+
+private extension MainScreenViewModel {
     enum Constants {
         static let supportUrl: String = SubscriptionConstants.liveHelpUrl
     }
