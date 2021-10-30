@@ -82,6 +82,9 @@
 		784CEFE724B26DBB00D95ED6 /* VPNAccountsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */; };
 		7852466425839A7600CAE94C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7852466325839A7600CAE94C /* GoogleService-Info.plist */; };
 		7852466525839A7600CAE94C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7852466325839A7600CAE94C /* GoogleService-Info.plist */; };
+		785DAEA6272D58F300452FB6 /* OpenVPNConfigurationProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785DAEA5272D58F200452FB6 /* OpenVPNConfigurationProviderProtocol.swift */; };
+		785DAEA8272D5A4B00452FB6 /* OpenVPNConfigurationsProviderCustomScramble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785DAEA7272D5A4B00452FB6 /* OpenVPNConfigurationsProviderCustomScramble.swift */; };
+		785DAEAA272D61AD00452FB6 /* OpenVPNConfigurationProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785DAEA9272D61AD00452FB6 /* OpenVPNConfigurationProviderFactory.swift */; };
 		786B8D3124E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */; };
 		786B8D3524E99CCD003AE398 /* PurchaseSubscriptionChooseCountryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3424E99CCD003AE398 /* PurchaseSubscriptionChooseCountryFactory.swift */; };
 		786B8D3724E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786B8D3624E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift */; };
@@ -230,6 +233,9 @@
 		784CEFE424B26DA000D95ED6 /* SubscriptionsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsListViewController.swift; sourceTree = "<group>"; };
 		784CEFE624B26DBB00D95ED6 /* VPNAccountsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNAccountsListViewController.swift; sourceTree = "<group>"; };
 		7852466325839A7600CAE94C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		785DAEA5272D58F200452FB6 /* OpenVPNConfigurationProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConfigurationProviderProtocol.swift; sourceTree = "<group>"; };
+		785DAEA7272D5A4B00452FB6 /* OpenVPNConfigurationsProviderCustomScramble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConfigurationsProviderCustomScramble.swift; sourceTree = "<group>"; };
+		785DAEA9272D61AD00452FB6 /* OpenVPNConfigurationProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPNConfigurationProviderFactory.swift; sourceTree = "<group>"; };
 		786B8D3024E95956003AE398 /* PurchaseSubscriptionChooseCountryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryViewModel.swift; sourceTree = "<group>"; };
 		786B8D3424E99CCD003AE398 /* PurchaseSubscriptionChooseCountryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryFactory.swift; sourceTree = "<group>"; };
 		786B8D3624E99E43003AE398 /* PurchaseSubscriptionChooseCountryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSubscriptionChooseCountryRouter.swift; sourceTree = "<group>"; };
@@ -879,6 +885,9 @@
 			children = (
 				78CC17632725850E00224DA5 /* OpenVPNConfigurationsProvider.swift */,
 				78CC1766272585E600224DA5 /* UserVPNConnectionSettings.swift */,
+				785DAEA5272D58F200452FB6 /* OpenVPNConfigurationProviderProtocol.swift */,
+				785DAEA7272D5A4B00452FB6 /* OpenVPNConfigurationsProviderCustomScramble.swift */,
+				785DAEA9272D61AD00452FB6 /* OpenVPNConfigurationProviderFactory.swift */,
 			);
 			path = OpenVPNConfigurationsProvider;
 			sourceTree = "<group>";
@@ -1162,11 +1171,13 @@
 				7876174D257BCF48004EA19B /* PendingSubscriptionOrderDTO.swift in Sources */,
 				78360DD32463474100988F14 /* MainScreenRouter.swift in Sources */,
 				78360DDD246354FB00988F14 /* AuthVPNUKConnectView.swift in Sources */,
+				785DAEA8272D5A4B00452FB6 /* OpenVPNConfigurationsProviderCustomScramble.swift in Sources */,
 				78360DF82465DE2800988F14 /* MainScreenViewController.swift in Sources */,
 				78461EEC25363C1000D01978 /* IAPReceiptDTO.swift in Sources */,
 				17D61E242364C60100ECAEBE /* VersionsDTO.swift in Sources */,
 				FA859BDA24CED44C002F12E7 /* Style.swift in Sources */,
 				78CC17642725850E00224DA5 /* OpenVPNConfigurationsProvider.swift in Sources */,
+				785DAEAA272D61AD00452FB6 /* OpenVPNConfigurationProviderFactory.swift in Sources */,
 				78BEA7382586897200A5C20D /* PurchaseSubscriptionTooltipView.swift in Sources */,
 				1782EFF9235CC06C0082F9CD /* CoreDataStack.swift in Sources */,
 				78360DD624634B1B00988F14 /* CustomConnectViewModel.swift in Sources */,
@@ -1195,6 +1206,7 @@
 				1782F01F235CF6380082F9CD /* SettingsViewController.swift in Sources */,
 				78360DB724606E7900988F14 /* ConnectionStatusView.swift in Sources */,
 				78BEA73225867CE200A5C20D /* AlertUtils.swift in Sources */,
+				785DAEA6272D58F300452FB6 /* OpenVPNConfigurationProviderProtocol.swift in Sources */,
 				7844C0EA24D6D79600EF5588 /* PurchaseSubscriptionOfferViewController.swift in Sources */,
 				78360DD924634B4900988F14 /* AccountVPNUKConnectViewModel.swift in Sources */,
 				7849602A24C62BD000157AB4 /* PurchaseSubscriptionOptionView.swift in Sources */,

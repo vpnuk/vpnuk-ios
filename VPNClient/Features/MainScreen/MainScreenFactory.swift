@@ -17,9 +17,7 @@ class MainScreenFactory {
             coreDataStack: CoreDataStack.shared,
             serversRestAPI: api
         )
-        let openVPNConfigurationsProvider = OpenVPNConfigurationsProvider(
-            openVPNConfigurationRepository: OpenVPNConfigurationRepository(api: api)
-        )
+        let openVPNConfigurationsProvider = OpenVPNConfigurationProviderFactory().create()
         let serverUpdatesChecker = ServerUpdatesChecker(api: api)
         let viewModel = MainScreenViewModel(
             router: router,

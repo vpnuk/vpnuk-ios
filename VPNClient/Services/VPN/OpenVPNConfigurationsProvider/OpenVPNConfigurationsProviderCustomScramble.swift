@@ -1,34 +1,34 @@
 //
-//  OpenVPNConfigurationsProvider.swift
+//  OpenVPNConfigurationsProviderCustomScramble.swift
 //  VPNClient
 //
-//  Created by Igor Kasyanenko on 24.10.2021.
+//  Created by Igor Kasyanenko on 30.10.2021.
 //  Copyright © 2021 VPNUK. All rights reserved.
 //
 
 import Foundation
 import TunnelKit
 
-/// WARNING: scrambled configuration contains "scramble string" and will not work, because TunnelKit supports only single-char obfuscation. Use OpenVPNConfigurationsProviderCustomScramble instead
-/// https://github.com/passepartoutvpn/tunnelkit/pull/170
-class OpenVPNConfigurationsProvider {
+class OpenVPNConfigurationsProviderCustomScramble {
     private var openVPNConfigurationFromFile: OpenVPN.Configuration?
-    private var openVPNScrambledConfigurationFromFile: OpenVPN.Configuration?
     
     private let openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
-    private let parsingQueue = DispatchQueue(label: "OpenVPNConfigurationsProvider.parsingQueue", qos: .userInitiated)
+    private let scrambleCharacter: Character
+    private let parsingQueue = DispatchQueue(label: "OpenVPNConfigurationsProviderCustomScramble.parsingQueue", qos: .userInitiated)
     private let shouldUseOvpnFile: Bool = true
     
-    init(openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol) {
+    init(
+        scrambleCharacter: Character,
+        openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
+    ) {
         self.openVPNConfigurationRepository = openVPNConfigurationRepository
+        self.scrambleCharacter = scrambleCharacter
     }
 }
 
-extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
+extension OpenVPNConfigurationsProviderCustomScramble: OpenVPNConfigurationProviderProtocol {
     var isConfigurationsLoaded: Bool {
-        return shouldUseOvpnFile
-        ? (openVPNConfigurationFromFile != nil && openVPNScrambledConfigurationFromFile != nil)
-        : true
+        shouldUseOvpnFile ? openVPNConfigurationFromFile != nil : true
     }
     func getUpdatedOpenVPNConfiguration(
         with userSettings: UserVPNConnectionSettings
@@ -37,33 +37,10 @@ extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
     }
     
     func reloadConfigurations(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
-        var reloadErrors: [Error] = []
-        let group = DispatchGroup()
-        
-        group.enter()
-        group.enter()
         reloadConfiguration(
             forceRedownload: forceRedownload,
-            completion: { result in
-                result.failure.map { reloadErrors.append($0) }
-                group.leave()
-            }
+            completion: completion
         )
-        reloadScrambledConfiguration(
-            forceRedownload: forceRedownload,
-            completion: { result in
-                result.failure.map { reloadErrors.append($0) }
-                group.leave()
-            }
-        )
-        
-        group.notify(queue: DispatchQueue.main) {
-            if let error = reloadErrors.first {
-                completion(.failure(error))
-            } else {
-                completion(.success(()))
-            }
-        }
     }
     
     /// Reload not scrambled config
@@ -84,34 +61,6 @@ extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
             loadConfig(openVPNConfigurationRepository.ovpnConfigurationFileInfo.fileUrl)
         } else {
             openVPNConfigurationRepository.downloadOVPNConfigurationFile { result in
-                switch result {
-                case .success(let url):
-                    loadConfig(url)
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
-        }
-    }
-    
-    /// Reload scrambled config.
-    private func reloadScrambledConfiguration(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
-        let loadConfig = { [weak self] (url: URL) in
-            self?.getOVPNConfiguration(from: url) { result in
-                switch result {
-                case .success(let config):
-                    self?.openVPNScrambledConfigurationFromFile = config
-                    completion(.success(()))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
-        }
-        
-        if openVPNConfigurationRepository.ovpnScrambledConfigurationFileInfo.isFileExistAtURL && !forceRedownload {
-            loadConfig(openVPNConfigurationRepository.ovpnScrambledConfigurationFileInfo.fileUrl)
-        } else {
-            openVPNConfigurationRepository.downloadOVPNScrambledConfigurationFile { result in
                 switch result {
                 case .success(let url):
                     loadConfig(url)
@@ -152,9 +101,7 @@ extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
         withUserSettings userSettings: UserVPNConnectionSettings
     ) -> OpenVPN.Configuration? {
         guard
-            let openVPNConfigurationFromFile = userSettings.scrambleFeatureEnabled
-                ? openVPNScrambledConfigurationFromFile
-                : openVPNConfigurationFromFile
+            let openVPNConfigurationFromFile = openVPNConfigurationFromFile
         else { return nil }
         return getUpdatedVPNConfig(openVPNConfigurationFromFile, withUserSettings: userSettings)
     }
@@ -189,6 +136,10 @@ extension OpenVPNConfigurationsProvider: OpenVPNConfigurationProviderProtocol {
         
         builder.hostname = userSettings.hostname
         builder.endpointProtocols = [EndpointProtocol(userSettings.socketType.toOpenVPN(), userSettings.port)]
+        
+        if userSettings.scrambleFeatureEnabled {
+            builder.xorMask = scrambleCharacter.asciiValue
+        }
         
         return builder.build()
     }
