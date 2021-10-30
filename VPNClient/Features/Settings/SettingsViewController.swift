@@ -24,7 +24,6 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var protocolSegmentedControl: UISegmentedControl!
     @IBOutlet weak var portSegmentedControl: UISegmentedControl!
     @IBOutlet weak var reconnectSwitcher: UISwitch!
-    @IBOutlet weak var useScrambledConfigSwitcher: UISwitch!
     
     @IBAction func reconnectSwitcherChanged(_ sender: UISwitch) {
         
@@ -41,7 +40,6 @@ class SettingsViewController: UIViewController {
         UserDefaults.socketTypeSetting = socketType
         UserDefaults.portSetting = "\(port!)"
         UserDefaults.reconnectOnNetworkChangeSetting = reconnectSwitcher.isOn
-        UserDefaults.scrambleVPNTrafficSetting = useScrambledConfigSwitcher.isOn
         
         NotificationCenter.default.post(name: VPNSettings.settingsChangedNotification, object: nil, userInfo: nil)
         
@@ -103,10 +101,8 @@ class SettingsViewController: UIViewController {
     }
     
     private func restoreFromSettings() {
-        reconnectSwitcher.setOn(UserDefaults.reconnectOnNetworkChangeSetting, animated: false)
-        useScrambledConfigSwitcher.setOn(UserDefaults.scrambleVPNTrafficSetting, animated: false)
-        
         let socketType = UserDefaults.socketTypeSetting ?? VPNSettings.defaultSettings.socketType
+        reconnectSwitcher.setOn(UserDefaults.reconnectOnNetworkChangeSetting, animated: false)
         updatePort(type: socketType)
         if let portStr = UserDefaults.portSetting, let port = Int(portStr), let index = VPNSettings.socketPorts[socketType]?.firstIndex(of: port) {
             portSegmentedControl.selectedSegmentIndex = index

@@ -118,7 +118,6 @@ extension CustomConnectViewModel {
             let credentials = OpenVPN.Credentials(username, password)
             let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
             let dnsServers = server.dns == nil ? nil : [server.dns!]
-            let scrambleFeatureEnabled = UserDefaults.scrambleVPNTrafficSetting
             
             let connectionSettings = UserVPNConnectionSettings(
                 hostname: server.address!,
@@ -126,7 +125,7 @@ extension CustomConnectViewModel {
                 dnsServers: dnsServers,
                 socketType: .init(socketType: type),
                 credentials: .init(credentials: credentials),
-                scrambleFeatureEnabled: scrambleFeatureEnabled,
+                scrambleFeatureEnabled: false,
                 onDemandRuleConnect: onDemandRuleConnect
             )
             connectorDelegate?.connect(withSettings: connectionSettings)

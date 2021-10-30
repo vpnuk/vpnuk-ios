@@ -56,6 +56,7 @@ class AccountVPNUKConnectViewModel  {
 // MARK: - AccountVPNUKConnectViewModelProtocol
 
 extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
+
     func viewDidLoad() {
         view?.updatePurchaseSubscriptionBanner(
             model: .init(
@@ -118,7 +119,7 @@ extension AccountVPNUKConnectViewModel {
         let serverDns: String? = server.dns
         let serverIp: String = ip
         
-        let scrambleFeatureEnabled = UserDefaults.scrambleVPNTrafficSetting
+        
         let credentials = OpenVPN.Credentials(account.username, account.password)
         let onDemandRuleConnect = UserDefaults.reconnectOnNetworkChangeSetting
         let dnsServers = serverDns == nil ? nil : [serverDns!]
@@ -129,7 +130,7 @@ extension AccountVPNUKConnectViewModel {
             dnsServers: dnsServers,
             socketType: .init(socketType: type),
             credentials: .init(credentials: credentials),
-            scrambleFeatureEnabled: scrambleFeatureEnabled,
+            scrambleFeatureEnabled: false,
             onDemandRuleConnect: onDemandRuleConnect
         )
         deps.connectorDelegate?.connect(withSettings: connectionSettings)
