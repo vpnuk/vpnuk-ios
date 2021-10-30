@@ -68,6 +68,16 @@ extension UserDefaults {
         }
     }
     
+    static var scrambleVPNTrafficSetting: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "scrambleVPNTrafficSetting")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "scrambleVPNTrafficSetting")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     static var selectedServerIP: String? {
         get {
             return UserDefaults.standard.string(forKey: "selectedServerIP")
