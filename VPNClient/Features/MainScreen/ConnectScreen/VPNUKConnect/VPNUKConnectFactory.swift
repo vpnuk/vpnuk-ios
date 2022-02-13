@@ -25,11 +25,13 @@ class VPNUKConnectFactory {
         )
         let storage = ConnectionStateStorageImpl.shared
         let authService = VPNUKAuthService(userCredentialsStorage: KeychainCredentialsStorage.buildForVPNUKAccount())
+        let api = RestAPI.shared
         let viewModel = AccountVPNUKConnectViewModel(
             dependencies: .init(
                 router: router,
                 connectorDelegate: connectorDelegate,
-                subscripionsAPI: RestAPI.shared,
+                subscripionsAPI: api,
+                authAPI: api,
                 connectionStateStorage: storage,
                 serversRepository: repository,
                 authService: authService

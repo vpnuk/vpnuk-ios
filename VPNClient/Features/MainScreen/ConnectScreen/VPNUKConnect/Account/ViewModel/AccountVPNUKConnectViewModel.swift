@@ -100,8 +100,19 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
     }
     
     private func forceDeleteAccountAndSignOut() {
-        
-        //signOut()
+        deps.authAPI.deleteAccount { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                // Successfully deleted
+                self.signOut()
+                self.deps.router.presentAlert(
+                    message: NSLocalizedString("Account successfully deleted", comment: "Deleted")
+                )
+            case .failure(let error):
+                self.deps.router.presentAlert(message: error.localizedDescription)
+            }
+        }
     }
 }
 
@@ -457,6 +468,7 @@ extension AccountVPNUKConnectViewModel {
         let router: AccountVPNUKConnectRouterProtocol
         weak var connectorDelegate: VPNConnectorDelegate?
         let subscripionsAPI: SubscripionsAPI
+        let authAPI: AuthAPI
         var connectionStateStorage: VPNUKConnectionStateStorage
         let serversRepository: ServersRepository
         let authService: AuthService

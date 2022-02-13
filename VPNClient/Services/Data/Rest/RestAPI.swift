@@ -13,6 +13,7 @@ import Alamofire
 protocol AuthAPI {
     func signUp(withData data: SignUpRequestDTO, completion: @escaping (_ result: Result<Void, Error>) -> ())
     func signIn(withCredentials credentials: SignInCredentialsDTO, completion: @escaping (_ result: Result<SignInResponseDTO, Error>) -> ())
+    func deleteAccount(completion: @escaping (_ result: Result<Void, Error>) -> ())
 }
 
 protocol ServersAPI {
@@ -29,7 +30,7 @@ protocol ServerFilesAPI {
 }
 
 protocol SubscripionsAPI {
-    func getPurchasableProductIds(callback: @escaping (Result<[Int:Bool], Error>) -> ()) 
+    func getPurchasableProductIds(callback: @escaping (Result<[Int:Bool], Error>) -> ())
     func getSubscriptions(callback: @escaping (_ subscriptions: Result<[SubscriptionDTO], Error>) -> ())
     func getSubscription(withId id: String, callback: @escaping (_ subscription: Result<SubscriptionDTO, Error>) -> ())
     func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (_ subscription: Result<SubscriptionCreateResponseDTO, Error>) -> ())
@@ -122,7 +123,7 @@ extension RestAPI: ServersAPI {
                         }
                     }
                 }
-        }
+            }
     }
 }
 
@@ -159,6 +160,25 @@ extension RestAPI: VersionsAPI {
 }
 
 extension RestAPI: AuthAPI {
+    func deleteAccount(completion: @escaping (Result<Void, Error>) -> ()) {
+        AF.request(
+            URL(string: baseUrl + "/wp-json/vpnuk/v1/customers")!,
+            method: .delete,
+            headers: getAuthHeaders()
+        )
+            .validate()
+            .response(queue: queue) { (response) in
+                DispatchQueue.main.async {
+                    if let error = response.error {
+                        print(error)
+                        completion(.failure(error as Error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+    }
+    
     func signUp(withData data: SignUpRequestDTO, completion: @escaping (Result<Void, Error>) -> ()) {
         AF.request(
             URL(string: baseUrl + "/wp-json/vpnuk/v1/customers")!,
@@ -177,7 +197,7 @@ extension RestAPI: AuthAPI {
                         completion(.success(()))
                     }
                 }
-        }
+            }
     }
     
     func signIn(withCredentials credentials: SignInCredentialsDTO, completion: @escaping (Result<SignInResponseDTO, Error>) -> ()) {
@@ -207,7 +227,7 @@ extension RestAPI: AuthAPI {
                         }
                     }
                 }
-        }
+            }
     }
     
 }
@@ -220,26 +240,26 @@ extension RestAPI: SubscripionsAPI {
             method: .get,
             headers: getAuthHeaders()
         )
-        .validate()
-        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-            if let error = response.error {
-                DispatchQueue.main.async {
-                    callback(.failure(error))
-                }
-            } else {
-                let data = response.data ?? Data()
-                do {
-                    let servers = try JSONDecoder().decode([SubscriptionDTO].self, from: data)
-                    DispatchQueue.main.async {
-                        callback(.success(servers))
-                    }
-                } catch {
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode([SubscriptionDTO].self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
                 }
             }
-        }
     }
     
     func getSubscription(withId id: String, callback: @escaping (Result<SubscriptionDTO, Error>) -> ()) {
@@ -248,26 +268,26 @@ extension RestAPI: SubscripionsAPI {
             method: .get,
             headers: getAuthHeaders()
         )
-        .validate()
-        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-            if let error = response.error {
-                DispatchQueue.main.async {
-                    callback(.failure(error))
-                }
-            } else {
-                let data = response.data ?? Data()
-                do {
-                    let servers = try JSONDecoder().decode(SubscriptionDTO.self, from: data)
-                    DispatchQueue.main.async {
-                        callback(.success(servers))
-                    }
-                } catch {
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode(SubscriptionDTO.self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
                 }
             }
-        }
     }
     
     func createSubscription(subscriptionRequest: SubscriptionCreateRequestDTO, callback: @escaping (Result<SubscriptionCreateResponseDTO, Error>) -> ()) {
@@ -277,26 +297,26 @@ extension RestAPI: SubscripionsAPI {
             parameters: subscriptionRequest,
             headers: getAuthHeaders()
         )
-        .validate()
-        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-            if let error = response.error {
-                DispatchQueue.main.async {
-                    callback(.failure(error))
-                }
-            } else {
-                let data = response.data ?? Data()
-                do {
-                    let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
-                    DispatchQueue.main.async {
-                        callback(.success(servers))
-                    }
-                } catch {
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let servers = try JSONDecoder().decode(SubscriptionCreateResponseDTO.self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(servers))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
                 }
             }
-        }
     }
     
     func sendPurchaseReceipt(base64EncodedReceipt: String, country: String?, callback: @escaping (Result<Void, Error>) -> ()) {
@@ -307,18 +327,18 @@ extension RestAPI: SubscripionsAPI {
             encoder: JSONParameterEncoder.default,
             headers: getAuthHeaders()
         )
-        .validate()
-        .response(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-            if let error = response.error {
-                DispatchQueue.main.async {
-                    callback(.failure(error))
-                }
-            } else {
-                DispatchQueue.main.async {
-                    callback(.success(()))
+            .validate()
+            .response(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        callback(.success(()))
+                    }
                 }
             }
-        }
     }
     
     func getPurchasableProductIds(callback: @escaping (Result<[Int:Bool], Error>) -> ()) {
@@ -327,26 +347,26 @@ extension RestAPI: SubscripionsAPI {
             method: .get,
             headers: getAuthHeaders()
         )
-        .validate()
-        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-            if let error = response.error {
-                DispatchQueue.main.async {
-                    callback(.failure(error))
-                }
-            } else {
-                let data = response.data ?? Data()
-                do {
-                    let json = try JSONDecoder().decode([Int:Bool].self, from: data)
-                    DispatchQueue.main.async {
-                        callback(.success(json))
-                    }
-                } catch {
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
                     DispatchQueue.main.async {
                         callback(.failure(error))
                     }
+                } else {
+                    let data = response.data ?? Data()
+                    do {
+                        let json = try JSONDecoder().decode([Int:Bool].self, from: data)
+                        DispatchQueue.main.async {
+                            callback(.success(json))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            callback(.failure(error))
+                        }
+                    }
                 }
             }
-        }
     }
     
     func renewOrder(
@@ -361,17 +381,17 @@ extension RestAPI: SubscripionsAPI {
             encoder: JSONParameterEncoder.default,
             headers: getAuthHeaders()
         )
-        .validate()
-        .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-            if let error = response.error {
-                DispatchQueue.main.async {
-                    callback(.failure(error))
-                }
-            } else {
-                DispatchQueue.main.async {
-                    callback(.success(()))
+            .validate()
+            .responseData(queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
+                if let error = response.error {
+                    DispatchQueue.main.async {
+                        callback(.failure(error))
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        callback(.success(()))
+                    }
                 }
             }
-        }
     }
 }
