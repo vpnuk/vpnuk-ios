@@ -16,6 +16,7 @@ protocol VPNConnectorDelegate: AnyObject {
     var connectionStatusUpdatedAction: ConnectionStatusUpdatedAction? { get set }
     var connectedServerData: ConnectionData? { get }
     func connect(withSettings settings: UserVPNConnectionSettings)
+    func disconnect()
     var connectionStatus: NEVPNStatus { get }
 }
 
@@ -250,6 +251,10 @@ extension MainScreenViewModel: VPNConnectorDelegate {
         default:
             break
         }
+    }
+    
+    func disconnect() {
+        vpnService.disconnect()
     }
 }
 

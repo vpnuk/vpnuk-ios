@@ -86,6 +86,8 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
         deps.connectionStateStorage.vpnukConnectionSelectedServerState = nil
         deps.connectionStateStorage.vpnukConnectionSelectedSubscriptionState = nil
         deps.router.switchToAuthorizationScreen()
+        // Disconnect if connected
+        deps.connectorDelegate?.disconnect()
     }
     
     func deleteAccount() {
@@ -100,8 +102,10 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
     }
     
     private func forceDeleteAccountAndSignOut() {
+        view?.setLoading(true)
         deps.authAPI.deleteAccount { [weak self] result in
             guard let self = self else { return }
+            self.view?.setLoading(false)
             switch result {
             case .success:
                 // Successfully deleted
