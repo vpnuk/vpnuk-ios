@@ -17,7 +17,6 @@ protocol VPNConnectorDelegate: AnyObject {
     var connectedServerData: ConnectionData? { get }
     func connect(withSettings settings: UserVPNConnectionSettings)
     var connectionStatus: NEVPNStatus { get }
-
 }
 
 enum ConnectScreenType: Int {
@@ -29,7 +28,6 @@ protocol MainScreenViewModelProtocol {
     func viewLoaded()
     func openSettingsTouched()
     func openSupportTouched()
-    func connectTypeChanged(type: ConnectScreenType)
 }
 
 class MainScreenViewModel: MainScreenViewModelProtocol {
@@ -75,8 +73,17 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
             self?.connectButtonTouched()
         }
         
-        
         loadData(forceReload: false)
+    }
+    
+    func openSettingsTouched() {
+        router.presentSettings()
+    }
+    
+    func openSupportTouched() {
+        if let link = URL(string: Constants.supportUrl) {
+            UIApplication.shared.open(link)
+        }
     }
     
     private func loadData(forceReload: Bool) {
@@ -160,7 +167,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
         serversRepository.updateServers(completion: completion)
     }
     
-    func connectTypeChanged(type: ConnectScreenType) {
+    private func connectTypeChanged(type: ConnectScreenType) {
         switch type {
         case .account:
             router.switchToAccountConnectView(connectorDelegate: self)
@@ -168,17 +175,42 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
             router.switchToCustomConnectView(connectorDelegate: self)
         }
         lastConnectScreenType = type
-        view?.setConnectScreenType(type)
+        view?.updateConnectScreenSwitcher(
+            model: buildModelForSwitcher(connectScreenType: type)
+        )
     }
     
-    func openSettingsTouched() {
-        router.presentSettings()
-    }
-    
-    func openSupportTouched() {
-        if let link = URL(string: Constants.supportUrl) {
-            UIApplication.shared.open(link)
+    private func buildModelForSwitcher(
+        connectScreenType: ConnectScreenType
+    ) -> MainScreenViewController.ConnectScreenSwitcherModel {
+        let items: [String] = [
+            NSLocalizedString("VPN Account", comment: ""),
+            NSLocalizedString("User Account", comment: "")
+        ]
+        
+        let selectedIndex: Int
+        switch connectScreenType {
+        case .custom:
+            selectedIndex = 0
+        case .account:
+            selectedIndex = 1
         }
+        
+        return .init(
+            items: items,
+            selectedIndex: selectedIndex,
+            itemSelectedAction: { [weak self] selectedIndex in
+                guard let self = self else { return }
+                switch selectedIndex {
+                case 0:
+                    self.connectTypeChanged(type: .custom)
+                case 1:
+                    self.connectTypeChanged(type: .account)
+                default:
+                    break
+                }
+            }
+        )
     }
 }
 

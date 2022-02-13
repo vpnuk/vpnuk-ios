@@ -11,13 +11,14 @@ import SnapKit
 
 protocol MainScreenViewProtocol: AlertPresentable, LoaderPresentable {
     func replaceConnectView(with view: UIView)
-    func setConnectScreenType(_ type: ConnectScreenType)
+    func updateConnectScreenSwitcher(model: MainScreenViewController.ConnectScreenSwitcherModel)
     var connectionStatusView: ConnectionStatusViewProtocol { get }
 }
 
 class MainScreenViewController: UIViewController {
     
     private let viewModel: MainScreenViewModelProtocol
+    private var connectScreenSelectedAction: ((Int) -> Void)?
     
     // header
     
@@ -55,17 +56,6 @@ class MainScreenViewController: UIViewController {
     
     private lazy var connectScreenSegmentedControl: UISegmentedControl = {
         let control = UISegmentedControl()
-        
-        control.insertSegment(
-            withTitle: NSLocalizedString("VPN Account", comment: ""),
-            at: 0,
-            animated: false
-        )
-        control.insertSegment(
-            withTitle: NSLocalizedString("User Account", comment: ""),
-            at: 0,
-            animated: false
-        )
         control.addTarget(self, action: #selector(connectScreenSegmentedControlSelected(sender:)), for: .valueChanged)
         return control
     }()
@@ -116,7 +106,6 @@ class MainScreenViewController: UIViewController {
     
     private lazy var connectView: UIView = {
         let view = UIView()
-//        view.backgroundColor = .cyan
         return view
     }()
     
@@ -205,9 +194,8 @@ class MainScreenViewController: UIViewController {
     
     @objc
     private func connectScreenSegmentedControlSelected(sender: UISegmentedControl) {
-        if let type = ConnectScreenType(rawValue: sender.selectedSegmentIndex) {
-            viewModel.connectTypeChanged(type: type)
-        }
+        let index = sender.selectedSegmentIndex
+        connectScreenSelectedAction?(index)
     }
     
     @objc
@@ -227,13 +215,34 @@ extension MainScreenViewController: MainScreenViewProtocol {
         statusView
     }
     
-    func setConnectScreenType(_ type: ConnectScreenType) {
-        connectScreenSegmentedControl.selectedSegmentIndex = type.rawValue
+    func updateConnectScreenSwitcher(model: MainScreenViewController.ConnectScreenSwitcherModel) {
+        connectScreenSegmentedControl.removeAllSegments()
+        for item in model.items.reversed() {
+            connectScreenSegmentedControl.insertSegment(
+                withTitle: item,
+                at: 0,
+                animated: false
+            )
+        }
+        connectScreenSelectedAction = model.itemSelectedAction
+        if let index = model.selectedIndex {
+            connectScreenSegmentedControl.selectedSegmentIndex = index
+        } else {
+            connectScreenSegmentedControl.selectedSegmentIndex = -1
+        }
     }
     
     func replaceConnectView(with view: UIView) {
         connectView.removeSubviews()
         connectView.addSubview(view)
         view.makeEdgesEqualToSuperview()
+    }
+}
+
+extension MainScreenViewController {
+    struct ConnectScreenSwitcherModel {
+        let items: [String]
+        let selectedIndex: Int?
+        let itemSelectedAction: (Int) -> Void
     }
 }
