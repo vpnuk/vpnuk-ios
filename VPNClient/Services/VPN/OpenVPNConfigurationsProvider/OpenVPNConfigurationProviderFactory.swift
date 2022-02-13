@@ -12,6 +12,7 @@ class OpenVPNConfigurationProviderFactory {
     func create() -> OpenVPNConfigurationProviderProtocol {
         let scrambleChar = Character("C")
         return OpenVPNConfigurationsProviderCustomScramble(
+            shouldUseOvpnFile: false, // Use hard-coded
             scrambleCharacter: scrambleChar,
             openVPNConfigurationRepository: OpenVPNConfigurationRepository(api: RestAPI.shared)
         )

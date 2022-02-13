@@ -203,7 +203,7 @@ extension MainScreenViewModel: VPNConnectorDelegate {
     }
     
     func connect(withSettings settings: UserVPNConnectionSettings) {
-        guard let configuration = openVPNConfigurationProvider.getUpdatedOpenVPNConfiguration(with: settings) else {
+        guard let configuration = openVPNConfigurationProvider.getOpenVPNConfiguration(with: settings) else {
             view?.presentAlert(message: NSLocalizedString("OpenVPN configuration not loaded", comment: ""))
             return
         }

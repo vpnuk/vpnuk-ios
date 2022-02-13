@@ -12,7 +12,7 @@ import TunnelKit
 protocol OpenVPNConfigurationProviderProtocol: AnyObject {
     var isConfigurationsLoaded: Bool { get }
     func reloadConfigurations(forceRedownload: Bool, completion: @escaping (Result<Void, Error>) -> Void)
-    func getUpdatedOpenVPNConfiguration(
+    func getOpenVPNConfiguration(
         with userSettings: UserVPNConnectionSettings
     ) -> OpenVPN.Configuration?
 }

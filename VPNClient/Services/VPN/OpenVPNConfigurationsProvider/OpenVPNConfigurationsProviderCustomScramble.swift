@@ -15,14 +15,17 @@ class OpenVPNConfigurationsProviderCustomScramble {
     private let openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
     private let scrambleCharacter: Character
     private let parsingQueue = DispatchQueue(label: "OpenVPNConfigurationsProviderCustomScramble.parsingQueue", qos: .userInitiated)
-    private let shouldUseOvpnFile: Bool = true
+    /// Use downloaded vpn config instead of hard coded
+    private let shouldUseOvpnFile: Bool
     
     init(
+        shouldUseOvpnFile: Bool,
         scrambleCharacter: Character,
         openVPNConfigurationRepository: OpenVPNConfigurationRepositoryProtocol
     ) {
         self.openVPNConfigurationRepository = openVPNConfigurationRepository
         self.scrambleCharacter = scrambleCharacter
+        self.shouldUseOvpnFile = shouldUseOvpnFile
     }
 }
 
@@ -30,7 +33,7 @@ extension OpenVPNConfigurationsProviderCustomScramble: OpenVPNConfigurationProvi
     var isConfigurationsLoaded: Bool {
         shouldUseOvpnFile ? openVPNConfigurationFromFile != nil : true
     }
-    func getUpdatedOpenVPNConfiguration(
+    func getOpenVPNConfiguration(
         with userSettings: UserVPNConnectionSettings
     ) -> OpenVPN.Configuration? {
         return buildVPNConfiguration(shouldUseOvpnFile: shouldUseOvpnFile, withUserSettings: userSettings)
