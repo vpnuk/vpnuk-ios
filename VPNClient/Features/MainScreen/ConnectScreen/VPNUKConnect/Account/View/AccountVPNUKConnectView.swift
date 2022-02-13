@@ -21,12 +21,20 @@ class AccountVPNUKConnectView: UIView {
     
     private lazy var signOutButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.setTitle(NSLocalizedString("Sign Out", comment: ""), for: .normal)
-        button.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        button.addTarget(self, action: #selector(signOutTouched), for: .touchUpInside)
         return button
     }()
     
+    private lazy var deleteAccountButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitle(NSLocalizedString("Delete account", comment: ""), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.addTarget(self, action: #selector(deleteAccountTouched), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var purchaseSubscriptionContainer: UIView = {
         let view = UIView()
@@ -69,7 +77,8 @@ class AccountVPNUKConnectView: UIView {
             arrangedSubviews: [
                 purchaseSubscriptionContainer,
                 subscriptionAndServerPickerStackView,
-                signOutButton
+                signOutButton,
+                deleteAccountButton
             ]
         )
         stackView.axis = .vertical
@@ -108,6 +117,7 @@ class AccountVPNUKConnectView: UIView {
             make.centerX.equalTo(self)
             make.width.equalTo(self).inset(UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
         }
+        contentStackView.setCustomSpacing(12, after: signOutButton)
     }
     
     private func commonInit() {
@@ -116,8 +126,13 @@ class AccountVPNUKConnectView: UIView {
     }
     
     @objc
-    private func signOut() {
+    private func signOutTouched() {
         viewModel.signOut()
+    }
+    
+    @objc
+    private func deleteAccountTouched() {
+        viewModel.deleteAccount()
     }
 }
 

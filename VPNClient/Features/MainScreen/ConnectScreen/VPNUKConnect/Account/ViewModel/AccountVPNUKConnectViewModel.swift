@@ -12,6 +12,7 @@ import TunnelKit
 protocol AccountVPNUKConnectViewModelProtocol {
     func viewDidLoad()
     func signOut()
+    func deleteAccount()
 }
 
 struct SubscriptionVPNAccount: Codable, Equatable {
@@ -87,6 +88,21 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
         deps.router.switchToAuthorizationScreen()
     }
     
+    func deleteAccount() {
+        deps.router.showConfirmAccountDeletionDialog(
+            cancelTouched: {
+                // Do nothing, cancelled
+            },
+            deleteTouched: { [weak self] in
+                self?.forceDeleteAccountAndSignOut()
+            }
+        )
+    }
+    
+    private func forceDeleteAccountAndSignOut() {
+        
+        signOut()
+    }
 }
 
 // MARK: - Connecting to server

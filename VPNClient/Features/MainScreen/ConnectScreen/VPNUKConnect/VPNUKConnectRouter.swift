@@ -25,6 +25,8 @@ protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable,
         for subscription: SubscriptionDTO,
         reloadSubscriptionsAction: @escaping Action
     )
+    /// Shows screen with confirmation
+    func showConfirmAccountDeletionDialog(cancelTouched: () -> Void, deleteTouched: () -> Void)
 }
 
 protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
@@ -100,6 +102,10 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
     
     func setLoading(_ present: Bool) {
         parentRouter.setLoading(present)
+    }
+    
+    func showConfirmAccountDeletionDialog(cancelTouched: () -> Void, deleteTouched: () -> Void) {
+        
     }
 }
 
