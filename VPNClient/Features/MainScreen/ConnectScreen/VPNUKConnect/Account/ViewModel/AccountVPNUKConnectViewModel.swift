@@ -101,7 +101,7 @@ extension AccountVPNUKConnectViewModel: AccountVPNUKConnectViewModelProtocol {
     
     private func forceDeleteAccountAndSignOut() {
         
-        signOut()
+        //signOut()
     }
 }
 

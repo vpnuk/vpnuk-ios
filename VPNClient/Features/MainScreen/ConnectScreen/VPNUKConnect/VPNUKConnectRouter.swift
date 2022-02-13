@@ -26,7 +26,7 @@ protocol AccountVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable,
         reloadSubscriptionsAction: @escaping Action
     )
     /// Shows screen with confirmation
-    func showConfirmAccountDeletionDialog(cancelTouched: () -> Void, deleteTouched: () -> Void)
+    func showConfirmAccountDeletionDialog(cancelTouched: @escaping () -> Void, deleteTouched: @escaping () -> Void)
 }
 
 protocol AuthVPNUKConnectRouterProtocol: AlertPresentable, LoaderPresentable {
@@ -104,8 +104,32 @@ class VPNUKConnectRouter: AuthVPNUKConnectRouterProtocol, AccountVPNUKConnectRou
         parentRouter.setLoading(present)
     }
     
-    func showConfirmAccountDeletionDialog(cancelTouched: () -> Void, deleteTouched: () -> Void) {
+    func showConfirmAccountDeletionDialog(cancelTouched: @escaping () -> Void, deleteTouched: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: "Delete account",
+            message: "This action will remove all user data from the system resulting in loss of service. Are you sure?",
+            preferredStyle: .alert
+        )
         
+        let deleteAction = UIAlertAction(
+            title: "Delete",
+            style: .destructive,
+            handler: { _ in
+                deleteTouched()
+            }
+        )
+        
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: { _ in
+                cancelTouched()
+            }
+        )
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        parentRouter.present(controller: alert, animated: true)
     }
 }
 
