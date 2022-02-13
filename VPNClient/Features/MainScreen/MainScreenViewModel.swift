@@ -19,9 +19,9 @@ protocol VPNConnectorDelegate: AnyObject {
     var connectionStatus: NEVPNStatus { get }
 }
 
-enum ConnectScreenType: Int {
-    case account = 0
-    case custom = 1
+enum ConnectScreenType: String {
+    case account = "account_type"
+    case custom = "custom_type"
 }
 
 protocol MainScreenViewModelProtocol {
@@ -43,7 +43,9 @@ class MainScreenViewModel: MainScreenViewModelProtocol {
     
     private var lastConnectScreenType: ConnectScreenType? {
         get {
-            let val = UserDefaults.standard.integer(forKey: "lastConnectScreenType")
+            guard let val = UserDefaults.standard.string(forKey: "lastConnectScreenType") else {
+                return nil
+            }
             return ConnectScreenType(rawValue: val)
         }
         set {
