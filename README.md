@@ -26,11 +26,11 @@ Part I and II do not apply to the LZO library, which remains licensed under the 
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. ([https://www.openssl.org/][dep-openssl])
 
-© 2002-2018 OpenVPN Inc. - OpenVPN is a registered trademark of OpenVPN Inc.
+© 2002-Present OpenVPN Inc. - OpenVPN is a registered trademark of OpenVPN Inc.
 
 ## Contacts
 
-Email: dekstersniper@gmail.com
+Email: danny@vpnuk.info
 
 [openvpn]: https://openvpn.net/index.php/open-source/overview.html
 
